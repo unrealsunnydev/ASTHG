@@ -4,6 +4,9 @@
 		Square150x150Logo="icons/icon150.png"
 		Square44x44Logo="icons/icon44.png"
 		Square70x70Logo="icons/icon44.png"
-		BackgroundColor="#242424"
-		ForegroundText="light" />
+		BackgroundColor="transparent"
+		ForegroundText="light"
+		DisplayName="An Sonic the Hedgehog Game"
+		ShortDisplayName="ASTHG"
+	/>
 </Application>

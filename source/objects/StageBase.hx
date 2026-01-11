@@ -26,9 +26,7 @@ class StageBase {
 			}
 			else {
 				trace("Stage file not found! Using Green Hill Zone instead");
-				json = {
-					folder: "zone1"
-				}
+				json = { folder: "zone1" }
 			}
 	}
 

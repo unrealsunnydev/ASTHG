@@ -6,13 +6,17 @@ import backend.ClientPrefs;
 import backend.Controls;
 import backend.Constants;
 import backend.CoolUtil;
+
 #if DISCORD_ALLOWED
 import backend.Discord;
 #end
+
 import backend.Locale;
+
 #if MODS_ALLOWED
 import backend.Mods;
 #end
+
 import backend.StateManager;
 import backend.SubStateManager;
 import backend.Paths;

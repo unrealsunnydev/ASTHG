@@ -6,6 +6,9 @@
 
 package options;
 
+import flixel.addons.display.FlxSliceSprite;
+import flixel.math.FlxRect;
+
 class OptionsState extends StateManager {
 	var options:Array<String> = [
 		"System",
@@ -16,6 +19,8 @@ class OptionsState extends StateManager {
 	];
 	private var curSelected:Int = 0;
 	private var grpTabs:FlxTypedGroup<FlxBitmapText>;
+	
+	var optBG:FlxSliceSprite = null;
 
 	public static var onPlayState:Bool = false;
 
@@ -23,9 +28,9 @@ class OptionsState extends StateManager {
 		var bg:flixel.FlxSprite = AsthgSprite.createGradient(FlxG.width, FlxG.height, [0x4FFFFFFF, 0x28FFFFFF], 2, 37, false);
 		add(bg);
 
+
 		// tabs group
 		grpTabs = new FlxTypedGroup<FlxBitmapText>();
-		add(grpTabs);
 
 		for (num => str in options) {
 			var txt:FlxBitmapText = new FlxBitmapText(0, 0, Locale.getString("title_" + str, "options"), Paths.getAngelCodeFont("Roco"));
@@ -34,6 +39,11 @@ class OptionsState extends StateManager {
 			txt.screenCenter(X);
 			grpTabs.add(txt);
 		}
+		
+		optBG = AsthgSprite.createSliced(0, 0, 7, 7, "button", FlxRect.get(3, 3, 1, 1), FlxRect.get(0, 0, 7, 7));
+		add(optBG);
+
+		add(grpTabs);
 
 		updateTabVisuals();
 
@@ -65,6 +75,10 @@ class OptionsState extends StateManager {
 	private function updateTabVisuals():Void {
 		for (idx => t in grpTabs.members) {
 			t.color = (idx == curSelected) ? FlxColor.YELLOW : FlxColor.WHITE;
+			optBG.x = grpTabs.members[curSelected].x - 5;
+			optBG.y = grpTabs.members[curSelected].y - 4;
+			optBG.width = grpTabs.members[curSelected].width + 8;
+			optBG.height = grpTabs.members[curSelected].height + 6;
 		}
 	}
 
@@ -74,13 +88,16 @@ class OptionsState extends StateManager {
 	}
 
 	function openSelectedSubstate(lbl:String) {
+		if (lbl.toLowerCase() == 'fail') {
+			CoolUtil.playSound("Fail");
+		} else { CoolUtil.playSound("MenuAccept"); }
 		switch (lbl.toLowerCase()) {
-			case "system": openSubState(new options.substates.System()); CoolUtil.playSound("MenuAccept");
-			case "display": openSubState(new options.substates.Display()); CoolUtil.playSound("MenuAccept");
-			case "gameplay": openSubState(new options.substates.Gameplay()); CoolUtil.playSound("MenuAccept");
-			case "controls": openSubState(new options.substates.Controls()); CoolUtil.playSound("MenuAccept");
-			case "language": openSubState(new options.substates.Language()); CoolUtil.playSound("MenuAccept");
-			default: trace('Unknown option: "$lbl"'); CoolUtil.playSound("Fail"); return; 
+			case "system": openSubState(new options.substates.System());
+			case "display": openSubState(new options.substates.Display());
+			case "gameplay": openSubState(new options.substates.Gameplay());
+			case "controls": openSubState(new options.substates.Controls());
+			case "language": openSubState(new options.substates.Language());
+			default: trace('Unknown option: "$lbl"'); return; 
 		}
 	}
 

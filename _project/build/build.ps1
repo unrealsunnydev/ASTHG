@@ -9,7 +9,6 @@ param(
 # Import translations folders if available
 Import-LocalizedData -BindingVariable "Msg" -ErrorAction Stop
 
-
 $Host.UI.RawUI.WindowTitle = $Msg.Title
 Clear-Host
 

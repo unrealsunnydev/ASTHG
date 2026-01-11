@@ -81,16 +81,14 @@ class ClientPrefs {
 					gamepadBinds.set(button, defaultButtons.get(button).copy());
 	}
 
-	public static function clearInvalidKeys(key:String)
-	{
+	public static function clearInvalidKeys(key:String) {
 		var keyBind:Array<FlxKey> = keyBinds.get(key);
 		var gamepadBind:Array<FlxGamepadInputID> = gamepadBinds.get(key);
 		while(keyBind != null && keyBind.contains(NONE)) keyBind.remove(NONE);
 		while(gamepadBind != null && gamepadBind.contains(NONE)) gamepadBind.remove(NONE);
 	}
 
-	public static function loadDefaultKeys()
-	{
+	public static function loadDefaultKeys() {
 		defaultKeys = keyBinds.copy();
 		defaultButtons = gamepadBinds.copy();
 	}
@@ -103,7 +101,7 @@ class ClientPrefs {
 
 		//Placing this in a separate save so that it can be manually deleted without removing your Score and stuff
 		var save:FlxSave = new FlxSave();
-		save.bind('controls_v3', CoolUtil.getSavePath());
+		save.bind('settings', CoolUtil.getSavePath());
 		save.data.keyboard = keyBinds;
 		save.data.gamepad = gamepadBinds;
 		save.flush();
@@ -145,7 +143,7 @@ class ClientPrefs {
 
 		// controls on a separate save file
 		var save:FlxSave = new FlxSave();
-		save.bind('controls_v3', CoolUtil.getSavePath());
+		save.bind('settings', CoolUtil.getSavePath());
 		if(save?.data.keyboard != null) {
 			var loadedControls:Map<String, Array<FlxKey>> = save.data.keyboard;
 			for (control => keys in loadedControls)
@@ -158,15 +156,14 @@ class ClientPrefs {
 		}
 	}
 
-	public static function reloadVolumeKeys()
-	{
+	public static function reloadVolumeKeys() {
 		Init.muteKeys = keyBinds.get('volume_mute').copy();
 		Init.volumeDownKeys = keyBinds.get('volume_down').copy();
 		Init.volumeUpKeys = keyBinds.get('volume_up').copy();
 		toggleVolumeKeys(true);
 	}
-	public static function toggleVolumeKeys(?turnOn:Bool = true)
-	{
+
+	public static function toggleVolumeKeys(?turnOn:Bool = true) {
 		FlxG.sound.muteKeys = turnOn ? Init.muteKeys : [];
 		FlxG.sound.volumeDownKeys = turnOn ? Init.volumeDownKeys : [];
 		FlxG.sound.volumeUpKeys = turnOn ? Init.volumeUpKeys : [];

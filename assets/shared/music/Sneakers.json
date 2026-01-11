@@ -1,12 +1,12 @@
 {
-	"title": "Glimmering Gift",
-	"artist": "Tee Lopes",
+	"title": "The Blur",
+	"artist": "Tee Lopes, Falk Au Yeong",
 	"album": "Sonic Mania",
 	"albumArtist": "SEGA",
 	"year": 2017,
-	"track": 25,
+	"track": 47,
 	"genre": "Game",
 
 	"loop": true,
-	"loopStart": 165375
+	"loopStart": 120960
 }

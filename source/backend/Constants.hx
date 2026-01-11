@@ -14,7 +14,7 @@ class Constants {
 
 
 	public static final POLYMOD_SETTINGS:Dynamic = {
-		modRoot: "../../../mods",
+		modRoot: #if mac "../../../" + #end "../../../mods",
 		dirs:["pt-BR Translation"],
 		useScriptedClasses: false
 	};

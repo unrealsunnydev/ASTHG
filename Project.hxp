@@ -1,6 +1,11 @@
 import hxp.*;
 import lime.tools.*;
 
+import Date;
+import DateTools;
+
+// We can't use libs here :(
+
 using StringTools;
 
 class Project extends HXProject
@@ -15,7 +20,7 @@ class Project extends HXProject
 		Rule: YEAR.MONTH.DAY	
 		(Current datetime of the update)
 	 */
-	final VERSION:String = "2026.1.7";
+	final VERSION:String = DateTools.format(Date.now(), "%Y.%m.%d");
 	
 	/*
 		Type of build
@@ -57,7 +62,7 @@ class Project extends HXProject
 	
 	public function new() {
 		super();
-		
+
 		this.meta.title = TITLE;
 		this.meta.version = VERSION;
 		this.meta.buildNumber = BUILD_TYPE;
@@ -73,8 +78,7 @@ class Project extends HXProject
 			this.window.width = 0;
 			this.window.height = 0;
 			this.window.fullscreen = true;
-		} else
-		{
+		} else {
 			this.window.width = 426;
 			this.window.height = 228;
 		}
@@ -82,22 +86,28 @@ class Project extends HXProject
 		this.window.orientation = Orientation.LANDSCAPE;
 		this.window.fps = 60;
 		this.window.background = (isDebug()) ? 0xFF00FF : 0x000000;
-		this.window.resizable = (isTarget("web") || isTarget("desktop")) ? true : false;
+		this.window.resizable = (isWeb() || isTarget("desktop")) ? true : false;
+		this.window.allowHighDPI = true;
 		
-		if (isTarget("web")) EXCLUDE_ASSETS.push("*.ogg");
+		if (isWeb()) EXCLUDE_ASSETS.push("*.ogg");
 		else				 EXCLUDE_ASSETS.push("*.mp3");
 			
+
+
 		echo("");
-		echo('${this.meta.title} v' + this.meta.version + (this.meta.buildNumber != null ? ' (build ${this.meta.buildNumber})' : ""));
+		echo('$TITLE v$VERSION' + (!isNull(BUILD_TYPE) ? ' (build $BUILD_TYPE)' : ""));
 		echo("-----------------------------------------");
 		dotPad("Company", this.meta.company, 24, false);
 		dotPad("Package", this.meta.packageName, 24, false);
 		dotPad("App file", this.app.file, 24, false);
 		echo("-----------------------------------------");
+		#if windows
+		echo("On windows!!!");
+		#end
 		
-		includeAssets("assets/embed", "assets/shared", null, EXCLUDE_ASSETS);
 		includeAssets("assets/shared", null, null, EXCLUDE_ASSETS);
 		includeAssets("assets/fonts", null);
+		includeAssets("assets/other", null);
 		includeAssets("assets/locales", null);
 		
 		sources.push("source");
@@ -113,15 +123,17 @@ class Project extends HXProject
 		// Adding Haxelibs
 		addHaxelib("flixel");
 		addHaxelib("flixel-addons");
+		addHaxelib("flixel-modding");
 		
 		addHaxelib("hxdiscord_rpc", (isCPP() && DISCORD_ALLOWED.get(this)));
 		// addHaxelib("hxcpp-debug-server", (isDebug()));
-		
 		addHaxelib("polymod", MODS_ALLOWED.get(this));
 		addHaxelib("firetongue", true); // Do NOT disable this, or all texts will not load
 		
-		addHaxelib("haxeui-core");
-		addHaxelib("haxeui-flixel");
+		if (isDebug()) {
+			addHaxelib("haxeui-core");
+			addHaxelib("haxeui-flixel");
+		}
 		
 		// Android configs
 		if (isAndroid()) {
@@ -158,7 +170,7 @@ class Project extends HXProject
 		
 		templatePaths.push("_project/templates");
 		
-		if (WindowsSettings.CustomVisuals) {
+		if (isWindows() && WindowsSettings.CustomVisuals) {
 			includeAssets("_project/templates/windows/template", "");
 		}
 		
@@ -173,8 +185,7 @@ class Project extends HXProject
 			
 			if (AndroidSettings.Icons.HasRound == true)
 				config.set("android.activity", {"android:roundIcon": "@drawable/ic_launcher_round"});
-		} else
-		{
+		} else {
 			addIcon("icon", "png", 8, true);
 			addIcon("icon", "png", 16, true);
 			addIcon("icon", "svg"); // Main
@@ -205,6 +216,10 @@ class Project extends HXProject
 	
 	function isCPP():Bool {
 		return (this.targetFlags.exists("cpp"));
+	}
+
+	function isWeb():Bool {
+		return (this.platformType == PlatformType.WEB || this.target == Platform.HTML5);
 	}
 	
 	/**
@@ -284,7 +299,7 @@ class Project extends HXProject
 	}
 	
 	inline public function isNull(str:String):Bool
-		return (str?.trim().length <= 0);
+		return (str == null || str.trim().length <= 0);
 }
 
 /**
@@ -297,22 +312,23 @@ enum abstract FeatureFlags(String) from String to String {
 	var TRANSLATIONS_ALLOWED = "TRANSLATIONS_ALLOWED";
 	var VIDEOS_ALLOWED = "VIDEOS_ALLOWED";
 	
-	public function set(project:Project, enable:Bool = true) {
-		if (enable || enable == null) {
+	public function set(project:Project, ?enable:Bool = true) {
+		if (enable == true || enable == null) {
 			project.haxedefs.set(this, "");
 		}
 		else {
 			if (has(project)) {
+				trace('${this} was removed from the list');
 				project.haxedefs.remove(this);
 			}
 				
 			// Nothing
 		}
-		project.dotPad(this, enable);
+		project.dotPad(this, '$enable' ?? 'false (fallback)');
 	}
 	
 	public function get(project:Project):Bool {
-		return (has(project)) ? project.haxedefs.get(this) : false;
+		return (project.haxedefs.get(this) == "") ?? false;
 	}
 	
 	public function has(project:Project) {

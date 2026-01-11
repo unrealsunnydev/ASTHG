@@ -1,6 +1,7 @@
 package states;
 
 import openfl.display.BitmapData;
+import flixel.FlxSprite;
 
 class ModsMenu extends StateManager {
 	#if MODS_ALLOWED

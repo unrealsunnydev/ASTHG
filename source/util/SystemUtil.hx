@@ -31,34 +31,34 @@ class SystemUtil {
 		#end
 	}
 
-	inline public static function getAccentColor():FlxColor {
-		var clr:Null<Dynamic>;
-		#if (web || flash)
-		FlxG.log.error("[ERROR] You're using a platform that doesn't support accent colors!");
+	public static var ACCENT_COLOR(default, set):FlxColor = FlxColor.WHITE;
+	inline public static function loadAccentColor():Null<Dynamic> {
+		#if (web || flash || winjs) // WinJS actually is HTML-based app
+		FlxG.log.error("You're using a platform that doesn't support accent colors!");
+		return;
 		#elseif windows
-		var p = new sys.io.Process("powershell.exe", ["-Command",
-		"Get-ItemPropertyValue",
-		"HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Accent", "AccentColorMenu"]);
-
-		var accent = p.stdout.readLine();
-		p.close();
 
 		/*
-			We need to transform to HEX and parse substrings because
-			Windows accent color is stored as ABRG
+			Run a PowerShell script converted to Int64
 		*/
+		var p = new sys.io.Process("powershell.exe", ["-NoProfile",
+		"-File", Sys.getCwd() + Paths.file("pwsh_scripts/GetAccentColor.ps1", TEXT, "other")]);
 
-		var hex = StringTools.hex(Std.parseInt(accent), 8);
-
-		var a = hex.substr(6, 2);
-		var r = hex.substr(0, 2);
-		var g = hex.substr(4, 2);
-		var b = hex.substr(2, 2);
-
-		clr = FlxColor.fromString('#$r$g$b');
+		var accent = Std.parseFloat(p.stdout.readLine());
+		trace("Accent: " + accent, "to float: " + accent, "to int: " + Std.int(accent), "to hex: " + ("#" + StringTools.hex(Std.int(accent), 6)));
+		p.close();
+		
+		// Haxe reads this as an FLOAT, not INT
+		return FlxColor.fromString("#" + StringTools.hex(Std.int(accent), 6));
 		#end
+	}
 
-		if (clr != null) trace ('Got accent color: clr $clr', "accent" + accent, "hex " + '0x$a$r$g$b', 'hex $hex');
-		return clr ?? FlxColor.WHITE;
+	private static function set_ACCENT_COLOR(value:Dynamic):FlxColor {
+		if (value != null) {
+			trace('returned $value :: #${StringTools.hex(value, 6)}');
+			return value;
+		}
+
+		return FlxColor.BLACK;
 	}
 }

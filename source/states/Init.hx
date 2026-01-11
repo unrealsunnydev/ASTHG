@@ -27,6 +27,8 @@ class Init extends StateManager {
 		polymod.Polymod.scan(Constants.POLYMOD_SETTINGS.modRoot);
 		#end
 
+		SystemUtil.ACCENT_COLOR = SystemUtil.loadAccentColor();
+
 		FlxTransitionableState.skipNextTransIn = true;
 		FlxTransitionableState.skipNextTransOut = true;
 
@@ -37,9 +39,9 @@ class Init extends StateManager {
 
 		#if debug 
 		// DEBUGING PURPOSES ONLY
-		StateManager.switchState(new options.OptionsState());
+		StateManager.switchState(new states.MainMenu());
 		#else
-		StateManager.switchState(new options.OptionsState());
+		StateManager.switchState(new states.TitleState());
 		#end
 	}
 }

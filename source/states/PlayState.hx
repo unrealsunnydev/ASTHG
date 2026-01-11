@@ -149,7 +149,7 @@ class PlayState extends StateManager {
 
 		if (FlxG.keys.justPressed.SIX) { 
 			rings += 10;
-			CoolUtil.playSound("Ring", true);
+			CoolUtil.playSound("Ring");
 		}
 
 		if (FlxG.keys.justPressed.EIGHT) {

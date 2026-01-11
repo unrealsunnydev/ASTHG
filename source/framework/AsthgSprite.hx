@@ -47,7 +47,7 @@ class AsthgSprite extends FlxSprite {
 		return spr;
 	}
 
-	public static function createSpriteSheet(x:Float = 0, y:Float = 0, fWidth:Int, fHeight:Int, image:Null<String>):AsthgSprite {
+	public static function createSpriteSheet(x:Float = 0, y:Float = 0, fWidth:Int, fHeight:Int, image:Null<String> = null):AsthgSprite {
 		var spr:AsthgSprite = new AsthgSprite(x, y);
 
 		if (!StringUtil.isNull(image))
@@ -67,7 +67,7 @@ class AsthgSprite extends FlxSprite {
 		@param image Image name
 		@return AsthgSprite
 	**/
-	public static function createSparrow(x:Float = 0, y:Float = 0, image:Null<String>):AsthgSprite {
+	public static function createSparrow(x:Float = 0, y:Float = 0, image:Null<String> = null):AsthgSprite {
 		var spr:AsthgSprite = new AsthgSprite(x, y);
 
 		if (!StringUtil.isNull(image)) {
@@ -94,6 +94,25 @@ class AsthgSprite extends FlxSprite {
 		scale.set(width / 2, height / 2);
 		updateHitbox(); // We can't use our tool because it's not a FlxSprite-type
 		return this;
+	}
+
+	/**
+		Creates a 9-Sliced sprite!
+		@param x Position horizontally
+		@param y Vertical position
+		@param width Width to final sprite
+		@param height Height to final sprite
+		@param image The image stored in "images/UI"
+		@param slice Slice parameters (Left, Top, Spaces from Left, Spaces from Top)
+		@param imageRect The image part you want to crop
+		@return FlxSliceSprite
+	**/
+	public static function createSliced(x:Float, y:Float, width:Float, height:Float, image:String, slice:FlxRect, ?imageRect:FlxRect):FlxSliceSprite {
+		// FINALLY I GOT IT HOW THIS THING WORKS -- @sunnydev31
+		var spr = new FlxSliceSprite(Paths.image("UI/" + image), slice, width, height, imageRect);
+		spr.x = x;
+		spr.y = y;
+		return spr;
 	}
 	
 	/**
@@ -122,16 +141,5 @@ class AsthgSprite extends FlxSprite {
 	public function scaleSet(width:Float, height:Float, ?updHitbox:Bool = true):Void {
 		scale.set(width, height);
 		if (updHitbox) updateHitbox();
-	}
-
-	/**
-		Custom function that returns a FlxPoint!
-		to not depend on Flixel functions
-		@param x Value 1
-		@param y Value 2
-		@return FlxPoint
-	**/
-	inline public static function vec2(x:Float, y:Float):FlxPoint {
-		return new FlxPoint(x, y);
 	}
 }

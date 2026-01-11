@@ -1,74 +1,65 @@
 {
-	"dependencies": [
-		{
-			"name": "extension-androidtools",
-			"type": "haxelib",
-			"version": null
-		},
-		{
-			"name": "firetongue",
-			"type": "git",
-			"dir": null,
-			"ref": "a6d8cd3927885aa7b0de881ddb202a74da2603b2",
-			"url": "https://github.com/larsiusprime/firetongue"
-		},
-		{
-			"name": "flixel",
-			"type": "haxelib",
-			"version": "5.6.1"
-		},
-		{
-			"name": "flixel-addons",
-			"type": "haxelib",
-			"version": "3.2.2"
-		},
-		{
-			"name": "flixel-tools",
-			"type": "haxelib",
-			"version": "1.2.1"
-		},
-		{
-			"name": "haxeui-core",
-			"type": "haxelib",
-			"version": null
-		},
-		{
-			"name": "haxeui-flixel",
-			"type": "haxelib",
-			"version": null
-		},
-		{
-			"name": "hxdiscord_rpc",
-			"type": "git",
-			"dir": null,
-			"ref": "82c47ecc1a454b7dd644e4fcac7e91155f176dec",
-			"url": "https://github.com/FunkinCrew/hxdiscord_rpc"
-		},
-		{
-			"name": "hxp",
-			"type": "haxelib",
-			"version": null
-		},
-		{
-			"name": "lime",
-			"type": "haxelib",
-			"version": "8.2.0"
-		},
-		{
-			"name": "openfl",
-			"type": "haxelib",
-			"version": "9.3.4"
-		},
-		{
-			"name": "polymod",
-			"type": "git",
-			"dir": null,
-			"url": "https://github.com/larsiusprime/polymod"
-		},
-		{
-			"name": "tjson",
-			"type": "haxelib",
-			"version": null
-		}
-	]
+  "dependencies": [
+    {
+      "name": "firetongue",
+      "type": "git",
+      "dir": null,
+      "ref": "a6d8cd3927885aa7b0de881ddb202a74da2603b2",
+      "url": "https://github.com/larsiusprime/firetongue"
+    },
+    {
+      "name": "flixel",
+      "type": "haxelib",
+      "version": "5.6.1"
+    },
+    {
+      "name": "flixel-addons",
+      "type": "haxelib",
+      "version": null
+    },
+    {
+      "name": "flixel-ui",
+      "type": "haxelib",
+      "version": null
+    },
+    {
+      "name": "haxeui-core",
+      "type": "haxelib",
+      "version": null
+    },
+    {
+      "name": "haxeui-flixel",
+      "type": "haxelib",
+      "version": null
+    },
+    {
+      "name": "hxdiscord_rpc",
+      "type": "git",
+      "dir": null,
+      "ref": "82c47ecc1a454b7dd644e4fcac7e91155f176dec",
+      "url": "https://github.com/FunkinCrew/hxdiscord_rpc"
+    },
+    {
+      "name": "hxp",
+      "type": "haxelib",
+      "version": null
+    },
+    {
+      "name": "lime",
+      "type": "haxelib",
+      "version": null
+    },
+    {
+      "name": "openfl",
+      "type": "haxelib",
+      "version": null
+    },
+    {
+      "name": "polymod",
+      "type": "git",
+      "dir": null,
+      "ref": "5c307d24369def05f44353c60719bd71e7844727",
+      "url": "https://github.com/larsiusprime/polymod"
+    }
+  ]
 }

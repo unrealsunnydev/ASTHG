@@ -34,7 +34,7 @@ class MainMenu extends StateManager {
 		var backd:FlxBackdrop = new FlxBackdrop(Paths.image("UI/backdropX"), X);
 		backd.y = 15;
 		backd.flipY = true;
-		backd.color = SystemUtil.getAccentColor();
+		backd.color = SystemUtil.ACCENT_COLOR;
 		backd.velocity.set(-30, 0);
 		add(backd);
 		
@@ -85,15 +85,14 @@ class MainMenu extends StateManager {
 				controls.vibrate(0.5, 0.2, 10);
 			}
 			if (controls.justPressed('accept')) {
-				CoolUtil.playSound("MenuAccept");
+				if (options[curSelected].toLowerCase() != "exit")
+					CoolUtil.playSound("MenuAccept");
 				selectedSomethin = true;
 				group.forEach(function(txt:FlxBitmapText) {
 					if (curSelected != txt.ID) {
 						FlxTween.tween(txt, {alpha: 0}, 0.6, {
 							ease: FlxEase.quadOut,
-							onComplete: function(twn:FlxTween) {
-								txt.kill();
-							}
+							onComplete: function(twn:FlxTween) { txt.kill(); }
 						});
 					}
 					else {
@@ -109,7 +108,9 @@ class MainMenu extends StateManager {
 								case 'mods':
 									LoadingState.switchStates(new ModsMenu());
 								case 'exit':
-									Sys.exit(0);
+									#if sys Sys.exit(0); CoolUtil.playSound("MenuAccept");
+									#else CoolUtil.playSound("Fail");
+									return; #end
 							}
 						});
 					}

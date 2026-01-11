@@ -1,8 +1,9 @@
 package states.editor;
 
-class CharacterEditor extends StateManager {
+class CharacterEditor extends UIState {
 
 	override function create() {
+		super.create();
 	}
 
 	override function update(e:Float) {

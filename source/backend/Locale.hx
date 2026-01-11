@@ -15,8 +15,7 @@ class Locale
 		Gets an translation phrase
 		@param key String key on files
 		@param defaultPhrase Phrase in English
-		@param values Any phrase that has "`{1}`, `{2}`..." will be replaced with any	
-					  value inserted following a sequence
+		@param values Any phrase that has "`{1}`, `{2}`..." will be replaced with any value inserted following a sequence
 		@return String
 	**/
 	inline public static function getString(key:String, context:String = "data", ?values:Array<Dynamic> = null):String {

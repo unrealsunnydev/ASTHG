@@ -4,6 +4,8 @@ import flixel.FlxGame;
 import firetongue.FireTongue;
 import openfl.display.Sprite;
 
+import openfl.events.UncaughtErrorEvent;
+
 class Main extends Sprite {
 	public static var tongue:FireTongue;
 	
@@ -24,13 +26,23 @@ class Main extends Sprite {
 		#if MODS_ALLOWED
 		Mods.loadMods();
 		#end
+
+		#if debug
+		openfl.utils._internal.Log.level = 1;
+		#end
 		
 		var game:FlxGame = new FlxGame(0, 0, states.Init, #if (flixel < "5.0.0") 1, #end 60, 60, true);
 		
+		#if web
+		Application.current.window.element.style.setProperty("image-rendering", "pixelated");
+		#end
+
 		addChild(game);
+		
+		openfl.Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 	}
 	
-	public static function onCrash(e:openfl.events.UncaughtErrorEvent) {
+	public static function onCrash(e:UncaughtErrorEvent) {
 		final folderPath:String = "./crash/";
 		var date:String = DateTools.format(Date.now(),
 			Locale.getString("format_date", null, ["-", "-"]) + "_" + Locale.getString("format_hour", null, ["-", "-"]));
@@ -38,13 +50,15 @@ class Main extends Sprite {
 		var msg:String = "Error!\n";
 		
 		msg += e.error + "\n\nReport this in Github: https://github.com/sunkydunky31/ASTHG/issues";
-		
+
+		#if sys
 		if (!sys.FileSystem.exists(folderPath))
 			sys.FileSystem.createDirectory(folderPath);
 			
 		sys.io.File.saveContent(folderPath + 'ASTHG_${date}.log', msg);
 		
 		Sys.println(msg);
+		#end
 		
 		lime.app.Application.current.window.alert(msg, "Something is wrong...");
 		
@@ -52,6 +66,8 @@ class Main extends Sprite {
 		DiscordClient.shutdown();
 		#end
 		
+		#if sys
 		Sys.exit(1);
+		#end
 	}
 }
