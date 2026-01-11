@@ -101,9 +101,6 @@ class Project extends HXProject
 		dotPad("Package", this.meta.packageName, 24, false);
 		dotPad("App file", this.app.file, 24, false);
 		echo("-----------------------------------------");
-		#if windows
-		echo("On windows!!!");
-		#end
 		
 		includeAssets("assets/shared", null, null, EXCLUDE_ASSETS);
 		includeAssets("assets/fonts", null);
@@ -123,7 +120,6 @@ class Project extends HXProject
 		// Adding Haxelibs
 		addHaxelib("flixel");
 		addHaxelib("flixel-addons");
-		addHaxelib("flixel-modding");
 		
 		addHaxelib("hxdiscord_rpc", (isCPP() && DISCORD_ALLOWED.get(this)));
 		// addHaxelib("hxcpp-debug-server", (isDebug()));
