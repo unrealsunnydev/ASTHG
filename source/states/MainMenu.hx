@@ -34,12 +34,17 @@ class MainMenu extends StateManager {
 		var backd:FlxBackdrop = new FlxBackdrop(Paths.image("UI/backdropX"), X);
 		backd.y = 15;
 		backd.flipY = true;
+		
+		trace('Appling accent to backd: ${SystemUtil.ACCENT_COLOR}', 'hex: ${SystemUtil.ACCENT_COLOR.toHexString()}');
 		backd.color = SystemUtil.ACCENT_COLOR;
+		backd.dirty = true;
 		backd.velocity.set(-30, 0);
 		add(backd);
 		
 		var backdFill:AsthgSprite = new AsthgSprite().createGraphic(FlxG.width, Math.floor(backd.y), backd.color);
 		add(backdFill);
+		
+		trace('backd color: ${backd.color}', 'backdFill color: ${backdFill.color}');
 
 		var titleTxt:FlxBitmapText = new FlxBitmapText(0, 2, Locale.getString("title", "main_menu"), Paths.getAngelCodeFont("HUD"));
 		

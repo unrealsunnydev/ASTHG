@@ -19,10 +19,6 @@ class Init extends StateManager {
 			replaceMissing: false
 		});
 
-		#if TRANSLATIONS_ALLOWED
-		haxe.ui.locale.LocaleManager.instance.language = ClientPrefs.data.language;
-		#end
-
 		#if MODS_ALLOWED
 		polymod.Polymod.scan(Constants.POLYMOD_SETTINGS.modRoot);
 		#end

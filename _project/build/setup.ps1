@@ -25,15 +25,6 @@ function Set-Pause {
 }
 
 # MAIN FUNCTION to call haxelib
-function Get-Haxelib {
-	param(
-		[Parameter(Mandatory=$true, Position=0)] [string]$Action,
-		[Parameter(Mandatory=$true, Position=1)] [object[]]$ExArgs
-	)
-
-	Write-Verbose "Called haxelib: $Action $($ExArgs)"
-	return & $Haxelib $Action @ExArgs
-}
 
 # Checks if the user has PSCore 
 if ($PSVersionTable.PSVersion.Major -lt "7") {
@@ -112,10 +103,10 @@ function Set-SetupAndroid {
 	Start-Sleep 2
 
 	# Adds "extension-androidtools" to HMM Library list
-	& "hmm" "haxelib" "extension-androidtools"
+	& "hmm" @("haxelib", "extension-androidtools")
 	Start-Sleep 5
 
-	Get-Haxelib "run" @("lime", "setup", "android", "--never")
+	& $Haxelib @("--never", "run", "lime", "setup", "android")
 	Set-SetupConfig -Name SetupAndroid -Value $true
 }
 
@@ -123,11 +114,11 @@ function New-GameSetup {
 	Write-Output ($Msg.InstallingDependencies.Default)
 	Set-Pause
 
-	Get-Haxelib "install" @("hmm", "--global")
+	& $Haxelib @("--global", "install", "hmm")
 	Start-Sleep 2
 
 	Set-Location "$PSScriptRoot/../../"
-	Get-Haxelib "run" @("hmm", "setup", "--global")
+	& $Haxelib @("--global", "run", "hmm", "setup")
 	Start-Sleep 2
 
 	& "hmm" "install"

@@ -93,7 +93,6 @@ class Project extends HXProject
 		else				 EXCLUDE_ASSETS.push("*.mp3");
 			
 
-
 		echo("");
 		echo('$TITLE v$VERSION' + (!isNull(BUILD_TYPE) ? ' (build $BUILD_TYPE)' : ""));
 		echo("-----------------------------------------");
@@ -166,9 +165,9 @@ class Project extends HXProject
 		
 		templatePaths.push("_project/templates");
 		
-		if (isWindows() && WindowsSettings.CustomVisuals) {
+		/* if (isWindows() && WindowsSettings.CustomVisuals) {
 			includeAssets("_project/templates/windows/template", "");
-		}
+		} */
 		
 		if (isAndroid() && AndroidSettings.Icons.Adaptive == true) {
 			/*
@@ -181,6 +180,18 @@ class Project extends HXProject
 			
 			if (AndroidSettings.Icons.HasRound == true)
 				config.set("android.activity", {"android:roundIcon": "@drawable/ic_launcher_round"});
+		} else if (isWindows()) {
+			addIcon("icon", "png", 16, true);
+			addIcon("windows/icon", "png", 24, true);
+			addIcon("windows/icon", "png", 32, true);
+			addIcon("windows/icon", "png", 40, true);
+			addIcon("windows/icon", "png", 48, true);
+			addIcon("windows/icon", "png", 64, true);
+			addIcon("windows/icon", "png", 96, true);
+			addIcon("windows/icon", "png", 128, true);
+			addIcon("windows/icon", "png", 256, true);
+			addIcon("windows/icon", "png", 512, true);
+			addIcon("windows/icon", "png", 768, true);
 		} else {
 			addIcon("icon", "png", 8, true);
 			addIcon("icon", "png", 16, true);
@@ -223,17 +234,12 @@ class Project extends HXProject
 		@param key Platform target
 	**/
 	function isTarget(key:String):Bool {
-		switch (key.trim().toLowerCase()) { // Added only the ones this game uses
-			case "hl", "neko":
-				return this.targetFlags.exists(key);
-			case "desktop":
-				return (this.platformType == PlatformType.DESKTOP);
-			case "mobile":
-				return (this.platformType == PlatformType.MOBILE);
-			case "web":
-				return (this.platformType == PlatformType.WEB);
-			default:
-				return false;
+		return switch (key.trim().toLowerCase()) { // Added only the ones this game uses
+			case "hl", "neko": this.targetFlags.exists(key);
+			case "desktop": (this.platformType == PlatformType.DESKTOP);
+			case "mobile": (this.platformType == PlatformType.MOBILE);
+			case "web": (this.platformType == PlatformType.WEB);
+			default: false;
 		}
 	}
 	

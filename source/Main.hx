@@ -10,10 +10,6 @@ class Main extends Sprite {
 	public static var tongue:FireTongue;
 	
 	public function new() {
-		haxe.ui.Toolkit.init();
-		haxe.ui.Toolkit.theme = "dark";
-		haxe.ui.Toolkit.autoScale = false;
-		
 		super();
 		
 		Controls.instance = new Controls();

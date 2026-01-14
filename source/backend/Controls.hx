@@ -29,13 +29,16 @@ class Controls
 		if (controllerMode) {
 			for (id in lime.ui.Gamepad.devices.keys()) {
 				var pad = lime.ui.Gamepad.devices.get(id);
-				if (pad != null) pad.rumble(low, high, duration);
+				if (pad != null) {
+					trace('Vibrating gamepad! ($low', high, '$duration)');
+					return pad.rumble(low, high, duration);
+				}
 			}
-			return;
 		}
 		#end
 
-		return lime.ui.Haptic.vibrate(Std.int(low), duration);
+		trace('Vibrating as Haptics (${Std.int(high)}', '$duration)');
+		return lime.ui.Haptic.vibrate(Std.int(high), duration);
 	}
 
 	public function pressed(key:String) {

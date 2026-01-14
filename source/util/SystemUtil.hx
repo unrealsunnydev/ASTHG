@@ -31,34 +31,38 @@ class SystemUtil {
 		#end
 	}
 
-	public static var ACCENT_COLOR(default, set):FlxColor = FlxColor.WHITE;
-	inline public static function loadAccentColor():Null<Dynamic> {
-		#if (web || flash || winjs) // WinJS actually is HTML-based app
-		FlxG.log.error("You're using a platform that doesn't support accent colors!");
-		return;
-		#elseif windows
+	@:privateAcess()
+	private static var _accent:FlxColor = FlxColor.WHITE;
+	public static var ACCENT_COLOR(get, set):FlxColor;
+	inline public static function loadAccentColor():Null<FlxColor> {
+		#if (windows && !winjs && !winrt)
 
 		/*
 			Run a PowerShell script converted to Int64
 		*/
-		var p = new sys.io.Process("powershell.exe", ["-NoProfile",
-		"-File", Sys.getCwd() + Paths.file("pwsh_scripts/GetAccentColor.ps1", TEXT, "other")]);
+		var p = new sys.io.Process("powershell.exe", ["-NoProfile", "-File",
+		CoolUtil.getConsoleScript("GetAccentColor.ps1")]);
 
-		var accent = Std.parseFloat(p.stdout.readLine());
-		trace("Accent: " + accent, "to float: " + accent, "to int: " + Std.int(accent), "to hex: " + ("#" + StringTools.hex(Std.int(accent), 6)));
+		var accent = Std.int(Std.parseFloat(p.stdout.readLine()));
+		trace('Accent: $accent', 'to hex: #${StringTools.hex(accent, 6)})');
 		p.close();
 		
 		// Haxe reads this as an FLOAT, not INT
-		return FlxColor.fromString("#" + StringTools.hex(Std.int(accent), 6));
+		return accent;
+		#else // I don't know how accent colors works on other systems...
+		FlxG.log.error("You're using a platform that doesn't support accent colors!");
+		return null;
 		#end
 	}
 
-	private static function set_ACCENT_COLOR(value:Dynamic):FlxColor {
-		if (value != null) {
-			trace('returned $value :: #${StringTools.hex(value, 6)}');
-			return value;
-		}
+	private static function get_ACCENT_COLOR():FlxColor {
+		return _accent;
+	}
 
-		return FlxColor.BLACK;
+	private static function set_ACCENT_COLOR(value:Null<FlxColor>):FlxColor {
+		_accent = (value != null) ? value : FlxColor.BLACK;
+
+		trace('returned $_accent :: ${_accent.toWebString()}');
+		return _accent;
 	}
 }

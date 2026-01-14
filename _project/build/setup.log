@@ -1,12 +1,17 @@
 **********************
 PowerShell transcript start
-Start time: 20260105192431
+Start time: 20260113234603
 Username: DESKTOP-L19LCBV\Sunky
 RunAs User: DESKTOP-L19LCBV\Sunky
 Configuration Name: 
 Machine: DESKTOP-L19LCBV (Microsoft Windows NT 10.0.19045.0)
-Host Application: C:\Program Files\PowerShell\7\pwsh.dll C:\Users\Sunky\source\ASTHG\_project\build\setup.ps1
-Process ID: 9532
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -NoProfile -ExecutionPolicy Bypass -Command Import-Module 'c:\Users\Sunky\.vscode\extensions\ms-vscode.powershell-2025.4.0\modules\PowerShellEditorServices\PowerShellEditorServices.psd1'; Start-EditorServices -HostName 'Visual Studio Code Host' -HostProfileId 'Microsoft.VSCode' -HostVersion '2025.4.0' -BundledModulesPath 'c:\Users\Sunky\.vscode\extensions\ms-vscode.powershell-2025.4.0\modules' -EnableConsoleRepl -StartupBanner "PowerShell Extension v2025.4.0
+Copyright (c) Microsoft Corporation.
+
+https://aka.ms/vscode-powershell
+Type 'help' to get help.
+" -LogLevel 'Warning' -LogPath 'c:\Users\Sunky\AppData\Roaming\Code\logs\20260113T232920\window1\exthost\ms-vscode.powershell' -SessionDetailsPath 'c:\Users\Sunky\AppData\Roaming\Code\User\globalStorage\ms-vscode.powershell\sessions\PSES-VSCode-12852-202341.json' -FeatureFlags @() 
+Process ID: 11044
 PSVersion: 7.5.4
 PSEdition: Core
 GitCommitId: 7.5.4
@@ -34,5 +39,5 @@ Installing dependencies.
 Finished.
 **********************
 PowerShell transcript end
-End time: 20260105193721
+End time: 20260113235818
 **********************

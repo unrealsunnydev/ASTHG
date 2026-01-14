@@ -38,8 +38,10 @@ class StateManager extends FlxState
 
 	public static function hotReload() {
 			trace("HOT RELOAD");
+			Paths.clearStoredMemory();
 			Paths.clearUnusedMemory();
-			Main.tongue.initialize({locale: ClientPrefs.data.language});
+			Main.tongue.initialize({locale: ClientPrefs.data.language});			
+			SystemUtil.ACCENT_COLOR = SystemUtil.loadAccentColor();
 			resetState();
 			return;
 	}

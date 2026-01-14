@@ -109,6 +109,12 @@ class CoolUtil
 		FlxG.sound.music.group = (group == null) ? FlxG.sound.defaultMusicGroup : group;
 
 		FlxG.sound.music.play();
-    }
+	}
+
+	#if sys
+	inline public static function getConsoleScript(file:String, folder:String = "pwsh_scripts"):String {
+		return (Sys.getCwd() + Paths.file('$folder/$file', TEXT, "other"));
+	}
+	#end
 }
 

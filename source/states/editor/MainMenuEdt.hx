@@ -3,9 +3,7 @@ package states.editor;
 class MainMenuEdt extends StateManager {
 	var selected:Int = 0;
 	var group:FlxTypedGroup<AsthgText>;
-	var options:Array<String> = [
-		"Character Editor"
-	];
+	var options:Array<String> = [];
 	
 	override public function create() {
 		var bg:flixel.FlxSprite = AsthgSprite.createGradient(FlxG.width, FlxG.height, [0xFF353535, 0xFF979797], 4, 32, false);
@@ -44,10 +42,7 @@ class MainMenuEdt extends StateManager {
 			if (controls.justPressed('accept')) {
 				CoolUtil.playSound("MenuAccept");
 				selectedSomethin = true;
-				switch(options[selected].toLowerCase()) {
-					case 'character editor':
-						LoadingState.switchStates(new states.editor.CharacterEditor());
-				}
+				//switch(options[selected].toLowerCase()) {}
 			}
 	  		if (controls.justPressed("back")) {
 				CoolUtil.playSound("MenuCancel");
