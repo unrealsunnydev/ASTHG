@@ -2,4 +2,5 @@ export/
 .vscode/
 .haxelib/
 _project/build/transcript.log
+_project/build/setup.log
 _project/build/setup_config.json
