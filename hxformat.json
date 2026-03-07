@@ -14,9 +14,10 @@
 	},
 
 	"sameLine": {
-		"ifElse": "same",
-		"doWhile": "same",
-		"tryBody": "same",
-		"tryCatch": "same"
+		"ifBody": "same",
+		"ifElse": "next",
+		"doWhile": "next",
+		"tryBody": "next",
+		"tryCatch": "next"
 	}
 }

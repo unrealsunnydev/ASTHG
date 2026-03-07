@@ -12,7 +12,7 @@ class TitleState extends StateManager {
 		add(bg);
 
 		pressStart = new FlxBitmapText(0, FlxG.height - 20, Locale.getString("press_start", "title_screen",
-		[backend.InputFormatter.getControlNames('accept')]), Paths.getAngelCodeFont("HUD"));
+			[backend.InputFormatter.getControlNames('accept')]).toUpperCase(), Paths.getAngelCodeFont("TitleFont"));
 		pressStart.screenCenter(X);
 		add(pressStart);
 

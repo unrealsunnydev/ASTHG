@@ -2,10 +2,8 @@ package backend;
 
 import flixel.FlxSubState;
 
-class SubStateManager extends FlxSubState
-{
-	public function new()
-	{
+class SubStateManager extends FlxSubState {
+	public function new() {
 		super();
 	}
 
@@ -14,8 +12,7 @@ class SubStateManager extends FlxSubState
 	inline function get_controls():Controls
 		return Controls.instance;
 
-	override function update(elapsed:Float)
-	{
+	override function update(elapsed:Float) {
 		//everyStep();
 		if(!persistentUpdate) StateManager.timePassedOnState += elapsed;
 

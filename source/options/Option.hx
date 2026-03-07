@@ -7,14 +7,14 @@ class Option {
 	public var desc:String = "This option does not have a description.";
 	public var type:OptionType = OptionType.BOOL;
 	public var saveVar(default, null):Null<String>;
-	public var options:Dynamic;
+	public var options:OptionSettings;
 	public var value(get, set):Dynamic;
 	public var defaultV:Null<Dynamic>;
 	
 	public var child:AsthgText;
 	public var text(get, set):Null<String>;
 
-	inline public function new(flag:String = "", saveVar:String = "", ?type:OptionType = OptionType.BOOL, ?options:Dynamic) {
+	inline public function new(flag:String = "", saveVar:String = "", ?type:OptionType = OptionType.BOOL, ?options:OptionSettings) {
 		_name = flag;
 
 		this.flag = Locale.getString(flag, "options");
@@ -35,7 +35,7 @@ class Option {
 				defaultV ??= 0;
 			case OptionType.STRING:
 				this.options = {list: ["No Options"], display: "%v"};
-				defaultV ??= options?.list[0];
+				defaultV ??= options?.list[0] ?? "No Option";
 		}
 	}
 
@@ -52,10 +52,8 @@ class Option {
 	private function get_text()
 		return _text;
 
-	private function set_text(newValue:String = '')
-	{
-		if (child != null)
-		{
+	private function set_text(newValue:String = '') {
+		if (child != null) {
 			_text = newValue;
 			child.text = Locale.getString('$_name-${value}', "options") ?? _text;
 			return _text;

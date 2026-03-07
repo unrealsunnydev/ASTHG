@@ -25,8 +25,6 @@
 		ErrorPath = "'{0}' was not found. Returning..."
 	}
 
-	UnsupportedPS = "You're using an older version of PowerShell`nPlease. Use PowerShell Core (6.0+), having in mind that it supports Unix-like systems."
-
 	Menu = @{
 		Title = "ASTHG Setup"
 		Options = @(
@@ -48,10 +46,6 @@
 
 	RemoveSetup = @{
 		Dependencies = "Removing dependencies..."
-		LibraryDependencies = "Removing library dependencies..."
-		InfoAndroid = "Checking for Android setup..."
-		NotAndroid = "Android configuration not found."
-		AndroidWarn = "WARNING: This will delete your Lime configuration file entirely!`nContinue? ({0}/{1})"
 	}
 
 	# Don't ask this

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<font>
+	<info face="Title Screen" size="16" bold="0" italic="0" charset="utf-8" unicode="1" stretchH="100"
+		smooth="0" aa="0" padding="1,1,1,1" spacing="1,3" />
+	<common lineHeight="16" base="14" scaleW="512" scaleH="45" pages="1" packed="0" />
+	<pages> <page id="0" file="TitleFont.png" /> </pages>
+
+	<chars count="26">
+		<!-- A --> <char id="65" x="0" y="0" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+		<!-- B --> <char id="66" x="8" y="0" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+		<!-- C --> <char id="67" x="16" y="0" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+		<!-- D --> <char id="68" x="24" y="0" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+		<!-- E --> <char id="69" x="32" y="0" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+		<!-- F --> <char id="70" x="40" y="0" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+		<!-- G --> <char id="71" x="48" y="0" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+		<!-- H --> <char id="72" x="56" y="0" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+		<!-- I --> <char id="73" x="64" y="0" width="3" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+		<!-- K --> <char id="75" x="67" y="0" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+		<!-- L --> <char id="76" x="75" y="0" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+		<!-- M --> <char id="77" x="83" y="0" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+		<!-- N --> <char id="78" x="91" y="0" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+		<!-- O --> <char id="79" x="0" y="8" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+		<!-- P --> <char id="80" x="8" y="8" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+		<!-- Q --> <char id="81" x="16" y="8" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+		<!-- R --> <char id="82" x="24" y="8" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+		<!-- S --> <char id="83" x="32" y="8" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+		<!-- T --> <char id="84" x="40" y="8" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+		<!-- U --> <char id="85" x="48" y="8" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+		<!-- V --> <char id="86" x="0" y="8" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+		<!-- W --> <char id="87" x="0" y="8" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+		<!-- X --> <char id="88" x="72" y="8" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+		<!-- Y --> <char id="89" x="80" y="8" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+		<!-- Z --> <char id="90" x="88" y="8" width="8" height="8" xoffset="0" yoffset="0" xadvance="8" page="0" chnl="15" />
+		<!--  --> <char id="32" x="0" y="0" width="0" height="0" xoffset="0" yoffset="0" xadvance="3" page="0" chnl="15" />
+	</chars>
+</font>

@@ -7,20 +7,21 @@ import states.Init;
 
 // Add a variable here and it will get automatically saved
 @:structInit class SaveVariables {
-	// ----------- System -----------
+	// ----------- System ----------- //
+	public var accentColors:Bool = false;
 	public var cacheOnGPU:Bool = #if !switch false #else true #end; //From Stilic
 	public var checkForUpdates:Bool = true;
 	public var discordRPC:Bool = #if DISCORD_ALLOWED true #else false #end;
 	public var haptics:Bool = true;
 	public var language:String = 'en-US'; //Default
 
-	// ----------- Graphics -----------
+	// ----------- Graphics ----------- //
 	public var backLayers:Float = 0.0;
 	public var framerate:Int = 60;
 	public var lowQuality:Bool = false;
 	public var showFPS:Bool = false;
 
-	// ----------- Gameplay -----------
+	// ----------- Gameplay ----------- //
 	public var autoPause:Bool = true;
 	public var flashing:Bool = true;
 	public var hideHud:Bool = false;
@@ -47,7 +48,7 @@ class ClientPrefs {
 		'volume_down'	=> [NUMPADMINUS],
 	];
 	
-	public static var gamepadBinds:Map<String, Array<FlxGamepadInputID>> = [		
+	public static var gamepadBinds:Map<String, Array<FlxGamepadInputID>> = [
 		'up'			=> [DPAD_UP],
 		'left'			=> [DPAD_LEFT],
 		'down'			=> [DPAD_DOWN],
@@ -63,22 +64,22 @@ class ClientPrefs {
 	public static var defaultKeys:Map<String, Array<FlxKey>> = null;
 	public static var defaultButtons:Map<String, Array<FlxGamepadInputID>> = null;
 
-	private static var importantMap:Map<String, Array<String>> =
-	[
+	private static var importantMap:Map<String, Array<String>> = [
 		"flixelSound" => ["volume"]
 	];
 
-	public static function resetKeys(controller:Null<Bool> = null) //Null = both, False = Keyboard, True = Controller
-	{
-		if(controller != true)
+	public static function resetKeys(controller:Null<Bool> = null) { //Null = both, False = Keyboard, True = Controller
+		if(controller != true) {
 			for (key in keyBinds.keys())
 				if(defaultKeys.exists(key))
 					keyBinds.set(key, defaultKeys.get(key).copy());
+		}
 
-		if(controller != false)
+		if(controller != false) {
 			for (button in gamepadBinds.keys())
 				if(defaultButtons.exists(button))
 					gamepadBinds.set(button, defaultButtons.get(button).copy());
+		}
 	}
 
 	public static function clearInvalidKeys(key:String) {
@@ -144,11 +145,13 @@ class ClientPrefs {
 		// controls on a separate save file
 		var save:FlxSave = new FlxSave();
 		save.bind('settings', CoolUtil.getSavePath());
+
 		if(save?.data.keyboard != null) {
 			var loadedControls:Map<String, Array<FlxKey>> = save.data.keyboard;
 			for (control => keys in loadedControls)
 				if(keyBinds.exists(control)) keyBinds.set(control, keys);
 		}
+
 		if(save?.data.gamepad != null) {
 			var loadedControls:Map<String, Array<FlxGamepadInputID>> = save.data.gamepad;
 			for (control => keys in loadedControls)
@@ -164,8 +167,8 @@ class ClientPrefs {
 	}
 
 	public static function toggleVolumeKeys(?turnOn:Bool = true) {
-		FlxG.sound.muteKeys = turnOn ? Init.muteKeys : [];
+		FlxG.sound.muteKeys		  = turnOn ? Init.muteKeys		 : [];
 		FlxG.sound.volumeDownKeys = turnOn ? Init.volumeDownKeys : [];
-		FlxG.sound.volumeUpKeys = turnOn ? Init.volumeUpKeys : [];
+		FlxG.sound.volumeUpKeys   = turnOn ? Init.volumeUpKeys	 : [];
 	}
 }

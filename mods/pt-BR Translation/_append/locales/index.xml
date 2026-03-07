@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data>
+
+	<!-- By now, this is not working as expected.... -->
+
+	<locale id="pt-BR" sort="1">
+		<contributors value="Sunnydev31" />
+		<ui language="Idioma" region="Região" />
+		<label id="en-US,en-GB,en-CA" language="Portuguese" region="Brazil" />
+		<label id="pt-BR, pt-PT" language="Português" region="Brasil" />
+	</locale>
+</data>
