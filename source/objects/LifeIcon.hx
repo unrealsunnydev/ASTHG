@@ -14,14 +14,6 @@ class LifeIcon extends AsthgSprite {
 		charObj = states.PlayState.instance?.player;
 
 		init(char);
-		
-		applyPalette([
-			FlxColor.fromString(charObj.json?.palettes[charObj.curPalette][0]),
-			FlxColor.fromString(charObj.json?.palettes[charObj.curPalette][1]),
-			FlxColor.fromString(charObj.json?.palettes[charObj.curPalette][2]),
-			FlxColor.fromString(charObj.json?.palettes[charObj.curPalette][3])
-		]);
-
 		animation.play("normal");
 
 		scrollFactor.set();
@@ -37,18 +29,17 @@ class LifeIcon extends AsthgSprite {
 		var strike:Bool = Paths.fileExists('images/$img.png', IMAGE);
 
 		if (!strike) { // Strike 1: Char file not found -> Use JSON entry
-			trace("Not found! Searching with JSON entry");
 			img = "characters/" + charObj.json.name + "/" + charObj.json.liveIcon;
+			trace("Not found! Searching with JSON entry");
 		}
 	
 		if (!strike) { //Strike 2: Char file with JSON name not found -> Use placeholder
-			trace("Not found again! Getting placeholder");
 			img = "characters/Sonic/liveIcon";
+			trace("Not found again! Getting placeholder");
 		}
 	
-		if (!strike) { //Strike 3: Impossible to find files to use / Even fallback was not found
+		if (!strike)  //Strike 3: Impossible to find files to use / Even fallback was not found
 			throw "Holy damn! WHAT DID YOU DO WITH YOUR ASSETS???????????";
-		}
 
 		var graphic = Paths.image(img);
 

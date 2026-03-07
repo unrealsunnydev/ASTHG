@@ -8,7 +8,6 @@ class PlayState extends StateManager {
 
 	public var score:Int = 10;
 	var time:String = "0:00";
-	var timeVal:Float = 0;
 	var rings:Int = 0;
 	var lives:Int = 3;
 	
@@ -26,8 +25,6 @@ class PlayState extends StateManager {
 	public var uiGroup:FlxSpriteGroup;
 
 	#if debug
-	var posX:AsthgSprite;
-	var posY:AsthgSprite;
 	var posXTxt:FlxBitmapText;
 	var posYTxt:FlxBitmapText;
 	#end
@@ -105,6 +102,12 @@ class PlayState extends StateManager {
 
 		livesIcon = new LifeIcon(player.lifeIcon);
 		livesIcon.setPosition(hudPos.x, FlxG.height - 26);
+		livesIcon.applyPalette([
+			FlxColor.fromString(player.json?.palettes[player.curPalette][0]),
+			FlxColor.fromString(player.json?.palettes[player.curPalette][1]),
+			FlxColor.fromString(player.json?.palettes[player.curPalette][2]),
+			FlxColor.fromString(player.json?.palettes[player.curPalette][3])
+		]);
 		uiGroup.add(livesIcon);
 		
 		livesTxt = new FlxBitmapText(livesIcon.x + livesIcon.frameWidth + 1, livesIcon.y + 3, 'livesTxt', Paths.getAngelCodeFont("HUD"));
@@ -112,15 +115,15 @@ class PlayState extends StateManager {
 		uiGroup.add(livesTxt);
 
 		#if debug
-		posX = AsthgSprite.create(FlxG.width - 60, hudPos.y, "HUD/posX");
-		posX.color = 0xFFFFFF00;
+		var posX:AsthgSprite = AsthgSprite.create(FlxG.width - 60, hudPos.y, "HUD/posX");
+		posX.color = (player.x >= 0xFFFF) ? 0xFFFF0000 :  0xFFFFFF00;
 		uiGroup.add(posX);
 
 		posXTxt = new FlxBitmapText(posX.x + posX.width + 1, posX.y, '', Paths.getAngelCodeFont("HUD"));
 		uiGroup.add(posXTxt);
 
-		posY = AsthgSprite.create(posX.x, hudPos.y + 13, "HUD/posY");
-		posY.color = 0xFFFFFF00;
+		var posY:AsthgSprite = AsthgSprite.create(posX.x, hudPos.y + 13, "HUD/posY");
+		posY.color = (player.y >= 0xFFFF) ? 0xFFFF0000 : 0xFFFFFF00;
 		uiGroup.add(posY);
 		
 		posYTxt = new FlxBitmapText(posY.x + posY.width + 1, posY.y, '', Paths.getAngelCodeFont("HUD"));
@@ -142,9 +145,6 @@ class PlayState extends StateManager {
 		#if debug
 		posXTxt.text = StringTools.hex(Std.int(player.x), 6);
 		posYTxt.text = StringTools.hex(Std.int(player.y), 6);
-
-		posX.color = (player.x >= 0xFFFF) ? 0xFFFF0000 :  0xFFFFFF00;
-		posY.color = (player.y >= 0xFFFF) ? 0xFFFF0000 :  0xFFFFFF00;
 		#end
 
 		if (FlxG.keys.justPressed.SIX) { 
@@ -157,7 +157,8 @@ class PlayState extends StateManager {
 			player.curPalette++;
 		}
 
-		player.updateMoves();
+		
+		updateMoves();
 		super.update(elapsed);
 
 		if (controls.justPressed('pause')) openPauseMenu();
@@ -208,5 +209,58 @@ class PlayState extends StateManager {
 		FlxTween.tween(bg2, {y: FlxG.height}, 0.4);
 		FlxTween.tween(backdrop, {y: FlxG.height - 50}, 0.5);
 		FlxTween.tween(backdrop2, {x: 50}, 0.5);
+	}
+
+	
+	function updateMoves() {
+		player.acceleration.x = 0;
+
+		var inputUP:Bool = false;
+		var inputDOWN:Bool = false;
+		var inputLEFT:Bool = false;
+		var inputRIGHT:Bool = false;
+
+		inputUP = controls.pressed('up');
+		inputDOWN = controls.pressed('down');
+		inputLEFT = controls.pressed('left');
+		inputRIGHT = controls.pressed('right');
+
+		if (inputUP && inputDOWN)
+			inputUP = inputDOWN = false;
+		if (inputLEFT && inputRIGHT)
+			inputLEFT = inputRIGHT = false; 
+
+		if (inputLEFT || inputRIGHT) {
+			if (inputLEFT) {
+				player.facing = LEFT;
+			}
+			else if (inputRIGHT) {
+				player.facing = RIGHT;
+			}
+		
+			switch (player.facing) {
+				case LEFT, RIGHT:
+					if ((player.velocity.x != 0) && player.touching == NONE)
+						player.playAnim("ANI_WALKING");
+
+					player.acceleration.x = (player.facing == LEFT) ? -player.maxVelocity.x * 4 : player.maxVelocity.x * 4;
+				case _:
+			}
+		}
+		else {
+			if (inputUP) {
+				player.facing = UP;
+				player.playAnim("ANI_LOOK_UP");
+			}
+			else if (inputDOWN) {
+				player.facing = DOWN;
+				player.playAnim("ANI_LOOK_DOWN");
+			}
+			else
+				player.playAnim("ANI_STOPPED");
+			
+			player.velocity.x = 0;
+			player.velocity.y = 0;
+		}
 	}
 }

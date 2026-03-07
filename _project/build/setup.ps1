@@ -1,6 +1,3 @@
-#requires -PSEdition Core
-#requires -Version 7
-
 param(
 	[string]$StayOnMenu = ""
 )
@@ -29,6 +26,13 @@ function Set-Pause {
 
 # MAIN FUNCTION to call haxelib
 
+# Checks if the user has PSCore 
+if ($PSVersionTable.PSVersion.Major -lt "7") {
+	Write-Output $Msg.UnsupportedPS
+	Set-Pause
+	exit
+}
+
 [bool]$HasHaxelib = $false
 if (Get-Command "haxelib" -ErrorAction SilentlyContinue) {
 	$Haxelib = "haxelib"
@@ -40,28 +44,25 @@ $ConfigPath = Join-Path $PSScriptRoot 'setup_config.json'
 $obj = @{ }
 
 function Get-SetupConfig {
-	param([Parameter(Mandatory = $true)] [object]$Name)
+	param([Parameter(Mandatory=$true)] [object]$Name)
 
 	try {
 		if (Test-Path $ConfigPath) {
 			$obj = Get-Content $ConfigPath -Raw | ConvertFrom-Json -ErrorAction Stop
 			return $obj[$Name]
 		}
-	}
-	catch {}
+	} catch {}
 }
 
 function Set-SetupConfig {
 	param(
-		[Parameter(Mandatory = $true, Position = 0)] [object]$Name,
-		[Parameter(Mandatory = $true, Position = 1)] [object]$Value
+		[Parameter(Mandatory=$true, Position=0)] [object]$Name,
+		[Parameter(Mandatory=$true, Position=1)] [object]$Value
 	)
-
 	$obj += @{ $Name = $Value }
 	try {
 		$obj | ConvertTo-Json | Set-Content -Path $ConfigPath -Encoding UTF8
-	}
-	catch { Write-Warning ($Msg.Config.FailedSave -f $_) }
+	} catch { Write-Warning ($Msg.Config.FailedSave -f $_) }
 }
 
 if (-not $HasHaxelib) { Write-Output ($Msg.NotHaxe) }
@@ -73,8 +74,7 @@ function Set-SetupWindows {
 	try {
 		Invoke-WebRequest -Uri ($url -f $filename) -OutFile $filename
 		Write-Output ($Msg.InstallingMSVC.Prompt)
-	}
-	catch {
+	} catch {
 		Write-Warning ($Msg.InstallingMSVC.ErrorDownload -f $_)
 		return
 	}
@@ -83,10 +83,8 @@ function Set-SetupWindows {
 		try {
 			Start-Process -FilePath $filename -ArgumentList "--add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.Windows10SDK.19041 --passive --nocache --downloadThenInstall" -Wait
 			Remove-Item $filename
-		}
-		catch {}
-	}
-	else {
+		} catch {}
+	} else {
 		Write-Warning ($Msg.InstallingMSVC.ErrorPath -f $filename)
 		return
 	}
@@ -164,16 +162,24 @@ function Remove-GameSetup {
 do {
 	Write-Output ("===== {0} =====" -f $Msg.Menu.Title)
 	foreach ($i in 0..($Msg["Menu"]["Options"].Count - 1)) {
-		switch ($i) {
+		switch($i) {
 			0 {
-				Write-Output ("{0}. {1}" -f $i, ($HasHaxelib) ? $Msg.Menu.Options[$i] : $Msg.Menu.NotAvailableOpt)
-				continue
+					if ($HasHaxelib) {
+						Write-Output ("{0}. {1}" -f $i, $Msg.Menu.Options[$i])
+					} else {
+						Write-Output ("{0}. {1}" -f $i, $Msg.Menu.NotAvailableOpt)
+					}
+					continue
 			}
 			4 {
-				Write-Output ("{0}. {1}" -f $i, ($HasHaxelib) ? $Msg.Menu.Options[$i] : $Msg.Menu.NotAvailableOpt)
-				continue
+					if ($HasHaxelib) {
+						Write-Output ("{0}. {1}" -f $i, $Msg.Menu.Options[$i])
+					} else {
+						Write-Output ("{0}. {1}" -f $i, $Msg.Menu.NotAvailableOpt)
+					}
+					continue
 			}
-			default { Write-Output ("{0}. {1}" -f $i, $Msg.Menu.Options[$i]); continue }
+			default { Write-Output ("{0}. {1}" -f $i, $Msg.Menu.Options[$i]); continue}
 		}
 	}
 	Write-Output ""
@@ -181,14 +187,14 @@ do {
 	$choice = Read-Host ($Msg.Menu.Prompt -f 0, ($Msg["Menu"]["Options"].Count - 1))
 
 	switch (($choice).ToString().ToLower()) {
-		'0' { if ($HasHaxelib)	{ New-GameSetup		} }
-		'1' { if ($IsWindows)	{ Set-SetupWindows	}	else { Write-Output ($Msg.Menu.ErrorOS) } }
-		'2' { if ($IsMacOS)		{ Set-SetupMacOS	}	else { Write-Output ($Msg.Menu.ErrorOS) } }
+		'0' { if ($HasHaxelib)	{ New-GameSetup } }
+		'1' { if ($IsWindows)	{ Set-SetupWindows }	else { Write-Output ($Msg.Menu.ErrorOS) } }
+		'2' { if ($IsMacOS)		{ Set-SetupMacOS }		else { Write-Output ($Msg.Menu.ErrorOS) } }
 		'3' { Set-SetupAndroid }
-		'4' { if ($HasHaxelib)	{ Remove-GameSetup } }
+		'4' { if ($HasHaxelib)	{Remove-GameSetup} }
 		'5' { exit }
 		'exit' { exit }
-		default { Write-Output ($Msg.Menu.Error) }
+		default { Write-Output ($Msg.Menu.Error)}
 	}
-} while ($StayOnMenu.ToLower() -in @("y", "yes", "true", "1"))
+} while ($StayOnMenu.ToLower() -in @("y","yes","true","1"))
 Stop-Transcript

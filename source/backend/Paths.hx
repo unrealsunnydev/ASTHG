@@ -16,13 +16,14 @@ import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
 
 @:access(openfl.display.BitmapData)
-class Paths {
+class Paths
+{
 	public static function excludeAsset(key:String) {
 		if (!dumpExclusions.contains(key))
 			dumpExclusions.push(key);
 	}
 
-	public static var dumpExclusions:Array<String> = ['assets/music/MainMenu.${Constants.SOUND_EXT}'];
+	public static var dumpExclusions:Array<String> = ['assets/shared/music/MainMenu.${Constants.SOUND_EXT}'];
 	// haya I love you for the base cache dump I took to the max
 	public static function clearUnusedMemory() {
 		// clear non local assets in the tracked assets list
@@ -58,6 +59,7 @@ class Paths {
 		}
 		// flags everything to be cleared out next unused memory clear
 		localTrackedAssets = [];
+		#if !html5 openfl.Assets.cache.clear("songs"); #end
 	}
 
 	public static function freeGraphicsFromMemory() {
@@ -116,11 +118,11 @@ class Paths {
 	}
 
 	public static function getPath(file:String, ?type:AssetType = TEXT, ?parentfolder:String = null):String {
-		if (!StringUtil.isNull(parentfolder) && parentfolder != "default") {
+		if (!StringUtil.isNull(parentfolder) && parentfolder != "shared") {
 			return getFolderPath(file, parentfolder);
 		}
 
-		if (!StringUtil.isNull(currentLevel) && currentLevel != 'default') {
+		if (!StringUtil.isNull(currentLevel) && currentLevel != 'shared') {
 			var levelPath = getFolderPath(file, currentLevel);
 			if (OpenFlAssets.exists(levelPath, type))
 				return levelPath;
@@ -128,7 +130,7 @@ class Paths {
 		return getFolderPath(file);
 	}
 
-	inline static public function getFolderPath(file:String = '', folder = "default"):String {
+	inline static public function getFolderPath(file:String = '', folder = "shared"):String {
 		return 'assets/$folder/$file';
 	}
 
@@ -230,10 +232,12 @@ class Paths {
 		var file:String = getPath(Locale.getFile(key, Constants.SOUND_EXT), SOUND, path);
 
 		//trace('precaching sound: $file');
-		if(!currentTrackedSounds.exists(file)) {
+		if(!currentTrackedSounds.exists(file))
+		{
 			if(OpenFlAssets.exists(file, SOUND))
 				currentTrackedSounds.set(file, OpenFlAssets.getSound(file));
-			else if(beepOnNull) {
+			else if(beepOnNull)
+			{
 				trace('SOUND NOT FOUND: $key, PATH: $path');
 				FlxG.log.error('SOUND NOT FOUND: $key, PATH: $path');
 				return FlxAssets.getSound('flixel/sounds/beep');
@@ -265,7 +269,7 @@ class Paths {
 
 	/**
 		Parses an JSON, uses tjson if available 
-		@param path Path to json name (e.g. 'music/ActClear.json')
+		@param path Path to json name (e.g. 'music/ActClear')
 		@return Dynamic
 	**/
 	public static function parseJson(path:String):Dynamic {

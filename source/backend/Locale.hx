@@ -8,7 +8,8 @@ import firetongue.FireTongue;
 	### Functions
 	`getString`, `getFile`
  */
-class Locale {
+class Locale
+{
 
 	/**
 		Gets an translation phrase
@@ -22,7 +23,7 @@ class Locale {
 
 		if (values != null) {
 			for (num => value in values)
-				str = str.replace('<${num}>', Std.string(value));
+				str = str.replace('<${num + 1}>', Std.string(value));
 		}
 
 		return str;

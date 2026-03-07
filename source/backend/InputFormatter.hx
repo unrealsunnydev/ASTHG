@@ -67,33 +67,33 @@ class InputFormatter {
 
 		switch(key) {
 			// Analogs
-			case LEFT_STICK_DIGITAL_LEFT: return Locale.getString("flxgamepad_stickl_left", "input");
-			case LEFT_STICK_DIGITAL_RIGHT: return Locale.getString("flxgamepad_stickl_right", "input");
-			case LEFT_STICK_DIGITAL_UP: return Locale.getString("flxgamepad_stickl_up", "input");
-			case LEFT_STICK_DIGITAL_DOWN: return Locale.getString("flxgamepad_stickl_down", "input");
+			case LEFT_STICK_DIGITAL_LEFT: return "Left";
+			case LEFT_STICK_DIGITAL_RIGHT: return "Right";
+			case LEFT_STICK_DIGITAL_UP: return "Up";
+			case LEFT_STICK_DIGITAL_DOWN: return "Down";
 			case LEFT_STICK_CLICK:
 				switch (model) {
 					case PS4, PSVITA: return "L3";
 					case XINPUT: return "LS";
-					default: return Locale.getString("flxgamepad_stickl_click", "input");
+					default: return "Analog Click";
 				}
 
-			case RIGHT_STICK_DIGITAL_LEFT: return Locale.getString("flxgamepad_stickr_left", "input");
-			case RIGHT_STICK_DIGITAL_RIGHT: return Locale.getString("flxgamepad_stickr_right", "input");
-			case RIGHT_STICK_DIGITAL_UP: return Locale.getString("flxgamepad_stickr_up", "input");
-			case RIGHT_STICK_DIGITAL_DOWN: return Locale.getString("flxgamepad_stickr_down", "input");
+			case RIGHT_STICK_DIGITAL_LEFT: return "C. Left";
+			case RIGHT_STICK_DIGITAL_RIGHT: return "C. Right";
+			case RIGHT_STICK_DIGITAL_UP: return "C. Up";
+			case RIGHT_STICK_DIGITAL_DOWN: return "C. Down";
 			case RIGHT_STICK_CLICK:
 				switch (model) {
 					case PS4, PSVITA: return "R3";
 					case XINPUT: return "RS";
-					default: return Locale.getString("flxgamepad_stickl_click", "input");
+					default: return "C. Click";
 				}
 
 			// Directional
-			case DPAD_LEFT: return Locale.getString("flxgamepad_dpad_left", "input");
-			case DPAD_RIGHT: return Locale.getString("flxgamepad_dpad_right", "input");
-			case DPAD_UP: return Locale.getString("flxgamepad_dpad_up", "input");
-			case DPAD_DOWN: return Locale.getString("flxgamepad_dpad_down", "input");
+			case DPAD_LEFT: return "D. Left";
+			case DPAD_RIGHT: return "D. Right";
+			case DPAD_UP: return "D. Up";
+			case DPAD_DOWN: return "D. Down";
 
 			// Top buttons
 			case LEFT_SHOULDER:
@@ -170,8 +170,7 @@ class InputFormatter {
 				if(label.toLowerCase() == 'null') return '---';
 
 				var arr:Array<String> = label.split('_');
-				for (i in 0...arr.length)
-					arr[i] = StringUtil.capitalize(arr[i]);
+				for (i in 0...arr.length) arr[i] = StringUtil.capitalize(arr[i]);
 				return arr.join(' ');
 		}
 	}
@@ -182,11 +181,11 @@ class InputFormatter {
 		
 		if (Controls.instance.controllerMode) {
 			arr = ClientPrefs.gamepadBinds.get(k);
-			b = (arr != null && arr?.length > 0) ? arr[0] : FlxGamepadInputID.NONE;
+			b = (arr != null && arr.length > 0) ? arr[0] : FlxGamepadInputID.NONE;
 		}
 		else {
 			arr = ClientPrefs.keyBinds.get(k);
-			b = (arr != null && arr?.length > 0) ? arr[0] : FlxKey.NONE;
+			b = (arr != null && arr.length > 0) ? arr[0] : FlxKey.NONE;
 		}
 	
 		return (Controls.instance.controllerMode) ? getGamepadName(b) : getKeyName(b);

@@ -11,24 +11,25 @@ class Main extends Sprite {
 	
 	public function new() {
 		super();
-
+		
 		Controls.instance = new Controls();
 		ClientPrefs.loadDefaultKeys();
-				
+		
+		tongue = new FireTongue(#if sys VanillaSys #else OPENFL #end, Case.Unchanged);
+		
 		FlxG.save.bind('game', CoolUtil.getSavePath());
 		
 		#if MODS_ALLOWED
-		Mods.loadMods(Mods.getAllIds());
+		Mods.loadMods();
 		#end
 
-		openfl.utils._internal.Log.level = openfl.utils._internal.Log.LogLevel.INFO;
-
-		tongue = new FireTongue(#if sys VanillaSys #else OPENFL #end, Case.Unchanged);
+		#if debug
+		openfl.utils._internal.Log.level = 1;
+		#end
 		
 		var game:FlxGame = new FlxGame(0, 0, states.Init, #if (flixel < "5.0.0") 1, #end 60, 60, true);
 		
 		#if web
-		// Tells the HTML to use pixelated images
 		Application.current.window.element.style.setProperty("image-rendering", "pixelated");
 		#end
 

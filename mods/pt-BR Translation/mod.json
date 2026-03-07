@@ -2,12 +2,7 @@
 	"title": "Portuguese (Brasil) Translation",
 	"description": "Adds a portuguese translation of the game",
 	"contributors": [
-		{
-			"name": "Sunnydev31",
-			"role": "Translator",
-			"url": "https://discordapp.com/users/525334699069931521/"
-		}
+		{ "name": "Sunnydev31" }
 	],
-	"mod_version": "2026.1.15",
-	"api_version": "2026.1.15"
+	"mod_version": "2025.12.23"
 }

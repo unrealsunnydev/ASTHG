@@ -23,6 +23,7 @@ import flixel.math.FlxPoint;
 	```
 **/
 class AsthgSprite extends FlxSprite {
+	// 9-Slice sprite properties
 
 	public function new(?x:Float = 0, ?y:Float = 0.0) {
 		super(x, y);
@@ -37,8 +38,7 @@ class AsthgSprite extends FlxSprite {
 	public static function create(x:Float = 0, y:Float = 0, image:Null<String>):AsthgSprite {
 		var spr:AsthgSprite = new AsthgSprite(x, y);
 
-		if (!StringUtil.isNull(image))
-			spr.loadGraphic(Paths.image(image));
+		if (!StringUtil.isNull(image)) spr.loadGraphic(Paths.image(image));
 		else {
 			trace("[create] 'image' argument is null!");
 			spr.loadGraphic(flixel.system.FlxAssets.getBitmapData("flixel/images/logo/default"));
@@ -89,7 +89,7 @@ class AsthgSprite extends FlxSprite {
 	}
 
 	public function createGraphic(width:Float = 1, height:Float = 1, color:FlxColor = FlxColor.WHITE):AsthgSprite {
-		var graph:FlxGraphic = FlxG.bitmap.create(2, 2, color, false, 'graphic($width,$height,#${color.toWebString()})');
+		var graph:FlxGraphic = FlxG.bitmap.create(2, 2, color, false, 'graphic($width,$height,$color)');
 		frames = graph.imageFrame;
 		scale.set(width / 2, height / 2);
 		updateHitbox(); // We can't use our tool because it's not a FlxSprite-type
@@ -102,18 +102,17 @@ class AsthgSprite extends FlxSprite {
 		@param y Vertical position
 		@param width Width to final sprite
 		@param height Height to final sprite
-		@param image The image stored in "images/"
+		@param image The image stored in "images/UI"
 		@param slice Slice parameters (Left, Top, Spaces from Left, Spaces from Top)
 		@param imageRect The image part you want to crop
 		@return FlxSliceSprite
 	**/
-	public static function createSliced(x:Float, y:Float, width:Float, height:Float, image:String, slice:Array<Int>, ?imageRect:Array<Int>):FlxSliceSprite {
+	public static function createSliced(x:Float, y:Float, width:Float, height:Float, image:String, slice:FlxRect, ?imageRect:FlxRect):FlxSliceSprite {
 		// FINALLY I GOT IT HOW THIS THING WORKS -- @sunnydev31
-		var sliceSprite:FlxSliceSprite = new FlxSliceSprite(Paths.image(image),
-			FlxRect.get(slice[0], slice[1], slice[2], slice[3]), width, height,
-			FlxRect.get(imageRect[0], imageRect[1], imageRect[2], imageRect[3]));
-		sliceSprite.setPosition(x, y);
-		return sliceSprite;
+		var spr = new FlxSliceSprite(Paths.image("UI/" + image), slice, width, height, imageRect);
+		spr.x = x;
+		spr.y = y;
+		return spr;
 	}
 	
 	/**

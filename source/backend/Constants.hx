@@ -14,17 +14,12 @@ class Constants {
 
 
 	public static final POLYMOD_SETTINGS:Dynamic = {
+		modRoot: #if mac "../../../" + #end "../../../mods",
 		dirs:["pt-BR Translation"],
 		useScriptedClasses: false
 	};
 
 	// Files
 	inline public static var SOUND_EXT = #if (web || flash) "mp3" #else "ogg" #end;
-	inline public static var VIDEO_EXT = "mp4";
-}
-
-enum abstract ConstantSound(String) to String {
-	var MENU_ACCEPT = "MenuAccept"
-	var MENU_SCROLL = "MenuChange"
-	var MENU_BACK   = "MenuCancel"
+	inline public static var VIDEO_EXT = #if (web || flash) "mp4" #else "ogv" #end;
 }

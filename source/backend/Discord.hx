@@ -30,7 +30,8 @@ class DiscordClient {
 		isInitialized = false;
 	}
 	
-	private static function onReady(request:cpp.RawConstPointer<DiscordUser>):Void {
+	private static function onReady(request:cpp.RawConstPointer<DiscordUser>):Void
+	{
 		trace('[DISCORD] Client has connected!');
 
 		final username:String = request[0].username;
@@ -51,16 +52,18 @@ class DiscordClient {
 
 	public static function initialize() {
 		var discordHandlers:DiscordEventHandlers = DiscordEventHandlers.create();
-		discordHandlers.ready	 	 = cpp.Function.fromStaticFunction(onReady);
+		discordHandlers.ready = cpp.Function.fromStaticFunction(onReady);
 		discordHandlers.disconnected = cpp.Function.fromStaticFunction(onDisconnected);
-		discordHandlers.errored 	 = cpp.Function.fromStaticFunction(onError);
+		discordHandlers.errored = cpp.Function.fromStaticFunction(onError);
 		Discord.Initialize(clientID, cpp.RawPointer.addressOf(discordHandlers), 1, null);
 
 		if(!isInitialized) trace("[DISCORD] Initialized!");
 
-		sys.thread.Thread.create(() -> {
+		sys.thread.Thread.create(() ->
+		{
 			var localID:String = clientID;
-			while (localID == clientID) {
+			while (localID == clientID)
+			{
 				#if DISCORD_DISABLE_IO_THREAD
 				Discord.updateConnection();
 				#end
@@ -73,24 +76,18 @@ class DiscordClient {
 		isInitialized = true;
 	}
 
-	public static function changePresence(?params:DiscordParameters) {
+	public static function changePresence(?details:String = "In the Menus", ?state:Null<String>, ?imageLargeKey:String, ?imageLargeText:String, ?imageSmallKey:String, ?imageSmallText:String, ?hasStartTimestamp:Bool, ?endTimestamp:Float) {
 		var startTimestamp:Float = 0;
-		if (params.hasStartTimestamp) startTimestamp = Date.now().getTime();
-		if (params.endTimestamp > 0) endTimestamp = startTimestamp + endTimestamp;
+		if (hasStartTimestamp) startTimestamp = Date.now().getTime();
+		if (endTimestamp > 0) endTimestamp = startTimestamp + endTimestamp;
 
-		presence.details = params.details ?? "In the Menus";
-		presence.largeImageKey = params.imageLargeKey ?? "icon";
-		presence.largeImageText = params.imageLargeText ?? "In menus";
+		presence.largeImageKey = imageLargeKey ?? "icon";
+		presence.largeImageText = imageLargeText ?? "In menus";
+		presence.smallImageKey = imageSmallKey;
+		presence.smallImageText = imageSmallText;
 
-		if (!StringUtil.isNull(params.smallImageKey))
-			presence.smallImageKey = params.imageSmallKey;
-		
-		if (!StringUtil.isNull(params.smallImageText))
-			presence.smallImageText = params.imageSmallText;
-
-
-		if (!StringUtil.isNull(params.state))
-			presence.state = params.state;
+		presence.details = details;
+		presence.state = state;
 
 		// Obtained times are in milliseconds so they are divided so Discord can use it
 		presence.startTimestamp = Std.int(startTimestamp / 1000);
@@ -108,26 +105,13 @@ class DiscordClient {
 		var change:Bool = (clientID != newID);
 		clientID = newID;
 
-		if(change && isInitialized) {
+		if(change && isInitialized)
+		{
 			shutdown();
 			initialize();
 			updatePresence();
 		}
 		return newID;
 	}
-}
-
-typedef DiscordParameters = {
-	var ?details:String;
-
-	var ?state:Null<String>;
-
-	var ?imageLarge.key:String;
-	var ?imageLarge.text:String;
-	var ?imageSmall.key:String;
-	var ?imageSmall.text:String;
-
-	var ?hasStartTimestamp:Bool;
-	var ?endTimestamp:Float
 }
 #end

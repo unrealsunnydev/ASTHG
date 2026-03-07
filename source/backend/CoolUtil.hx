@@ -5,7 +5,8 @@ import flixel.sound.FlxSoundGroup;
 import openfl.utils.Assets;
 import lime.utils.Assets as LimeAssets;
 
-class CoolUtil {
+class CoolUtil
+{
 	/**
 		Helper Function to Fix Save Files for Flixel 5
 
@@ -95,7 +96,7 @@ class CoolUtil {
 			loopTimeVal = CoolUtil.getSampleLoop(musJson.loopStart, hz);
 		}
 
-		FlxG.sound.music ??= new FlxSound();
+		if (FlxG.sound.music == null) FlxG.sound.music = new FlxSound();
 		if (FlxG.sound.music.active) FlxG.sound.music.stop();
 
 		FlxG.sound.music.loadEmbedded(asset, looped);
@@ -105,17 +106,15 @@ class CoolUtil {
 		FlxG.sound.music.loopTime = loopTimeVal;
 		FlxG.sound.music.volume = volume;
 		FlxG.sound.music.persist = true;
-		FlxG.sound.music.group = group ?? FlxG.sound.defaultMusicGroup;
+		FlxG.sound.music.group = (group == null) ? FlxG.sound.defaultMusicGroup : group;
 
 		FlxG.sound.music.play();
 	}
 
+	#if sys
 	inline public static function getConsoleScript(file:String, folder:String = "pwsh_scripts"):String {
-		#if sys
 		return (Sys.getCwd() + Paths.file('$folder/$file', TEXT, "other"));
-		#else
-		trace("Unsupported platform to run shell commands");
-		#end
 	}
+	#end
 }
 
