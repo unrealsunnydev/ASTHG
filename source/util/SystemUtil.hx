@@ -8,16 +8,18 @@ class SystemUtil {
 		folder = folder.replace('/', '\\');
 		if(folder.endsWith('/')) folder.substr(0, folder.length - 1); 
 
+		var command:String = "";
 		#if linux
-			var command:String = '/usr/bin/xdg-open';
+		command = '/usr/bin/xdg-open';
 		#elseif windows
-			var command:String = 'explorer.exe';
+		command = 'explorer.exe';
 		#end
 
 		#if (windows || linux)
-			Sys.command(command, [folder]);
-			trace('[openFolder] $command $folder');
+		Sys.command(command, [folder]);
+		trace('[openFolder] $command $folder');
 		#end
+
 		#else
 		FlxG.log.error("Platform is not supported for SystemUtil.openFolder");
 		#end
@@ -31,11 +33,11 @@ class SystemUtil {
 		#end
 	}
 
-	@:privateAcess()
+	@:privateAccess()
 	private static var _accent:FlxColor = FlxColor.WHITE;
 	public static var ACCENT_COLOR(get, set):FlxColor;
 	inline public static function loadAccentColor():Null<FlxColor> {
-		#if (windows && !winjs && !winrt)
+		#if (windows && !winjs && !winrt) // Is Windows and not Web-targets
 
 		/*
 			Run a PowerShell script converted to Int64
@@ -44,7 +46,6 @@ class SystemUtil {
 		CoolUtil.getConsoleScript("GetAccentColor.ps1")]);
 
 		var accent = Std.int(Std.parseFloat(p.stdout.readLine()));
-		trace('Accent: $accent', 'to hex: #${StringTools.hex(accent, 6)})');
 		p.close();
 		
 		// Haxe reads this as an FLOAT, not INT
@@ -60,9 +61,8 @@ class SystemUtil {
 	}
 
 	private static function set_ACCENT_COLOR(value:Null<FlxColor>):FlxColor {
-		_accent = (value != null) ? value : FlxColor.BLACK;
+		_accent = value ?? FlxColor.BLACK;
 
-		trace('returned $_accent :: ${_accent.toWebString()}');
 		return _accent;
 	}
 }

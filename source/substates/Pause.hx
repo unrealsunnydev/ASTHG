@@ -2,7 +2,7 @@ package substates;
 
 class Pause extends SubStateManager {
 	var curSelected:Int = 0;
-	var grpOptions:FlxTypedGroup<AsthgText>;
+	var grpOptions:FlxTypedGroup<AsthgBitmapText>;
 	var options:Array<String> = [];
 	var options2:Array<String> = [
 		'Resume',
@@ -33,7 +33,7 @@ class Pause extends SubStateManager {
 		var backdFill:AsthgSprite = new AsthgSprite(backd.x + backd.width, 0).createGraphic(Std.int(fillWidth), FlxG.height, backd.color);
 		add(backdFill);
 
-		grpOptions = new FlxTypedGroup<AsthgText>();
+		grpOptions = new FlxTypedGroup<AsthgBitmapText>();
 		add(grpOptions);
 
 		var titleTxt:FlxBitmapText = new FlxBitmapText(20, bottomFill.y - 6, Locale.getString("title", "pause"), Paths.getAngelCodeFont("Roco"));
@@ -58,17 +58,17 @@ class Pause extends SubStateManager {
 
 		if (controls.justPressed('up')) {
 			changeSelection(-1);
-			CoolUtil.playSound("MenuChange");
+			CoolUtil.playSound(ConstantSound.MENU_SCROLL);
 		}
 
 		if (controls.justPressed('down')) {
-			CoolUtil.playSound("MenuChange");
+			CoolUtil.playSound(ConstantSound.MENU_SCROLL);
 			changeSelection(1);
 		}
 
 		var selected:String = options[curSelected];
 		if (controls.justPressed('accept') && (cantUnpause <= 0)) {
-			CoolUtil.playSound("MenuAccept");
+			CoolUtil.playSound(ConstantSound.MENU_ACCEPT);
 			switch (selected.toLowerCase()) {
 				case 'resume':
 					close();
@@ -83,19 +83,16 @@ class Pause extends SubStateManager {
 	}
 
 	function regenerateMenu() {
-		for (i in 0...grpOptions.members.length)
-		{
-			var obj:AsthgText = grpOptions.members[0];
+		for (i in 0...grpOptions.members.length) {
+			var obj:AsthgBitmapText = grpOptions.members[0];
 			obj.kill();
 			grpOptions.remove(obj, true);
 			obj.destroy();
 		}
 
 		for (num => str in options) {
-			var item:AsthgText = AsthgText.create(backd.x + 67, 60, Locale.getString(str, "pause").toUpperCase());
-			item.format(16, "center", FlxColor.WHITE);
-			item.formatBorder(SHADOW_XY(3,1), 0xFF404040);
-			item.y += (30 * (num - (options.length / 2))) + item.size;
+			var item:AsthgBitmapText = AsthgBitmapText.createAngelCode(backd.x + 67, 60, Locale.getString(str, "pause").toUpperCase());
+			item.y += (30 * (num - (options.length / 2))) + item.height;
 			item.x -= (item.width/2);
 			item.ID = num;
 			grpOptions.add(item);
@@ -109,7 +106,7 @@ class Pause extends SubStateManager {
 		curSelected = FlxMath.wrap(curSelected + change, 0, grpOptions.length - 1);
 		for (num => item in grpOptions.members) {
 			item.ID = num - curSelected;
-			item.color = (item.ID != 0) ? FlxColor.WHITE : FlxColor.RED;
+			item.color = (item.ID != 0) ? FlxColor.WHITE : (ClientPrefs.data.accentColors ? SystemUtil.ACCENT_COLOR : FlxColor.RED);
 		}
 	}
 

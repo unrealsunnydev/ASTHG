@@ -7,15 +7,13 @@ class CustomFadeTransition extends SubStateManager {
 	var transGradient:flixel.FlxSprite;
 
 	var duration:Float;
-	public function new(duration:Float, isTransIn:Bool)
-	{
+	public function new(duration:Float, isTransIn:Bool) {
 		this.duration = duration;
 		this.isTransIn = isTransIn;
 		super();
 	}
 
-	override function create()
-	{
+	override function create() {
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length-1]];
 		var width:Int = Std.int(FlxG.width / Math.max(camera.zoom, 0.001));
 		var height:Int = Std.int(FlxG.height / Math.max(camera.zoom, 0.001));
@@ -54,8 +52,7 @@ class CustomFadeTransition extends SubStateManager {
 		else
 			transBlack.y = transGradient.y - transBlack.height;
 
-		if(transGradient.y >= targetPos)
-		{
+		if(transGradient.y >= targetPos) {
 			close();
 			if(finishCallback != null) finishCallback();
 			finishCallback = null;

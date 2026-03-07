@@ -5,8 +5,7 @@ import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.gamepad.mappings.FlxGamepadMapping;
 import flixel.input.keyboard.FlxKey;
 
-class Controls
-{
+class Controls {
 	//Gamepad & Keyboard stuff
 	public var keyboardBinds:Map<String, Array<FlxKey>>;
 	public var gamepadBinds:Map<String, Array<FlxGamepadInputID>>;
@@ -35,10 +34,12 @@ class Controls
 				}
 			}
 		}
-		#end
-
+		#elseif mobile
 		trace('Vibrating as Haptics (${Std.int(high)}', '$duration)');
 		return lime.ui.Haptic.vibrate(Std.int(high), duration);
+		#else
+		trace("Tried to vibrate a device, but platform is not compatible!");
+		#end
 	}
 
 	public function pressed(key:String) {

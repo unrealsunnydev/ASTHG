@@ -17,8 +17,8 @@ class SaveSelect extends StateManager {
 
 	var selectSave:AsthgSprite;
 	var arrow1:AsthgSprite;
-	var arrow3:AsthgSprite;
 	var arrow2:AsthgSprite;
+	var arrow3:AsthgSprite;
 	var arrow4:AsthgSprite;
 
 	override function create() {
@@ -67,18 +67,18 @@ class SaveSelect extends StateManager {
 		arrow1.cameras = [camFront];
 		add(arrow1);
 
-		arrow3 = AsthgSprite.create(0, 0, "saveSelect/selectArrow");
-		arrow3.color = Constants.SAVE_SELECTED_ARROW_COLOR[1];
-		arrow3.cameras = [camFront];
-		add(arrow3);
-
-		arrow2 = AsthgSprite.create(0, 0, "saveSelect/selectArrowFlip");
-		arrow2.color = arrow1.color;
+		arrow2 = AsthgSprite.create(0, 0, "saveSelect/selectArrow");
+		arrow2.color = Constants.SAVE_SELECTED_ARROW_COLOR[1];
 		arrow2.cameras = [camFront];
 		add(arrow2);
 
+		arrow3 = AsthgSprite.create(0, 0, "saveSelect/selectArrowFlip");
+		arrow3.color = arrow1.color;
+		arrow3.cameras = [camFront];
+		add(arrow3);
+
 		arrow4 = AsthgSprite.create(0, 0, "saveSelect/selectArrowFlip");
-		arrow4.color = arrow3.color;
+		arrow4.color = arrow2.color;
 		arrow4.cameras = [camFront];
 		add(arrow4);
 
@@ -100,10 +100,8 @@ class SaveSelect extends StateManager {
 			StateManager.switchState(new states.MainMenu());
 		}
 
-		if (controls.justPressed('left')) {
-			changeSelection(-1);
-		} else if (controls.justPressed('right')) {
-			changeSelection(1);
+		if (controls.justPressed('left') || controls.justPressed('right')) {
+			changeSelection(controls.justPressed('left') ? -1 : 1);
 		}
 	}
 
@@ -118,11 +116,11 @@ class SaveSelect extends StateManager {
 
 		selectSave.setPosition	(member.x,	member.y);
 		arrow1.setPosition		(member.x,	member.y + 14);
-		arrow2.setPosition		(arrow1.x,	arrow1.y + 18);
-		arrow3.setPosition		(arrow2.x,	member.y + 65);
-		arrow4.setPosition		(arrow3.x,	arrow3.y + 30);
+		arrow2.setPosition		(arrow3.x,	member.y + 65);
+		arrow3.setPosition		(arrow1.x,	arrow1.y + 18);
+		arrow4.setPosition		(arrow2.x,	arrow2.y + 30);
 
-		CoolUtil.playSound("MenuChange");
+		CoolUtil.playSound(ConstantSound.MENU_SCROLL);
 	}
 }
 

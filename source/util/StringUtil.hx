@@ -9,7 +9,7 @@ class StringUtil {
 		return text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
 	
 	/**
-		Checks if `string` is `null`, empty or blank space 
+		Checks if `string` is `null` or empty
 
 		@param string The string to check
 		@return Bool

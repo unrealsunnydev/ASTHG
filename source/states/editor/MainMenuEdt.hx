@@ -3,7 +3,7 @@ package states.editor;
 class MainMenuEdt extends StateManager {
 	var selected:Int = 0;
 	var group:FlxTypedGroup<AsthgText>;
-	var options:Array<String> = [];
+	var options:Array<String> = ["dummy"];
 	
 	override public function create() {
 		var bg:flixel.FlxSprite = AsthgSprite.createGradient(FlxG.width, FlxG.height, [0xFF353535, 0xFF979797], 4, 32, false);
@@ -13,12 +13,14 @@ class MainMenuEdt extends StateManager {
 		group = new FlxTypedGroup<AsthgText>();
 		add(group);
 
-		for (num => str in options) {
-			var menu:AsthgText = AsthgText.create(10, 30, Locale.getString("title_" + str, "editor_menu"));
-			menu.format(16, "center", FlxColor.WHITE);
-			menu.y += (18 * num);
-			menu.ID = num;
-			group.add(menu);
+		if (options != null) {
+			for (num => str in options) {
+				var menu:AsthgText = AsthgText.create(10, 30, Locale.getString("title_" + str, "editor_menu"));
+				menu.format(16, "center", FlxColor.WHITE);
+				menu.y += (18 * num);
+				menu.ID = num;
+				group.add(menu);
+			}
 		}
 
 		super.create();
@@ -31,21 +33,21 @@ class MainMenuEdt extends StateManager {
 		if (!selectedSomethin) {
 			if (controls.justPressed('up')) {
 				changeItem(-1);
-				CoolUtil.playSound("MenuChange");
+				CoolUtil.playSound(ConstantSound.MENU_SCROLL);
 				controls.vibrate(0.5, 0.2, 10);
 			}
 			if (controls.justPressed('down')) {
 				changeItem(1);
-				CoolUtil.playSound("MenuChange");
+				CoolUtil.playSound(ConstantSound.MENU_SCROLL);
 				controls.vibrate(0.5, 0.2, 10);
 			}
 			if (controls.justPressed('accept')) {
-				CoolUtil.playSound("MenuAccept");
+				CoolUtil.playSound(ConstantSound.MENU_ACCEPT);
 				selectedSomethin = true;
 				//switch(options[selected].toLowerCase()) {}
 			}
 	  		if (controls.justPressed("back")) {
-				CoolUtil.playSound("MenuCancel");
+				CoolUtil.playSound(ConstantSound.MENU_BACK);
 				StateManager.switchState(new states.MainMenu());
 			}
 		}

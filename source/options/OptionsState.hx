@@ -28,7 +28,6 @@ class OptionsState extends StateManager {
 		var bg:flixel.FlxSprite = AsthgSprite.createGradient(FlxG.width, FlxG.height, [0x4FFFFFFF, 0x28FFFFFF], 2, 37, false);
 		add(bg);
 
-
 		// tabs group
 		grpTabs = new FlxTypedGroup<FlxBitmapText>();
 
@@ -40,7 +39,7 @@ class OptionsState extends StateManager {
 			grpTabs.add(txt);
 		}
 		
-		optBG = AsthgSprite.createSliced(0, 0, 7, 7, "button", FlxRect.get(3, 3, 1, 1), FlxRect.get(0, 0, 7, 7));
+		optBG = AsthgSprite.createSliced(0, 0, 7, 7, "UI/button", [3, 3, 1, 1], [0, 0, 7, 7]);
 		add(optBG);
 
 		add(grpTabs);
@@ -53,12 +52,9 @@ class OptionsState extends StateManager {
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		if (controls.justPressed('up')) {
-			changeSelection(-1);
-			CoolUtil.playSound("MenuChange");
-		} else if (controls.justPressed('down')) {
-			changeSelection(1);
-			CoolUtil.playSound("MenuChange");
+		if (controls.justPressed('up') || controls.justPressed('down')) {
+			changeSelection(controls.justPressed('up') ? -1 : 1);
+			CoolUtil.playSound(ConstantSound.MENU_SCROLL);
 		}
 
 		if (controls.justPressed('accept')) {
@@ -67,14 +63,14 @@ class OptionsState extends StateManager {
 
 		if (controls.justPressed('back')) {
 			ClientPrefs.saveSettings();
-			CoolUtil.playSound("MenuCancel");
+			CoolUtil.playSound(ConstantSound.MENU_BACK);
 			StateManager.switchState(new states.MainMenu());
 		}
 	}
 
 	private function updateTabVisuals():Void {
 		for (idx => t in grpTabs.members) {
-			t.color = (idx == curSelected) ? FlxColor.YELLOW : FlxColor.WHITE;
+			t.color = (idx == curSelected) ? (ClientPrefs.data.accentColors ? SystemUtil.ACCENT_COLOR : FlxColor.WHITE) : FlxColor.WHITE;
 			optBG.x = grpTabs.members[curSelected].x - 5;
 			optBG.y = grpTabs.members[curSelected].y - 4;
 			optBG.width = grpTabs.members[curSelected].width + 8;
@@ -82,7 +78,7 @@ class OptionsState extends StateManager {
 		}
 	}
 
-	function changeSelection(change:Int) {	
+	function changeSelection(change:Int) {
 		curSelected = FlxMath.wrap(curSelected + change, 0, options.length - 1);
 		updateTabVisuals();
 	}
@@ -90,7 +86,7 @@ class OptionsState extends StateManager {
 	function openSelectedSubstate(lbl:String) {
 		if (lbl.toLowerCase() == 'fail') {
 			CoolUtil.playSound("Fail");
-		} else { CoolUtil.playSound("MenuAccept"); }
+		} else { CoolUtil.playSound(ConstantSound.MENU_ACCEPT); }
 		switch (lbl.toLowerCase()) {
 			case "system": openSubState(new options.substates.System());
 			case "display": openSubState(new options.substates.Display());

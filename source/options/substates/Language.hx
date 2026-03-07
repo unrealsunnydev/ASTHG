@@ -12,10 +12,14 @@ import openfl.utils.Assets;
 class Language extends SubStateManager {
 	#if (TRANSLATIONS_ALLOWED && target.unicode)
 	/*
-		^^ we need to be shure that Unicode are supported, or
-		translations will be weird as hell ^^
+		^^ we need to be shure that Unicode are supported,
+		or translations will be weird as hell ^^
 	*/
 	var grpLanguages:FlxTypedGroup<AsthgText> = new FlxTypedGroup<AsthgText>();
+
+	/**
+		Current game's supported languages list
+	**/
 	var languages:Array<String> = [];
 	var curSelected:Int = 0;
 	public function new() {
@@ -54,9 +58,8 @@ class Language extends SubStateManager {
 		super.update(elapsed);
 
 		var mult:Int = (FlxG.keys.pressed.SHIFT) ? 4 : 1;
-		if(controls.justPressed('up')) changeSelected(-1 * mult);
-		if(controls.justPressed('down')) changeSelected(1 * mult);
-		if(FlxG.mouse.wheel != 0) changeSelected(FlxG.mouse.wheel * mult);
+		if(controls.justPressed('up') || controls.justPressed('down') || FlxG.mouse.wheel != 0)
+			changeSelected(controls.justPressed('up') ? -1 : 0 - FlxG.mouse.wheel * mult);
 
 		if(controls.justPressed('back')) {
 			if(changedLanguage) {

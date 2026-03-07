@@ -14,15 +14,13 @@ class Init extends StateManager {
 		FlxG.game.focusLostFramerate = 60;
 		ClientPrefs.loadPrefs();
 		
+		// Initialize language framework
 		Main.tongue.initialize({
 			locale: ClientPrefs.data.language,
 			replaceMissing: false
 		});
 
-		#if MODS_ALLOWED
-		polymod.Polymod.scan(Constants.POLYMOD_SETTINGS.modRoot);
-		#end
-
+		// Load the accent color
 		SystemUtil.ACCENT_COLOR = SystemUtil.loadAccentColor();
 
 		FlxTransitionableState.skipNextTransIn = true;
@@ -35,7 +33,7 @@ class Init extends StateManager {
 
 		#if debug 
 		// DEBUGING PURPOSES ONLY
-		StateManager.switchState(new states.MainMenu());
+		StateManager.switchState(new states.ModsMenu());
 		#else
 		StateManager.switchState(new states.TitleState());
 		#end

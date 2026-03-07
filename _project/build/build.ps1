@@ -1,3 +1,4 @@
+#requires -PSEdition Core
 
 param(
 	[string]$Is32Bits,
@@ -15,7 +16,8 @@ Clear-Host
 # Checker for Haxelib + Stops running if not found
 $haxelib = if (-not (Get-Command "haxelib" -ErrorAction SilentlyContinue)) {
 	Join-Path (Read-Host ($Msg.InsertHaxelib)) "haxelib"
-} else { Get-Command "haxelib" -ErrorAction Stop}
+}
+else { Get-Command "haxelib" -ErrorAction Stop }
 
 # Start with default settings if not called on PowerShell terminal
 # CPP -> Windows / Linux / MacOS (depends on host)

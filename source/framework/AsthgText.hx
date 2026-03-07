@@ -21,11 +21,13 @@ class AsthgText extends FlxText {
 		@param y Vertical position of the box
 		@param text Your text
 		@param font Your font file name
+		@param embedded If the font is a internal game font or a global one (from your platform)
 		@return AsthgText
 	**/
-	public static function create(x:Float, y:Float, text:String, ?font:String = "Mania.ttf"):AsthgText {
-		var txt:AsthgText = new AsthgText(x, y, 0, text, 16);
-		txt.font = Paths.font(font);
+	public static function create(x:Float, y:Float, text:String, ?font:String = "Mania.ttf", ?embedded:Bool = true):AsthgText {
+		var txt:AsthgText = new AsthgText(x, y, 0, text, 16, embedded);
+		txt.font = (embedded) ? Paths.font(font) : font;
+
 		return txt;
 	}
 

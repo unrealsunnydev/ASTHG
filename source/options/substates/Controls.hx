@@ -111,33 +111,33 @@ class Controls extends SubStateManager {
 			if (controls.justPressed('up')) { 
 				row = (row - 1 + binds.length) % binds.length;
 				updateSelection();
-				CoolUtil.playSound("MenuChange");
+				CoolUtil.playSound(ConstantSound.MENU_SCROLL);
 			}
 			if (controls.justPressed('down')) {
 				row = (row + 1) % binds.length;
 				updateSelection();
-				CoolUtil.playSound("MenuChange");
+				CoolUtil.playSound(ConstantSound.MENU_SCROLL);
 			}
 			if (controls.justPressed('left')) {
 				col = (col - 1 + 2) % 2;
 				updateSelection();
-				CoolUtil.playSound("MenuChange");
+				CoolUtil.playSound(ConstantSound.MENU_SCROLL);
 			}
 			if (controls.justPressed('right')) {
 				col = (col + 1) % 2; updateSelection(); 
-				CoolUtil.playSound("MenuChange");
+				CoolUtil.playSound(ConstantSound.MENU_SCROLL);
 			}
 
 			if (controls.justPressed('accept')) {
 				startCapture(binds[row][col]);
-				CoolUtil.playSound("MenuAccept");
+				CoolUtil.playSound(ConstantSound.MENU_ACCEPT);
 			}
 
 			if (FlxG.keys.justPressed.TAB || (FlxG.gamepads.anyJustPressed(FlxGamepadInputID.LEFT_SHOULDER) || FlxG.gamepads.anyJustPressed(FlxGamepadInputID.RIGHT_SHOULDER))) {
 				currentDevice = (currentDevice == DeviceType.KEYBOARD ? DeviceType.GAMEPAD : DeviceType.KEYBOARD);
 				refreshLabels();
 				updateSelection();
-				CoolUtil.playSound("MenuAccept");
+				CoolUtil.playSound(ConstantSound.MENU_ACCEPT);
 			}
 			
 			if (controls.justPressed('back')) close();
@@ -169,11 +169,11 @@ class Controls extends SubStateManager {
 	function captureKeyboard() {
 		if (FlxG.keys.justPressed.ESCAPE) {
 			endCapture();
-			CoolUtil.playSound("MenuCancel");
+			CoolUtil.playSound(ConstantSound.MENU_BACK);
 			return;
 		}
 		if (FlxG.keys.justPressed.DELETE) {
-			CoolUtil.playSound("MenuCancel");
+			CoolUtil.playSound(ConstantSound.MENU_BACK);
 			writeKeyboard(FlxKey.NONE);
 			endCapture();
 			return;
@@ -184,7 +184,7 @@ class Controls extends SubStateManager {
 				writeKeyboard(k);
 				endCapture();
 			}
-			CoolUtil.playSound("MenuChange");
+			CoolUtil.playSound(ConstantSound.MENU_SCROLL);
 		}
 	}
 

@@ -5,74 +5,116 @@ import Date;
 import DateTools;
 
 // We can't use libs here :(
+// Reason: Lime only push itself and hxp lib as libraries, any other lib won't work (except our own outside "src" folder)
+
+import tools.Language;
 
 using StringTools;
 
 class Project extends HXProject
 {
-	/**
-		Name of the project
-		Can be translated on android build (check below)
-	**/
-	final TITLE:String = "Unnamed Sonic Game";
+	//Change game settings here!
+	static var GAME:Map<String, Dynamic> = [
+		/**
+			Name of the project
+			Can be translated on android build (check below)
+		**/
+		"title" => "Unnamed Sonic Game",
 	
-	/*
-		Rule: YEAR.MONTH.DAY	
-		(Current datetime of the update)
-	 */
-	final VERSION:String = DateTools.format(Date.now(), "%Y.%m.%d");
+		/**
+			Rule: YEAR.MONTH.DAY	
+			(Current datetime of the update)
+		**/
+		"version" => (DateTools.format(Date.now(), "%Y.%m.%d")),
+		
+		/**
+			Name of the company, or developer
+		**/
+		"company" => "Sunnydev31",
+
+		/**
+			Package name for the project
+			Ussually in format: com.company.game
+		**/
+		"packageName" => "game.sunkydev.asthg",
+
+		/**
+			Name of the executable file (without extension)
+		**/
+		"file" => "ASTHG",
+
+		/**
+			List of supported languages that the game uses
+		**/
+		"languages" => ["en"]
+	];
+
+	static var EXCLUDE_ASSETS:Array<String> = ["*.aseprite"];
 	
-	/*
-		Type of build
-		Options: TEST, RELEASE, PREVIEW
-	 */
-	final BUILD_TYPE:String = "TEST";
-	final COMPANY:String = "Sunnydev31";
-	final PACKAGE_NAME:String = "game.sunkydev.asthg";
-	final FILE:String = "ASTHG";
-	
-	static var EXCLUDE_ASSETS:Array<String> = [];
-	
-	static var AndroidSettings:Dynamic = {
+	static var AndroidSettings:Map<String, Dynamic> = [
 		/**
 			Icon settings for Android
 		**/
-		Icons: {
+		"icons" => {
+
 			/**
 				Adaptive icons (Android 8.0+) uses a foreground and background layer to create different shapes
 				Adds support for monochrome icons on Android 12+ too, this depends on how you configured the XML files. 
 			**/
-			Adaptive: true,
+			"adaptive": true,
+
 			/**
 				A circular version of the icon for devices that use round icons
 				OPTIONAL if you are using Adaptive icons
 			**/
-			HasRound: false
+			"hasRound": false
 		},
+
 		/**
 			Changes the game title to a translatable string (by now).
 			Also, you can add more localized strings support
 		**/
-		LocalizedStrings: true
-	};
+		"localizedStrings" => true
+	];
 	
-	static var WindowsSettings:Dynamic = {
-		CustomVisuals: true // Doesn't work by now
-	}
+	static var WindowsSettings:Map<String, Dynamic> = [
+		/**
+			If enabled, this will use Windows 8+ VisualElements for stiling
+
+			WARNING: You need to pack the entire game to MSIX every build for this to work properly!
+		**/
+		"visualElements" => true
+	];
+
 	
 	public function new() {
 		super();
+		if (isWindows() && isCPP()) {
+			Sys.command("chcp", ["65001"]);
+			Sys.command("cls");
+			setenv("PROJECT_BUILD", (isDebug() ? "debug" : isFinal() ? "final" : "release"));
+		}
 
-		this.meta.title = TITLE;
-		this.meta.version = VERSION;
-		this.meta.buildNumber = BUILD_TYPE;
-		this.meta.company = COMPANY;
-		this.meta.packageName = PACKAGE_NAME.toLowerCase();
+		Language.load();
+
+		if (Sys.systemName() == "Windows") {
+			sys.io.File.saveContent("tools/build.txt", [
+				"BUILD=" + Sys.getEnv("PROJECT_BUILD"),
+				"WINDOWS.VISUALELEMENTS=" + WindowsSettings.get("visualElements") // Add more things here if you want!
+			].join("\n"));
+		}
+
+		this.meta.title = GAME.get("title");
+		this.meta.version = GAME.get("version");
+		this.meta.company = GAME.get("company");
+		this.meta.packageName = GAME.get("packageName").toLowerCase();
 		
-		this.app.file = FILE;
+		this.app.file = GAME.get("file");
 		this.app.main = "Main";
 		this.app.preloader = "flixel.system.FlxPreloader";
 		this.app.path = "export/" + (isDebug() ? "debug" : isFinal() ? "final" : "release");
+
+		this.postBuildCallbacks.push(CommandHelper.interpretHaxe("tools/Postbuild.hx"));
 		
 		if (isTarget("mobile")) {
 			this.window.width = 0;
@@ -80,35 +122,40 @@ class Project extends HXProject
 			this.window.fullscreen = true;
 		} else {
 			this.window.width = 426;
-			this.window.height = 228;
+			this.window.height = 240;
 		}
 		
 		this.window.orientation = Orientation.LANDSCAPE;
 		this.window.fps = 60;
-		this.window.background = (isDebug()) ? 0xFF00FF : 0x000000;
+		this.window.background = (isDebug() ? 0xFF00FF : 0x000000);
 		this.window.resizable = (isWeb() || isTarget("desktop")) ? true : false;
 		this.window.allowHighDPI = true;
 		
 		if (isWeb()) EXCLUDE_ASSETS.push("*.ogg");
-		else				 EXCLUDE_ASSETS.push("*.mp3");
+		else		 EXCLUDE_ASSETS.push("*.mp3");
 			
 
 		echo("");
-		echo('$TITLE v$VERSION' + (!isNull(BUILD_TYPE) ? ' (build $BUILD_TYPE)' : ""));
+		echo('${GAME.get("title")} v${GAME.get("version")}');
 		echo("-----------------------------------------");
-		dotPad("Company", this.meta.company, 24, false);
-		dotPad("Package", this.meta.packageName, 24, false);
-		dotPad("App file", this.app.file, 24, false);
+		dotPad(Language.translate("project_Company"), this.meta.company, 24, false);
+		dotPad(Language.translate("project_Package"), this.meta.packageName, 24, false);
+		dotPad(Language.translate("project_AppFile"), this.app.file, 24, false);
 		echo("-----------------------------------------");
 		
-		includeAssets("assets/shared", null, null, EXCLUDE_ASSETS);
-		includeAssets("assets/fonts", null);
-		includeAssets("assets/other", null);
-		includeAssets("assets/locales", null);
-		
+		includeAssets("assets/default",	null, null, EXCLUDE_ASSETS);
+		includeAssets("assets/fonts",	null);
+		includeAssets("assets/other",	null);
+		includeAssets("assets/locales",	null);
+
+		templatePaths.push("_project/templates");
+
+		if (isWindows() && WindowsSettings.get("visualElements"))
+			includeAssets("_project/resources/windows", "");
+
 		sources.push("source");
 		
-		MODS_ALLOWED.set(this, false); // Polymod dependencies are breaking so it will be disabled by default
+		MODS_ALLOWED.set(this, true);
 		DISCORD_ALLOWED.set(this, false);
 		TRANSLATIONS_ALLOWED.set(this, true);
 		echo("-----------------------------------------", true);
@@ -125,16 +172,11 @@ class Project extends HXProject
 		addHaxelib("polymod", MODS_ALLOWED.get(this));
 		addHaxelib("firetongue", true); // Do NOT disable this, or all texts will not load
 		
-		if (isDebug()) {
-			addHaxelib("haxeui-core");
-			addHaxelib("haxeui-flixel");
-		}
-		
 		// Android configs
 		if (isAndroid()) {
 			addHaxelib("extension-androidtools");
 			
-			if (AndroidSettings.LocalizedStrings == true) {
+			if (AndroidSettings.get("localizedStrings")) {
 				// Change game name to a translatable string
 				config.set("android.application", {"android:label": "@string/app_name"});
 				config.set("android.activity", {"android:label": "@string/app_name"});
@@ -152,49 +194,45 @@ class Project extends HXProject
 		// Configure PolyMod
 		if (MODS_ALLOWED.has(this)) {
 			if (isDebug())
-				haxedefs.set("POLYMOD_DEBUG", true);
-				
-			haxedefs.set("POLYMOD_API_VERSION_MATCH",	"NONE");
-			haxedefs.set("POLYMOD_MOD_METADATA_FILE",	"mod.json");
-			haxedefs.set("POLYMOD_MOD_PACK_FILE",		"modpack.txt");
-			haxedefs.set("POLYMOD_MOD_ICON_FILE",		"mod.png");
-			haxedefs.set("POLYMOD_ROOT_PATH",			"scripts/");
-			haxedefs.set("POLYMOD_SCRIPT_EXT",			".hxs");
-			haxedefs.set("POLYMOD_SCRIPT_LIBRARY",		"scripts");
+				this.haxedefs.set("POLYMOD_DEBUG", true);
+			
+			echo(Language.translate("haxelib_Polymod_config"));
+			this.haxedefs.set("POLYMOD_API_VERSION_MATCH",	"NONE");
+			this.haxedefs.set("POLYMOD_MOD_METADATA_FILE",	"mod.json");
+			this.haxedefs.set("POLYMOD_MOD_PACK_FILE",		"modpack.txt");
+			this.haxedefs.set("POLYMOD_MOD_ICON_FILE",		"mod.png");
+			this.haxedefs.set("POLYMOD_ROOT_PATH",			"scripts/");
+			this.haxedefs.set("POLYMOD_SCRIPT_EXT",			".hxs");
+			this.haxedefs.set("POLYMOD_SCRIPT_LIBRARY",		"scripts");
 		}
 		
-		templatePaths.push("_project/templates");
 		
-		/* if (isWindows() && WindowsSettings.CustomVisuals) {
-			includeAssets("_project/templates/windows/template", "");
-		} */
-		
-		if (isAndroid() && AndroidSettings.Icons.Adaptive == true) {
+		if (isAndroid() && AndroidSettings.get("icons").adaptive) {
 			/*
 				NOTE
-				This icons can be a drawable (VectorDrawable/"Android SVG") or an mipmap (Image)
-				If you will use mipmaps, check "templates" folder
-			 */
+				This icons can be a vector or a image
+				If you will use images, check "templates" folder
+			*/
+
+			config.set("android.activity", {"android:icon": "@mipmap/ic_launcher"});
 			
-			config.set("android.activity", {"android:icon": "@drawable/ic_launcher"});
-			
-			if (AndroidSettings.Icons.HasRound == true)
-				config.set("android.activity", {"android:roundIcon": "@drawable/ic_launcher_round"});
-		} else if (isWindows()) {
-			addIcon("icon", "png", 16, true);
-			addIcon("windows/icon", "png", 24, true);
-			addIcon("windows/icon", "png", 32, true);
-			addIcon("windows/icon", "png", 40, true);
-			addIcon("windows/icon", "png", 48, true);
-			addIcon("windows/icon", "png", 64, true);
-			addIcon("windows/icon", "png", 96, true);
-			addIcon("windows/icon", "png", 128, true);
-			addIcon("windows/icon", "png", 256, true);
-			addIcon("windows/icon", "png", 512, true);
-			addIcon("windows/icon", "png", 768, true);
-		} else {
+			if (AndroidSettings.get("icons.hasRound"))
+				config.set("android.activity", {"android:roundIcon": "@mipmap/ic_launcher_round"});
+		}
+		else {
 			addIcon("icon", "png", 8, true);
 			addIcon("icon", "png", 16, true);
+			addIcon("icon", "png", 16, true);
+			addIcon("icon", "png", 24, true);
+			addIcon("icon", "png", 32, true);
+			addIcon("icon", "png", 40, true);
+			addIcon("icon", "png", 48, true);
+			addIcon("icon", "png", 64, true);
+			addIcon("icon", "png", 96, true);
+			addIcon("icon", "png", 128, true);
+			addIcon("icon", "png", 256, true);
+			addIcon("icon", "png", 512, true);
+			addIcon("icon", "png", 768, true);
 			addIcon("icon", "svg"); // Main
 		}
 	}
@@ -226,7 +264,7 @@ class Project extends HXProject
 	}
 
 	function isWeb():Bool {
-		return (this.platformType == PlatformType.WEB || this.target == Platform.HTML5);
+		return (this.platformType == PlatformType.WEB || this.target == Platform.HTML5 || this.target == "winjs");
 	}
 	
 	/**
@@ -248,9 +286,12 @@ class Project extends HXProject
 	function isFinal():Bool
 		return this.targetFlags.exists("final");
 		
-	function addHaxelib(name:String, ?condition:Null<Bool>) {
+	function addHaxelib(name:String, ?condition:Null<Bool>, ?version:Null<String>) {
 		if (condition == null || condition == true) {
-			this.haxelibs.push(new Haxelib(name));
+			if (isNull(version))
+				this.haxelibs.push(new Haxelib(name));
+			else
+				this.haxelibs.push(new Haxelib(name, version));
 			dotPad(name, true);
 		} else { dotPad(name, false); }
 	}
@@ -279,7 +320,7 @@ class Project extends HXProject
 		if (size != null && appendSizeToName) path += '$size';
 		path += '.$format';
 		
-		echo('[Icon] Path: $path, Size: ' + (size != null ? '$size' : "placeholder"), true); // A null size is a placeholder for all sizes
+		echo(Language.translate("project_Icon_message", [path, (size != null ? '$size' : Language.translate("project_Icon_placeholder"))]), true); // A null size is a placeholder for all sizes
 		
 		this.icons.push(new Icon(path, size));
 	}
@@ -312,7 +353,7 @@ enum abstract FeatureFlags(String) from String to String {
 	var MODS_ALLOWED = "MODS_ALLOWED";
 	var DISCORD_ALLOWED = "DISCORD_ALLOWED";
 	var TRANSLATIONS_ALLOWED = "TRANSLATIONS_ALLOWED";
-	var VIDEOS_ALLOWED = "VIDEOS_ALLOWED";
+	//var VIDEOS_ALLOWED = "VIDEOS_ALLOWED";
 	
 	public function set(project:Project, ?enable:Bool = true) {
 		if (enable == true || enable == null) {
@@ -320,17 +361,20 @@ enum abstract FeatureFlags(String) from String to String {
 		}
 		else {
 			if (has(project)) {
-				trace('${this} was removed from the list');
+				project.echo(Language.translate("feature_Disabled", [this]));
 				project.haxedefs.remove(this);
 			}
-				
 			// Nothing
 		}
-		project.dotPad(this, '$enable' ?? 'false (fallback)');
+		project.dotPad(this, enable != null ? '$enable' : 'false (fallback!)');
 	}
 	
 	public function get(project:Project):Bool {
-		return (project.haxedefs.get(this) == "") ?? false;
+		if (has(project)) {
+			return (project.haxedefs.get(this) == "");
+		}
+
+		return false;
 	}
 	
 	public function has(project:Project) {

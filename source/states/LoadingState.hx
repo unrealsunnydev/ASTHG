@@ -94,8 +94,7 @@ class LoadingState extends StateManager {
 	}
 }
 
-class MultiCallback
-{
+class MultiCallback {
 	public var callback:Void->Void;
 	public var logId:Null<String>;
 	public var length(default, null) = 0;
@@ -115,8 +114,7 @@ class MultiCallback
 		numRemaining++;
 		var func:Void->Void = null;
 		func = function () {
-			if (unfired.exists(id))
-			{
+			if (unfired.exists(id)) {
 				unfired.remove(id);
 				fired.push(id);
 				numRemaining--;
@@ -124,8 +122,7 @@ class MultiCallback
 				if (!StringUtil.isNull(logId))
 					log('fired $id, $numRemaining remaining');
 				
-				if (numRemaining == 0)
-				{
+				if (numRemaining == 0) {
 					if (!StringUtil.isNull(logId))
 						log('all callbacks fired');
 					callback();
@@ -138,8 +135,7 @@ class MultiCallback
 		return func;
 	}
 	
-	inline function log(msg):Void
-	{
+	inline function log(msg):Void {
 		if (!StringUtil.isNull(logId))
 			trace('$logId: $msg');
 	}
