@@ -2,21 +2,18 @@ name: "Unix Shell Test"
 
 on:
   push:
-	branches: [ main ]
+    branches: [ main ]
   pull_request:
-	branches: [ main ]
+    branches: [ main ]
 
 jobs:
-	test-script:
-		strategy:
-			matrix:
-				os: [ubuntu-latest, macos-latest] ## Maybe add more Unix OSes?
-
-	runs-on: ${{ matrix.os }}
-
-	steps:
-		- name: "Checkout Repository"
-		- uses: actions/checkout@v4
-
-		- name: "Run Script"
-		- run: chmod +x "./_project/build/Install PowerShell-Core.sh" && "./_project/build/Install PowerShell-Core.sh"
+  test-script:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest] ## Maybe add more Unix OSes?
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: "Checkout Repository"
+        uses: actions/checkout@v4
+      - name: "Run Script"
+        run: chmod +x "./_project/build/Install PowerShell-Core.sh" && "./_project/build/Install PowerShell-Core.sh"
