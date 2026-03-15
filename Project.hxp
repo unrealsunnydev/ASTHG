@@ -12,8 +12,7 @@ import tools.PlatformSettings;
 
 using StringTools;
 
-class Project extends HXProject
-{
+class Project extends HXProject {
 	//Change game settings here!
 	static var GAME:Map<String, Dynamic> = [
 		/**
@@ -148,18 +147,29 @@ class Project extends HXProject
 		addHaxelib("flixel-addons");
 		
 		addHaxelib("hxdiscord_rpc", (isCPP() && DISCORD_ALLOWED.get(this)));
-		// addHaxelib("hxcpp-debug-server", (isDebug()));
 		addHaxelib("polymod", MODS_ALLOWED.get(this));
 		addHaxelib("firetongue", true); // Do NOT disable this, or all texts will not load
+
+		/*
+		--------------------
+			QUICK NOTICE
+		--------------------
+		I am only using HXCPP from The Funkin' Crew because the installation for Android
+		breaks when searching for CLANG++, until I fix that in the project, I maintain it
+		on the list.
+		*/
 		
 		// Android configs
 		if (isAndroid()) {
 			addHaxelib("extension-androidtools");
+
+			config.set("android.minimum-sdk-version", 29); // 9 - Pie
+			config.set("android.target-sdk-version", 35); // 15 - Vanilla Ice Cream
 			
 			if (PLATFORM_SETTINGS.android.localizedStrings) {
 				// Change game name to a translatable string
 				config.set("android.application", {"android:label": "@string/app_name"});
-				config.set("android.activity", {"android:label": "@string/app_name"});
+				config.set("android.activity",	  {"android:label": "@string/app_name"});
 			}
 		}
 		
@@ -168,6 +178,7 @@ class Project extends HXProject
 			haxedefs.set("NAPE_RELEASE_BUILD", null);
 		}
 		
+		// Removes the Flixel "Lost Focus" screen
 		haxedefs.set("FLX_NO_FOCUS_LOST_SCREEN", null);
 		haxedefs.set("message.reporting", "pretty");
 		
@@ -176,7 +187,6 @@ class Project extends HXProject
 			if (isDebug())
 				this.haxedefs.set("POLYMOD_DEBUG", true);
 			
-			echo(Language.translate("haxelib_Polymod_config"));
 			this.haxedefs.set("POLYMOD_API_VERSION_MATCH",	"NONE");
 			this.haxedefs.set("POLYMOD_MOD_METADATA_FILE",	"mod.json");
 			this.haxedefs.set("POLYMOD_MOD_PACK_FILE",		"modpack.txt");
@@ -189,30 +199,49 @@ class Project extends HXProject
 		
 		if (isAndroid() && PLATFORM_SETTINGS.android.icons.adaptive) {
 			/*
-				NOTE
+				------------
+					NOTE
+				------------
 				This icons can be a vector or a image
 				If you will use images, check "templates" folder
 			*/
 
-			config.set("android.activity", {"android:icon": "@mipmap/ic_launcher"});
-			
-			if (PLATFORM_SETTINGS.android.icons.hasRound)
-				config.set("android.activity", {"android:roundIcon": "@mipmap/ic_launcher_round"});
+			// Usually, MipMap are the correct folder to insert Android icons, not Drawable
+			// But, it's fine placing them in Drawable folder, also, we can't change it I guess...
+
+			if (PLATFORM_SETTINGS.android.icons.adaptive) {
+				config.set("android.activity", {"android:icon": "@mipmap/ic_launcher"});
+				config.set("android.application", {"android:icon": "@string/app_name"});
+			}
+			else {
+				addIcon("icon", "png", [36], true);
+				addIcon("icon", "png", [48], true);
+				addIcon("icon", "png", [72], true);
+				addIcon("icon", "png", [96], true);
+				addIcon("icon", "png", [144], true);
+				addIcon("icon", "png", [192], true);
+
+				// OUYA Icon
+				addIcon("icon", "png", [732, 412], true);
+
+				if (PLATFORM_SETTINGS.android.icons.hasRound)
+					config.set("android.activity", {"android:roundIcon": "@mipmap/ic_launcher_round"});
+			}	
 		}
 		else {
-			addIcon("icon", "png", 8, true);
-			addIcon("icon", "png", 16, true);
-			addIcon("icon", "png", 16, true);
-			addIcon("icon", "png", 24, true);
-			addIcon("icon", "png", 32, true);
-			addIcon("icon", "png", 40, true);
-			addIcon("icon", "png", 48, true);
-			addIcon("icon", "png", 64, true);
-			addIcon("icon", "png", 96, true);
-			addIcon("icon", "png", 128, true);
-			addIcon("icon", "png", 256, true);
-			addIcon("icon", "png", 512, true);
-			addIcon("icon", "png", 768, true);
+			addIcon("icon", "png", [8], true);
+			addIcon("icon", "png", [16], true);
+			addIcon("icon", "png", [16], true);
+			addIcon("icon", "png", [24], true);
+			addIcon("icon", "png", [32], true);
+			addIcon("icon", "png", [40], true);
+			addIcon("icon", "png", [48], true);
+			addIcon("icon", "png", [64], true);
+			addIcon("icon", "png", [96], true);
+			addIcon("icon", "png", [128], true);
+			addIcon("icon", "png", [256], true);
+			addIcon("icon", "png", [512], true);
+			addIcon("icon", "png", [768], true);
 			addIcon("icon", "svg"); // Main
 		}
 	}
@@ -299,14 +328,14 @@ class Project extends HXProject
 		@param size Icon size to append, `null` will use this icon for all sizes
 		@param appendSizeToName If true, the `size` argument will be added to the icon name, becoming `icon16.png` for example
 	**/
-	function addIcon(name:String, format:String = "png", ?size:Null<Int>, ?appendSizeToName:Null<Bool> = false) {
+	function addIcon(name:String, format:String = "png", ?size:Null<Array<Int>>, ?appendSizeToName:Null<Bool> = false) {
 		var path:String = "_project/icons/" + name;
 		if (size != null && appendSizeToName) path += '$size';
 		path += '.$format';
 		
-		echo(Language.translate("project_Icon_message", [path, (size != null ? '$size' : Language.translate("project_Icon_placeholder"))]), true); // A null size is a placeholder for all sizes
+		echo(Language.translate("project_Icon_message", [path, (size != null ? '${size.join("x")}' : Language.translate("project_Icon_placeholder"))]), true); // A null size is a placeholder for all sizes
 		
-		this.icons.push(new Icon(path, size));
+		this.icons.push(new Icon(path, size[0] ?? null, size[1] ?? null));
 	}
 	
 	/**

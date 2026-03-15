@@ -102,7 +102,7 @@ class AsthgSprite extends FlxSprite {
 		@param y Vertical position
 		@param width Width to final sprite
 		@param height Height to final sprite
-		@param image The image stored in "images/"
+		@param image The image stored in `images/`
 		@param slice Slice parameters (Left, Top, Spaces from Left, Spaces from Top)
 		@param imageRect The image part you want to crop
 		@return FlxSliceSprite
