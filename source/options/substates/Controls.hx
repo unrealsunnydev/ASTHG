@@ -108,12 +108,12 @@ class Controls extends SubStateManager {
 		super.update(elapsed);
 
 		if (!capturing) {
-			if (controls.justPressed('up')) { 
+			if (controls.UP) { 
 				row = (row - 1 + binds.length) % binds.length;
 				updateSelection();
 				CoolUtil.playSound(ConstantSound.MENU_SCROLL);
 			}
-			if (controls.justPressed('down')) {
+			if (controls.DOWN) {
 				row = (row + 1) % binds.length;
 				updateSelection();
 				CoolUtil.playSound(ConstantSound.MENU_SCROLL);
@@ -128,7 +128,7 @@ class Controls extends SubStateManager {
 				CoolUtil.playSound(ConstantSound.MENU_SCROLL);
 			}
 
-			if (controls.justPressed('accept')) {
+			if (controls.ACCEPT) {
 				startCapture(binds[row][col]);
 				CoolUtil.playSound(ConstantSound.MENU_ACCEPT);
 			}
@@ -140,7 +140,7 @@ class Controls extends SubStateManager {
 				CoolUtil.playSound(ConstantSound.MENU_ACCEPT);
 			}
 			
-			if (controls.justPressed('back')) close();
+			if (controls.BACK) close();
 		}
 		else {
 			if (currentDevice == DeviceType.KEYBOARD) captureKeyboard();

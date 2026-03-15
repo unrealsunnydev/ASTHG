@@ -8,6 +8,7 @@ import DateTools;
 // Reason: Lime only push itself and hxp lib as libraries, any other lib won't work (except our own outside "src" folder)
 
 import tools.Language;
+import tools.PlatformSettings;
 
 using StringTools;
 
@@ -49,42 +50,25 @@ class Project extends HXProject
 		"languages" => ["en"]
 	];
 
+	/**
+		List of items to remove on the build
+		Assets like MP3/OGG are removed by platform
+	**/
 	static var EXCLUDE_ASSETS:Array<String> = ["*.aseprite"];
 	
-	static var AndroidSettings:Map<String, Dynamic> = [
-		/**
-			Icon settings for Android
-		**/
-		"icons" => {
-
-			/**
-				Adaptive icons (Android 8.0+) uses a foreground and background layer to create different shapes
-				Adds support for monochrome icons on Android 12+ too, this depends on how you configured the XML files. 
-			**/
-			"adaptive": true,
-
-			/**
-				A circular version of the icon for devices that use round icons
-				OPTIONAL if you are using Adaptive icons
-			**/
-			"hasRound": false
+	static var PLATFORM_SETTINGS:PlatformSettings = {
+		android: {
+			icons: {
+				adaptive: true,
+				hasRound: false
+			},
+			localizedStrings: true
 		},
 
-		/**
-			Changes the game title to a translatable string (by now).
-			Also, you can add more localized strings support
-		**/
-		"localizedStrings" => true
-	];
-	
-	static var WindowsSettings:Map<String, Dynamic> = [
-		/**
-			If enabled, this will use Windows 8+ VisualElements for stiling
-
-			WARNING: You need to pack the entire game to MSIX every build for this to work properly!
-		**/
-		"visualElements" => true
-	];
+		windows: {
+			visualElements: true
+		}
+	};
 
 	
 	public function new() {
@@ -92,17 +76,14 @@ class Project extends HXProject
 		if (isWindows() && isCPP()) {
 			Sys.command("chcp", ["65001"]);
 			Sys.command("cls");
-			setenv("PROJECT_BUILD", (isDebug() ? "debug" : isFinal() ? "final" : "release"));
 		}
-
 		Language.load();
+		
+		setenv("PROJECT_BUILD", (isDebug() ? "debug" : isFinal() ? "final" : "release"));
 
-		if (Sys.systemName() == "Windows") {
-			sys.io.File.saveContent("tools/build.txt", [
-				"BUILD=" + Sys.getEnv("PROJECT_BUILD"),
-				"WINDOWS.VISUALELEMENTS=" + WindowsSettings.get("visualElements") // Add more things here if you want!
-			].join("\n"));
-		}
+		// You can remove this line if your haxe is installed in the default path
+		setenv("HAXE_STD_PATH", Sys.getEnv("HAXEPATH") + "\\std");
+
 
 		this.meta.title = GAME.get("title");
 		this.meta.version = GAME.get("version");
@@ -112,15 +93,14 @@ class Project extends HXProject
 		this.app.file = GAME.get("file");
 		this.app.main = "Main";
 		this.app.preloader = "flixel.system.FlxPreloader";
-		this.app.path = "export/" + (isDebug() ? "debug" : isFinal() ? "final" : "release");
-
-		this.postBuildCallbacks.push(CommandHelper.interpretHaxe("tools/Postbuild.hx"));
+		this.app.path = "export/" + Sys.getEnv("PROJECT_BUILD");
 		
 		if (isTarget("mobile")) {
 			this.window.width = 0;
 			this.window.height = 0;
 			this.window.fullscreen = true;
-		} else {
+		}
+		else {
 			this.window.width = 426;
 			this.window.height = 240;
 		}
@@ -150,7 +130,7 @@ class Project extends HXProject
 
 		templatePaths.push("_project/templates");
 
-		if (isWindows() && WindowsSettings.get("visualElements"))
+		if (isWindows() && PLATFORM_SETTINGS.windows.visualElements)
 			includeAssets("_project/resources/windows", "");
 
 		sources.push("source");
@@ -176,7 +156,7 @@ class Project extends HXProject
 		if (isAndroid()) {
 			addHaxelib("extension-androidtools");
 			
-			if (AndroidSettings.get("localizedStrings")) {
+			if (PLATFORM_SETTINGS.android.localizedStrings) {
 				// Change game name to a translatable string
 				config.set("android.application", {"android:label": "@string/app_name"});
 				config.set("android.activity", {"android:label": "@string/app_name"});
@@ -207,7 +187,7 @@ class Project extends HXProject
 		}
 		
 		
-		if (isAndroid() && AndroidSettings.get("icons").adaptive) {
+		if (isAndroid() && PLATFORM_SETTINGS.android.icons.adaptive) {
 			/*
 				NOTE
 				This icons can be a vector or a image
@@ -216,7 +196,7 @@ class Project extends HXProject
 
 			config.set("android.activity", {"android:icon": "@mipmap/ic_launcher"});
 			
-			if (AndroidSettings.get("icons.hasRound"))
+			if (PLATFORM_SETTINGS.android.icons.hasRound)
 				config.set("android.activity", {"android:roundIcon": "@mipmap/ic_launcher_round"});
 		}
 		else {
@@ -293,7 +273,8 @@ class Project extends HXProject
 			else
 				this.haxelibs.push(new Haxelib(name, version));
 			dotPad(name, true);
-		} else { dotPad(name, false); }
+		}
+		else { dotPad(name, false); }
 	}
 	
 	/**
@@ -303,9 +284,12 @@ class Project extends HXProject
 	**/
 	public function echo(value:Dynamic, ?debug:Bool = false) {
 		if (debug) {
-			if (isDebug()) return Sys.println(value);
-			else { return; }
-		} else { return Sys.println(value); }
+			if (isDebug())
+				return Sys.println(value);
+			else
+				return;
+		}
+		else { return Sys.println(value); }
 	}
 	
 	/**
@@ -340,9 +324,17 @@ class Project extends HXProject
 		
 		echo(name + padding + value, debug);
 	}
+
 	
-	inline public function isNull(str:String):Bool
-		return (str == null || str.trim().length <= 0);
+	/**
+		Checks if `string` is `null` or empty
+		*Copied from `util.StringUtil` class, importing it will cause a lot of exceptions around `package;`*
+
+		@param string The string to check
+		@return Bool
+	**/
+	inline public static function isNull(string:Null<String>):Bool
+		return (string == null || string.trim().length <= 0);
 }
 
 /**
@@ -350,10 +342,10 @@ class Project extends HXProject
 	Contains also functions for enabling/disabling, get values and check existence
 **/
 enum abstract FeatureFlags(String) from String to String {
-	var MODS_ALLOWED = "MODS_ALLOWED";
-	var DISCORD_ALLOWED = "DISCORD_ALLOWED";
+	var MODS_ALLOWED		 = "MODS_ALLOWED";
+	var DISCORD_ALLOWED		 = "DISCORD_ALLOWED";
 	var TRANSLATIONS_ALLOWED = "TRANSLATIONS_ALLOWED";
-	//var VIDEOS_ALLOWED = "VIDEOS_ALLOWED";
+	//var VIDEOS_ALLOWED	 = "VIDEOS_ALLOWED";
 	
 	public function set(project:Project, ?enable:Bool = true) {
 		if (enable == true || enable == null) {

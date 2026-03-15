@@ -161,7 +161,7 @@ class Character extends AsthgSprite {
 		}
 
 		// In PlayState, make action buttons act like jump buttons
-		if (controls.justPressed("jump") || controls.justPressed("accept") || controls.justPressed("back")) {
+		if (controls.justPressed("jump") || controls.ACCEPT || controls.BACK) {
 			this.y -= 0x38000;
 			CoolUtil.playSound("Jump");
 		}

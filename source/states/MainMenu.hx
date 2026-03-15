@@ -76,13 +76,13 @@ class MainMenu extends StateManager {
 	var selectedSomethin:Bool = false;
 	override function update(elapsed:Float) {
 		if (!selectedSomethin) {
-			if (controls.justPressed('up') || controls.justPressed('down')) {
-				changeItem(controls.justPressed('up') ? -1 : 1);
+			if (controls.UP || controls.DOWN) {
+				changeItem(controls.UP ? -1 : 1);
 				CoolUtil.playSound(ConstantSound.MENU_SCROLL);
 				controls.vibrate(1.5, 1.2, 10);
 			}
 
-			if (controls.justPressed('accept')) {
+			if (controls.ACCEPT) {
 				
 				if (options[curSelected].toLowerCase() != "exit")
 					CoolUtil.playSound(ConstantSound.MENU_ACCEPT);
@@ -115,7 +115,7 @@ class MainMenu extends StateManager {
 				});
 			}
 
-			if (controls.justPressed("back")) {
+			if (controls.BACK) {
 				CoolUtil.playSound(ConstantSound.MENU_BACK);
 				StateManager.switchState(new TitleState());
 			}

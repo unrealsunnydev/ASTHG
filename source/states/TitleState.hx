@@ -25,7 +25,7 @@ class TitleState extends StateManager {
 	}
 
 	override function update(e:Float) {
-		if (controls.justPressed('accept'))
+		if (controls.ACCEPT)
 			StateManager.switchState(new states.MainMenu());
 
 	}

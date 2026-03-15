@@ -1,9 +1,0 @@
-flag	content
-background_layers	Escuridão nos Fundos
-background_layers_desc	Adiciona uma camada escura aos fundos fazendo-os não ser muito luminosos
-show_framerate	Mostrar Quadros
-show_framerate_desc	Adiciona um contador fps no canto superior esquerdo da tela.
-framerate	Taxa de Quadros
-framerate_desc	Define seu atual <Q>framerate<Q>
-low_quality	Baixa Qualidade
-low_quality_desc	Faz o jogo possuir alta performance em plataformas mais fracas

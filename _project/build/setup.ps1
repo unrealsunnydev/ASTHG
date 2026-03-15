@@ -68,10 +68,9 @@ if (-not $HasHaxelib) { Write-Output ($Msg.NotHaxe) }
 
 function Set-SetupWindows {
 	$filename = "vs_BuildTools.exe"
-	$url = "https://aka.ms/vs/16/release/{0}"
 
 	try {
-		Invoke-WebRequest -Uri ($url -f $filename) -OutFile $filename
+		Invoke-WebRequest -Uri ("https://aka.ms/vs/16/release/{0}" -f $filename) -OutFile $filename
 		Write-Output ($Msg.InstallingMSVC.Prompt)
 	}
 	catch {
@@ -79,16 +78,14 @@ function Set-SetupWindows {
 		return
 	}
 
-	if (Test-Path $filename) {
-		try {
+	try {
+		if (Test-Path $filename) {
 			Start-Process -FilePath $filename -ArgumentList "--add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.Windows10SDK.19041 --passive --nocache --downloadThenInstall" -Wait
 			Remove-Item $filename
 		}
-		catch {}
 	}
-	else {
-		Write-Warning ($Msg.InstallingMSVC.ErrorPath -f $filename)
-		return
+	catch {
+		throw ($Msg.InstallingMSVC.ErrorPath -f $filename)
 	}
 
 	Write-Output ($Msg.Finished)

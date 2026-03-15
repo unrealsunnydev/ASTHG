@@ -92,11 +92,11 @@ class SaveSelect extends StateManager {
 	override function update(e:Float) {
 		super.update(e);
 
-		if (controls.justPressed('accept')) {
+		if (controls.ACCEPT) {
 			LoadingState.switchStates(new states.PlayState(), true);
 		}
 
-		if (controls.justPressed('back')) {
+		if (controls.BACK) {
 			StateManager.switchState(new states.MainMenu());
 		}
 

@@ -36,14 +36,14 @@ class ModsMenu extends StateManager {
 	}
 
 	override function update(e:Float) {
-		if (controls.justPressed("back")) {
+		if (controls.BACK) {
 			CoolUtil.playSound(ConstantSound.MENU_BACK);
 			StateManager.switchState(new states.MainMenu());
 		}
 
-		if (controls.justPressed("up") || controls.justPressed("down")) {
+		if (controls.UP || controls.DOWN) {
 			CoolUtil.playSound(ConstantSound.MENU_SCROLL);
-			changeSelection(controls.justPressed("up") ? -1 : 1);
+			changeSelection(controls.UP ? -1 : 1);
 		}
 
 		super.update(e);
@@ -68,7 +68,7 @@ private class ModEntry extends FlxSpriteGroup {
 	public var selected:Bool = false;
 
 	public var icon:AsthgSprite = new AsthgSprite(0, 0).createGraphic(18, 18, FlxColor.BLACK);
-	public var text:AsthgBitmapText = AsthgBitmapText.createAngelCode(0, 0, "", "Mania0");
+	public var text:AsthgBitmapText = AsthgBitmapText.createAngelCode(0, 0, "", "HUD");
 
 	// Mod Meta Info
 	public var name:String = "Unknown Mod";
@@ -93,7 +93,7 @@ private class ModEntry extends FlxSpriteGroup {
 			this.compatible = (meta.apiVersion == CoolUtil.getProjectInfo("version"));
 
 			
-			icon.loadGraphic(meta.iconPath ?? Paths.image("mods_menu"));
+			icon.loadGraphic(meta.iconPath ?? "mods_menu/unknownMod");
 		}
 		
 		bg = AsthgSprite.createSliced(x, y, 404, 18, "UI/button", [3, 3, 1, 1], [0, 0, 7, 7]);

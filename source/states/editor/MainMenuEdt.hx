@@ -31,22 +31,22 @@ class MainMenuEdt extends StateManager {
 	var selectedSomethin:Bool = false;
 	override function update(elapsed:Float) {
 		if (!selectedSomethin) {
-			if (controls.justPressed('up')) {
+			if (controls.UP) {
 				changeItem(-1);
 				CoolUtil.playSound(ConstantSound.MENU_SCROLL);
 				controls.vibrate(0.5, 0.2, 10);
 			}
-			if (controls.justPressed('down')) {
+			if (controls.DOWN) {
 				changeItem(1);
 				CoolUtil.playSound(ConstantSound.MENU_SCROLL);
 				controls.vibrate(0.5, 0.2, 10);
 			}
-			if (controls.justPressed('accept')) {
+			if (controls.ACCEPT) {
 				CoolUtil.playSound(ConstantSound.MENU_ACCEPT);
 				selectedSomethin = true;
 				//switch(options[selected].toLowerCase()) {}
 			}
-	  		if (controls.justPressed("back")) {
+	  		if (controls.BACK) {
 				CoolUtil.playSound(ConstantSound.MENU_BACK);
 				StateManager.switchState(new states.MainMenu());
 			}

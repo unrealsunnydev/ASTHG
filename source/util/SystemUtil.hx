@@ -37,6 +37,8 @@ class SystemUtil {
 	private static var _accent:FlxColor = FlxColor.WHITE;
 	public static var ACCENT_COLOR(get, set):FlxColor;
 	inline public static function loadAccentColor():Null<FlxColor> {
+		trace("Loading accent colors...");
+
 		#if (windows && !winjs && !winrt) // Is Windows and not Web-targets
 
 		/*
@@ -48,11 +50,12 @@ class SystemUtil {
 		var accent = Std.int(Std.parseFloat(p.stdout.readLine()));
 		p.close();
 		
+		trace("Loaded!");
 		// Haxe reads this as an FLOAT, not INT
 		return accent;
 		#else // I don't know how accent colors works on other systems...
 		FlxG.log.error("You're using a platform that doesn't support accent colors!");
-		return null;
+		return FlxColor.WHITE;
 		#end
 	}
 

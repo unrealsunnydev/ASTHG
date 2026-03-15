@@ -52,16 +52,16 @@ class OptionsState extends StateManager {
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		if (controls.justPressed('up') || controls.justPressed('down')) {
-			changeSelection(controls.justPressed('up') ? -1 : 1);
+		if (controls.UP || controls.DOWN) {
+			changeSelection(controls.UP ? -1 : 1);
 			CoolUtil.playSound(ConstantSound.MENU_SCROLL);
 		}
 
-		if (controls.justPressed('accept')) {
+		if (controls.ACCEPT) {
 			openSelectedSubstate(options[curSelected]);
 		}
 
-		if (controls.justPressed('back')) {
+		if (controls.BACK) {
 			ClientPrefs.saveSettings();
 			CoolUtil.playSound(ConstantSound.MENU_BACK);
 			StateManager.switchState(new states.MainMenu());

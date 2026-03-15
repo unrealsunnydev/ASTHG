@@ -5,7 +5,7 @@ package util;
 **/
 class StringUtil {
 	
-	inline public static function capitalize(text:String)
+	inline public static function capitalize(text:String):String
 		return text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
 	
 	/**

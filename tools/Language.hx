@@ -6,24 +6,21 @@ import sys.FileSystem;
 using StringTools;
 
 class Language {
-	static var trans:Map<String, String> = []; // Store translations here
+	static var trans:Map<String, String> = new Map<String, String>(); // Store translations here
 	static var curLang:String = lime.system.Locale.currentLocale;
 
 	public static function load() {
-		curLang ??= "en_US";
 		
-		if (!FileSystem.exists('_project/translations/$curLang.txt')) {
+		if (!FileSystem.exists('_project/translations/$curLang.txt') || curLang == null) {
 			curLang = "en_US";
 		}
 
 		var file = File.getContent("_project/translations/" + curLang + ".txt");
 
+		var reg = ~/^(\w+)=(.*)$/ig;
 		for (line => text in file.split("\n")) {
-			text = text.trim();
-
-			if (text.length > 4) {
-			var parts = text.split("=");
-				trans.set(parts[0], parts[1]);
+			if (reg.match(text)) {
+				trans.set(StringTools.trim(reg.matched(1)), StringTools.trim(reg.matched(2)));
 			}
 		}
 	}

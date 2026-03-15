@@ -2,7 +2,19 @@ package backend;
 
 class Constants {
 	// Fonts
-	inline public static final ABSOLUTE_FONT_GLYPHDATA:String = " ☺☻♥♦♣♠●◘◉◙♂♀♪♬☼►◄↕‼¶§▄↨↑↓→←∟↔▲▼ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~⌂ÇüéâäaçêëèïîìÄÂÉæÆôöòûùÿÖÜc¢£¥₧ƒáíóúñÑªº¿⌐¬½¼¡«»";
+	public static final ABSOLUTE_FONT_GLYPHDATA:String = [ // Switched to array for more organization
+		" ☺☻♥♦♣♠●◘◉◙♂♀♪♬☼",
+		"►◄↕‼¶§▄↨↑↓→←∟↔▲▼",
+		" !\"#$%&'()*+,-./",
+		"0123456789:;<=>?",
+		"@ABCDEFGHIJKLMNO",
+		"PQRSTUVWXYZ[\\]^_",
+		"`abcdefghijklmno",
+		"pqrstuvwxyz{|}~⌂",
+		"ÇüéâäaçêëèïîìÄÂ",
+		"ÉæÆôöòûùÿÖÜc¢£¥₧ƒ",
+		"áíóúñÑªº¿⌐¬½¼¡«»"
+	].join("");
 
 	// Characters
 	public static final PALETTE_OVERRIDE:Array<FlxColor> = [0xFF2020A0, 0xFF2040C0, 0xff4040E0, 0xff6060E0];
@@ -24,7 +36,9 @@ class Constants {
 }
 
 enum abstract ConstantSound(String) to String {
-	var MENU_ACCEPT = "MenuAccept"
-	var MENU_SCROLL = "MenuChange"
-	var MENU_BACK   = "MenuCancel"
+	var MENU_ACCEPT = "MenuAccept";
+	var MENU_SCROLL = "MenuChange";
+	var MENU_BACK   = "MenuCancel";
+
+	var PLAYER_JUMP = "Jump";
 }

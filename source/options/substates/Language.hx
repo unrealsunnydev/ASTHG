@@ -58,21 +58,21 @@ class Language extends SubStateManager {
 		super.update(elapsed);
 
 		var mult:Int = (FlxG.keys.pressed.SHIFT) ? 4 : 1;
-		if(controls.justPressed('up') || controls.justPressed('down') || FlxG.mouse.wheel != 0)
-			changeSelected(controls.justPressed('up') ? -1 : 0 - FlxG.mouse.wheel * mult);
+		if (controls.UP || controls.DOWN)
+			changeSelected((controls.UP ? -1 : 0) * mult);
 
-		if(controls.justPressed('back')) {
+		if (controls.BACK) {
 			if(changedLanguage) {
 				FlxTransitionableState.skipNextTransIn = true;
 				FlxTransitionableState.skipNextTransOut = true;
 				StateManager.resetState();
 			}
 			else close();
-			CoolUtil.playSound('MenuCancel');
+			CoolUtil.playSound(ConstantSound.MENU_BACK);
 		}
 
-		if(controls.justPressed('accept')) {
-			CoolUtil.playSound('MenuAccept');
+		if(controls.ACCEPT) {
+			CoolUtil.playSound(ConstantSound.MENU_ACCEPT);
 			ClientPrefs.data.language = languages[curSelected];
 			ClientPrefs.saveSettings();
 			Main.tongue.initialize({locale: ClientPrefs.data.language});
@@ -85,7 +85,7 @@ class Language extends SubStateManager {
 		for (num => lang in grpLanguages) {
 			lang.alpha = (num == curSelected) ? 1 : 0.6;
 		}
-		CoolUtil.playSound('MenuChange');
+		CoolUtil.playSound(ConstantSound.MENU_SCROLL);
 	}
 	#end
 }

@@ -74,22 +74,22 @@ typedef OptionSettings = {
 		Minimal value for this `INT`/`FLOAT` option	
 		Default: `0.0`
 	**/
-	min:Float,
+	?min:Float,
 
 	/**
 		Maximum value for this `INT`/`FLOAT` option	
 		Default: `10.0`
 	**/
-	max:Float,
+	?max:Float,
 
 	/**
 		How much increase/decrease values when changing `INT`/`FLOAT` options
 	**/
-	amount:Float,
+	?amount:Float,
 
 	/**
 		Only available for `STRING` options.
 		Set's a list of values for this option.
 	**/
-	list:Array<String>
+	?list:Array<String>
 }

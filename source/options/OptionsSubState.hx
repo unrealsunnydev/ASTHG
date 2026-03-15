@@ -46,8 +46,8 @@ class OptionsSubState extends SubStateManager {
 	}
 
 	override public function update(e:Float) {
-		if(controls.justPressed('back')) {
-			close(); CoolUtil.playSound('MenuCancel');
+		if(controls.BACK) {
+			close(); CoolUtil.playSound(ConstantSound.MENU_BACK);
 		}
 	}
 

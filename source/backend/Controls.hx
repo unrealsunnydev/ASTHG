@@ -9,6 +9,8 @@ class Controls {
 	//Gamepad & Keyboard stuff
 	public var keyboardBinds:Map<String, Array<FlxKey>>;
 	public var gamepadBinds:Map<String, Array<FlxGamepadInputID>>;
+
+
 	public function justPressed(key:String) {
 		var result:Bool = (FlxG.keys.anyJustPressed(keyboardBinds[key]) == true);
 		if(result) controllerMode = false;
@@ -17,7 +19,7 @@ class Controls {
 	}
 
 	/**
-		Rumble a controller or vibrate an cell phone
+		Rumble a controller or vibrate on mobile
 		@param low (Strong) Low Frequence motor, period if on mobile
 		@param high (Weak) High frequence motor.
 		@param duration Duration of the vibration
@@ -29,7 +31,7 @@ class Controls {
 			for (id in lime.ui.Gamepad.devices.keys()) {
 				var pad = lime.ui.Gamepad.devices.get(id);
 				if (pad != null) {
-					trace('Vibrating gamepad! ($low', high, '$duration)');
+					trace('Vibrating gamepad! ($low, $high, $duration)');
 					return pad.rumble(low, high, duration);
 				}
 			}
@@ -39,6 +41,7 @@ class Controls {
 		return lime.ui.Haptic.vibrate(Std.int(high), duration);
 		#else
 		trace("Tried to vibrate a device, but platform is not compatible!");
+		return;
 		#end
 	}
 
@@ -90,6 +93,26 @@ class Controls {
 		}
 		return false;
 	}
+
+	public var UP(get, never):Bool;
+	public var DOWN(get, never):Bool;
+	public var LEFT(get, never):Bool;
+	public var RIGHT(get, never):Bool;
+
+	public var AUX(get, never):Bool;
+	public var JUMP(get, never):Bool;
+	public var BACK(get, never):Bool;
+	public var ACCEPT(get, never):Bool;
+	
+	private function get_UP()		return justPressed("up");
+	private function get_DOWN()		return justPressed("down");
+	private function get_LEFT()		return justPressed("left");
+	private function get_RIGHT()	return justPressed("right");
+	
+	private function get_AUX()		return justPressed("auxiliar");
+	private function get_JUMP()		return justPressed("jump");
+	private function get_BACK()		return justPressed("back");
+	private function get_ACCEPT()	return justPressed("accept");
 
 	// IGNORE THESE
 	public static var instance:Controls;

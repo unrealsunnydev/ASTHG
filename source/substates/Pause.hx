@@ -51,23 +51,17 @@ class Pause extends SubStateManager {
 		cantUnpause -= e;
 		super.update(e);
 		
-		if(controls.justPressed('back')) {
+		if(controls.BACK) {
 			close();
 			return;
 		}
 
-		if (controls.justPressed('up')) {
-			changeSelection(-1);
+		if (controls.UP || controls.DOWN) {
+			changeSelection(controls.UP ? -1 : 1);
 			CoolUtil.playSound(ConstantSound.MENU_SCROLL);
 		}
-
-		if (controls.justPressed('down')) {
-			CoolUtil.playSound(ConstantSound.MENU_SCROLL);
-			changeSelection(1);
-		}
-
 		var selected:String = options[curSelected];
-		if (controls.justPressed('accept') && (cantUnpause <= 0)) {
+		if (controls.ACCEPT && (cantUnpause <= 0)) {
 			CoolUtil.playSound(ConstantSound.MENU_ACCEPT);
 			switch (selected.toLowerCase()) {
 				case 'resume':
