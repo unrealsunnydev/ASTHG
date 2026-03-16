@@ -1,11 +1,6 @@
 name: "USE (Unnamed Sonic Engine) Build"
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-    
+on: 
   workflow_dispatch:
     inputs:
       # Most of these parameters are available on the Setup Script
@@ -36,12 +31,13 @@ on:
 
       # NOTE: I didn't test it, tell me if it works!
       arch-32:
-        description: "Defines if the build should be 32-bits or not."
+        description: "Should your build be for 32bits?"
         type: boolean
         default: false
 
 jobs:
   setup:
+    name: "Setup the build environment"
     permissions: write-all
     runs-on: [ubuntu-latest, macos-latest, windows-latest]
     steps:
@@ -80,6 +76,8 @@ jobs:
         run: pwsh -File "./_project/build/build.ps1" -Platform ${{ inputs.platform }} -BuildType ${{ inputs.build-type }} -Action build -Is32Bits ${{ inputs.arch-32 }}
         # We can't use: run, -watch, test; because it's a online VM, not a local one
 
+      - run: echo "Uploading files..."
+      
       - name: "Upload Build Artifacts"
         uses: actions/upload-artifact@v3
         with:
