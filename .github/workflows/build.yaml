@@ -58,8 +58,16 @@ jobs:
         with:
           haxe-version: "4.3.7"
 
-      - name: "Run Setup Script - Install Dependencies"
-        run: pwsh -File "./_project/build/setup.ps1" -MenuOption 0
+      - name: "Install Dependencies"
+        shell: "pwsh"
+        run: |
+          & "haxelib" @("--global", "install", "hmm")
+          Start-Sleep 2
+
+          & "haxelib" @("--global", "run", "hmm", "setup")
+          Start-Sleep 2
+
+          & "hmm" "install"
 
       - name: "Cache Haxe & Libraries"
         uses: actions/cache@v3
