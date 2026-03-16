@@ -7,7 +7,7 @@ on:
     branches: [ main ]
     
   workflow_dispatch:
-    input:
+    inputs:
       # Most of these parameters are available on the Setup Script
       # You can only change them if:
       # - You called the script on terminal and not double-clicked it
@@ -60,7 +60,7 @@ jobs:
         with:
           path: ~/.haxelib
           key: ${{ runner.os }}-haxelib-${{ hashFiles('*.hxml', 'hmm.json') }}
-          restore-keys: ${{ runner.os }}-haxelib-
+          restore-keys: haxelib-dependencies
 
       - name: "Run Setup Script - Setup Platform"
         if: matrix.os == 'windows-latest'
@@ -77,11 +77,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: "Build the Game"
-        run: pwsh -File "./_project/build/build.ps1" -Platform ${{ input.platform }} -BuildType ${{ input.build-type }} -Action build -Is32Bits ${{ input.arch-32 }}
+        run: pwsh -File "./_project/build/build.ps1" -Platform ${{ inputs.platform }} -BuildType ${{ inputs.build-type }} -Action build -Is32Bits ${{ inputs.arch-32 }}
         # We can't use: run, -watch, test; because it's a online VM, not a local one
 
       - name: "Upload Build Artifacts"
         uses: actions/upload-artifact@v3
         with:
-          name: build-${{ input.platform }}-${{input.build-type}}
-          path: export/${{ input.build-type}}/${{input.platform}}/bin
+          name: build-${{ inputs.platform }}-${{inputs.build-type}}
+          path: export/${{ inputs.build-type}}/${{inputs.platform}}/bin
