@@ -2,7 +2,8 @@
 #requires -Version 7
 
 param(
-	[string]$StayOnMenu = ""
+	[string]$StayOnMenu = "",
+	[int]$MenuOption = -1
 )
 
 Import-LocalizedData -BindingVariable "Msg" -ErrorAction SilentlyContinue
@@ -175,17 +176,16 @@ do {
 	}
 	Write-Output ""
 
-	$choice = Read-Host ($Msg.Menu.Prompt -f 0, ($Msg["Menu"]["Options"].Count - 1))
+	$MenuOption = (Read-Host ($Msg.Menu.Prompt -f 0, ($Msg["Menu"]["Options"].Count - 1))).ToInt32()
 
-	switch (($choice).ToString().ToLower()) {
-		'0' { if ($HasHaxelib)	{ New-GameSetup		} }
-		'1' { if ($IsWindows)	{ Set-SetupWindows	}	else { Write-Output ($Msg.Menu.ErrorOS) } }
-		'2' { if ($IsMacOS)		{ Set-SetupMacOS	}	else { Write-Output ($Msg.Menu.ErrorOS) } }
-		'3' { Set-SetupAndroid }
-		'4' { if ($HasHaxelib)	{ Remove-GameSetup } }
-		'5' { exit }
-		'exit' { exit }
+	switch ($MenuOption) {
+		0 { if ($HasHaxelib)	{ New-GameSetup		} }
+		1 { if ($IsWindows)	{ Set-SetupWindows	}	else { Write-Output ($Msg.Menu.ErrorOS) } }
+		2 { if ($IsMacOS)		{ Set-SetupMacOS	}	else { Write-Output ($Msg.Menu.ErrorOS) } }
+		3 { Set-SetupAndroid }
+		4 { if ($HasHaxelib)	{ Remove-GameSetup } }
+		5 { exit }
 		default { Write-Output ($Msg.Menu.Error) }
 	}
-} while ($StayOnMenu.ToLower() -in @("y", "yes", "true", "1"))
+} while ($StayOnMenu.ToLower() -in @("y", "yes", "true", "1") -or $MenuOption -eq -1)
 Stop-Transcript

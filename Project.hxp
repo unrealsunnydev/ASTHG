@@ -58,7 +58,7 @@ class Project extends HXProject {
 	static var PLATFORM_SETTINGS:PlatformSettings = {
 		android: {
 			icons: {
-				adaptive: true,
+				adaptive: true, // I could leave the icons be named "ic_launcher" and maintain compatible with Android N- ...
 				hasRound: false
 			},
 			localizedStrings: true
@@ -163,7 +163,7 @@ class Project extends HXProject {
 		if (isAndroid()) {
 			addHaxelib("extension-androidtools");
 
-			config.set("android.minimum-sdk-version", 29); // 9 - Pie
+			config.set("android.minimum-sdk-version", 29); // 10 - Q
 			config.set("android.target-sdk-version", 35); // 15 - Vanilla Ice Cream
 			
 			if (PLATFORM_SETTINGS.android.localizedStrings) {

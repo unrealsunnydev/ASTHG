@@ -8,6 +8,7 @@ param(
 	[string]$Is32Bits,
 	[string]$Action,
 	[string]$Platform,
+	[string]$BuildType,
 	[string[]]$BuildFlags
 )
 
@@ -27,11 +28,12 @@ else { Get-Command "haxelib" -ErrorAction Stop }
 # CPP -> Windows / Linux / MacOS (depends on host)
 if ([string]::IsNullOrEmpty($Platform)) { $Platform	= if ($IsWindows -or $IsLinux -or $IsMacOS) { "cpp" } else { "hl" } }
 if ([string]::IsNullOrEmpty($Action)) { $Action = "build" }
+if ([string]::IsNullOrEmpty($BuildType)) { $BuildType = "release" }
 if ([string]::IsNullOrEmpty($Is32Bits)) { $Is32Bits = "false" }
 
 $Is32Bits = ($Is32Bits -in @("y", "yes", "true", "1"))
 
-$hxArgs = @("run", "lime", $Action, $Platform)
+$hxArgs = @("run", "lime", $Action, $Platform, "-$BuildType")
 
 <#
 	.DESCRIPTION
@@ -69,10 +71,6 @@ Write-Host ($Msg.BuildTexts["$Action"])
 & $haxelib @hxArgs
 
 Set-Pause
-
-$BuildType = if ($BuildFlags.Contains("-debug")) { "debug" }
-elseif ($BuildFlags.Contains("-final")) { "final" }
-else { "release" }
 
 if ($Action -in @("build")) {
 	$expPath = switch ($Platform) {
