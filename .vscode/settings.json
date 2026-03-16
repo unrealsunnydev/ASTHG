@@ -1,0 +1,61 @@
+{
+	"files.associations": {
+		"*.hxp": "haxe",
+		"*.hxs": "haxe"
+	},
+	"files.exclude": {
+		"**/.discord": true,
+		"**/.vscode": true
+	},
+	"json.schemas": [
+		{
+			"fileMatch": ["/assets/shared/music/*.json"],
+			"url": "./vscode/schema/MusicMetadata.json"
+		},
+		{
+			"fileMatch": ["/assets/shared/data/characters/*.json"],
+			"url": "./vscode/schema/CharacterMeta.json"
+		}
+	],
+	"yaml.schemas": {
+		"./.github/workflows/*.yaml": "https://json.schemastore.org/github-workflow.json"
+	},
+	"files.watcherExclude": {
+		"**/.git/**": true,
+		"**/.haxelib/**": true,
+		"**/export/**": true
+	},
+	"lime.projectFile": "Project.hxp",
+	"lime.targets": [
+		{
+			"label": "HashLink",
+			"name": "hl",
+			"enabled": true
+		},
+		{
+			"label": "HTML5",
+			"name": "html5",
+			"enabled": true
+		},
+		{
+			"label": "Linux",
+			"name": "linux",
+			"enabled": true
+		},
+		{
+			"label": "NekoVM",
+			"name": "neko",
+			"enabled": true
+		},
+		{
+			"label": "MacOS",
+			"name": "mac",
+			"enabled": true
+		},
+		{
+			"label": "Windows",
+			"name": "windows",
+			"enabled": true
+		}
+	]
+}

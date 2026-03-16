@@ -1,0 +1,52 @@
+{
+	"$schema": "https://json-schema.org/draft-07/schema#",
+
+	"title": "ASTHG Character's Animation Data",
+	"type": "object",
+	"properties": {
+		"name": {
+			"type": "string",
+			"description": "Name of the animation"
+		},
+
+		"displayName": {
+			"type": "string",
+			"description": "How should your animation be displayed?"
+		},
+
+		"sheets": {
+			"type": "string",
+			"description": "Show much spritesheets your animation use?\nSeparated by comma (`,`)"
+		},
+
+		"prefix": {
+			"type": "string",
+			"description": "Reference of the animation on your SparrowAtlas V2 file"
+		},
+
+		"fps": {
+			"type": "integer",
+			"description": "Frames per Second that this animation uses"
+		},
+
+		"loop": {
+			"type": "boolean",
+			"description": "Does this animation loops?"
+		},
+
+		"offset": {
+			"type": "array",
+			"items": {
+				"type": "integer",
+				"maximum": 2
+			}
+		},
+
+		"indices": {
+			"type": "array",
+			"items": {
+				"type": "integer"
+			}
+		}
+	}
+}
