@@ -7,7 +7,7 @@ import DateTools;
 // We can't use libs here :(
 // Reason: Lime only push itself and hxp lib as libraries, any other lib won't work (except our own outside "src" folder)
 
-import tools.Language;
+import tools.Language as LNG;
 import tools.PlatformSettings;
 
 using StringTools;
@@ -22,10 +22,10 @@ class Project extends HXProject {
 		"title" => "Unnamed Sonic Game",
 	
 		/**
-			Rule: YEAR.MONTH.DAY	
-			(Current datetime of the update)
+			Rule: MAJOR.MINOR.BUGFIX-PATCH
+			Changed back to semantic version because of Polymod...
 		**/
-		"version" => (DateTools.format(Date.now(), "%Y.%m.%d")),
+		"version" => "1.1.1",
 		
 		/**
 			Name of the company, or developer
@@ -76,7 +76,7 @@ class Project extends HXProject {
 			Sys.command("chcp", ["65001"]);
 			Sys.command("cls");
 		}
-		Language.load();
+		LNG.load();
 		
 		setenv("PROJECT_BUILD", (isDebug() ? "debug" : isFinal() ? "final" : "release"));
 
@@ -117,9 +117,9 @@ class Project extends HXProject {
 		echo("");
 		echo('${GAME.get("title")} v${GAME.get("version")}');
 		echo("-----------------------------------------");
-		dotPad(Language.translate("project_Company"), this.meta.company, 24, false);
-		dotPad(Language.translate("project_Package"), this.meta.packageName, 24, false);
-		dotPad(Language.translate("project_AppFile"), this.app.file, 24, false);
+		dotPad(LNG.translate("project_Company"), this.meta.company, 24, false);
+		dotPad(LNG.translate("project_Package"), this.meta.packageName, 24, false);
+		dotPad(LNG.translate("project_AppFile"), this.app.file, 24, false);
 		echo("-----------------------------------------");
 		
 		includeAssets("assets/default",	null, null, EXCLUDE_ASSETS);
@@ -151,12 +151,12 @@ class Project extends HXProject {
 		addHaxelib("firetongue", true); // Do NOT disable this, or all texts will not load
 
 		/*
-		--------------------
-			QUICK NOTICE
-		--------------------
-		I am only using HXCPP from The Funkin' Crew because the installation for Android
-		breaks when searching for CLANG++, until I fix that in the project, I maintain it
-		on the list.
+			--------------------
+				QUICK NOTICE
+			--------------------
+			I am only using HXCPP from The Funkin' Crew because the installation for Android
+			breaks when searching for CLANG++, until I fix that in the project, I maintain it
+			on the list.
 		*/
 		
 		// Android configs
@@ -164,7 +164,6 @@ class Project extends HXProject {
 			addHaxelib("extension-androidtools");
 
 			config.set("android.minimum-sdk-version", 29); // 10 - Q
-			config.set("android.target-sdk-version", 35); // 15 - Vanilla Ice Cream
 			
 			if (PLATFORM_SETTINGS.android.localizedStrings) {
 				// Change game name to a translatable string
@@ -211,7 +210,7 @@ class Project extends HXProject {
 
 			if (PLATFORM_SETTINGS.android.icons.adaptive) {
 				config.set("android.activity", {"android:icon": "@mipmap/ic_launcher"});
-				config.set("android.application", {"android:icon": "@string/app_name"});
+				config.set("android.application", {"android:icon": "@mipmap/ic_launcher"});
 			}
 			else {
 				addIcon("icon", "png", [36], true);
@@ -333,7 +332,7 @@ class Project extends HXProject {
 		if (size != null && appendSizeToName) path += '$size';
 		path += '.$format';
 		
-		echo(Language.translate("project_Icon_message", [path, (size != null ? '${size.join("x")}' : Language.translate("project_Icon_placeholder"))]), true); // A null size is a placeholder for all sizes
+		echo(LNG.translate("project_Icon_message", [path, (size != null ? '${size.join("x")}' : LNG.translate("project_Icon_placeholder"))]), true); // A null size is a placeholder for all sizes
 		
 		this.icons.push(new Icon(path, size[0] ?? null, size[1] ?? null));
 	}
@@ -363,7 +362,7 @@ class Project extends HXProject {
 		@return Bool
 	**/
 	inline public static function isNull(string:Null<String>):Bool
-		return (string == null || string.trim().length <= 0);
+		return (string == null || string.trim()?.length <= 0);
 }
 
 /**
@@ -382,7 +381,7 @@ enum abstract FeatureFlags(String) from String to String {
 		}
 		else {
 			if (has(project)) {
-				project.echo(Language.translate("feature_Disabled", [this]));
+				project.echo(LNG.translate("feature_Disabled", [this]));
 				project.haxedefs.remove(this);
 			}
 			// Nothing

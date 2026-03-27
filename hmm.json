@@ -50,8 +50,10 @@
     },
     {
       "name": "lime",
-      "type": "haxelib",
-      "version": null
+      "type": "git",
+      "dir": null,
+      "ref": "89cef3a2283e364e3ec175d567beb3e6ff2adfbe",
+      "url": "https://github.com/FunkinCrew/lime.git"
     },
     {
       "name": "openfl",

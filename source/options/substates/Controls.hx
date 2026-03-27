@@ -153,9 +153,12 @@ class Controls extends SubStateManager {
 		captureBind = b;
 		dim.visible = true;
 		prompt.visible = true;
-		prompt.text = (currentDevice == DeviceType.KEYBOARD)
-			? Locale.getString("keybind_change", "options", [InputFormatter.getKeyName(FlxKey.ESCAPE), InputFormatter.getKeyName(FlxKey.DELETE)])
-			: Locale.getString("keybind_change_gamepad", "options", [InputFormatter.getGamepadName(FlxGamepadInputID.B), InputFormatter.getGamepadName(FlxGamepadInputID.BACK)]);
+		prompt.text = (currentDevice == DeviceType.KEYBOARD) ? Locale.getString("keybind_change", "options")
+			: Locale.getString("keybind_change_gamepad", "options");
+		prompt.text += Locale.getString("keybind_actions", "options", [
+			(currentDevice == DeviceType.KEYBOARD) ? InputFormatter.getKeyName(FlxKey.ESCAPE) : InputFormatter.getGamepadName(FlxGamepadInputID.B),
+			(currentDevice == DeviceType.KEYBOARD) ? InputFormatter.getKeyName(FlxKey.DELETE) : InputFormatter.getGamepadName(FlxGamepadInputID.BACK)
+		]);
 	}
 
 	function endCapture() {

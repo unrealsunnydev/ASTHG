@@ -39,7 +39,7 @@ on:
         description: "Select which OS runner to use for the build."
         type: choice
         required: true
-        default: "ubuntu-latest"
+        default: "windows-latest"
         options:
           - ubuntu-latest
           - macos-latest

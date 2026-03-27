@@ -92,17 +92,14 @@ class SaveSelect extends StateManager {
 	override function update(e:Float) {
 		super.update(e);
 
-		if (controls.ACCEPT) {
+		if (controls.ACCEPT)
 			LoadingState.switchStates(new states.PlayState(), true);
-		}
 
-		if (controls.BACK) {
+		if (controls.BACK)
 			StateManager.switchState(new states.MainMenu());
-		}
 
-		if (controls.justPressed('left') || controls.justPressed('right')) {
+		if (controls.justPressed('left') || controls.justPressed('right'))
 			changeSelection(controls.justPressed('left') ? -1 : 1);
-		}
 	}
 
 	function changeSelection(count:Int = 0) {
@@ -110,7 +107,7 @@ class SaveSelect extends StateManager {
 
 		var member = cast saveGroup.members[curSelected];
 		if (member == null) {
-			trace("[WARNING] member is null!");
+			trace("member is null!".warn());
 			return;
 		}
 

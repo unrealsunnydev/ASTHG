@@ -20,10 +20,8 @@ class Locale {
 	inline public static function getString(key:String, context:String = "data", ?values:Array<Dynamic> = null):String {
 		var str:String = Main.tongue.get(formatKey(key), context, true);
 
-		if (values != null) {
-			for (num => value in values)
-				str = str.replace('<${num}>', Std.string(value));
-		}
+		if (values != null)
+			str.format(values);
 
 		return str;
 	}

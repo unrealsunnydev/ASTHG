@@ -1,0 +1,7 @@
+flag	content
+cache_on_gpu	Cache na GPU
+cache_on_gpu_desc	Isso faz o jogo criar caches na GPU (óbvio).<N>Desative se sua placa gráfica é ruim.
+discord_rich_presence	Presença Rica Discord
+discord_rich_presence_desc	Determina quando o jogo deve mostrar seu status em seu perfil do Discord
+haptics	Vibrações
+haptics_desc	Faz seu dispositivo vibrar dependendo do conteúdo em jogo.

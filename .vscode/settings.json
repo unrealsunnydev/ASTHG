@@ -5,7 +5,6 @@
 	},
 	"files.exclude": {
 		"**/.discord": true,
-		"**/.vscode": true
 	},
 	"json.schemas": [
 		{
@@ -57,5 +56,13 @@
 			"name": "windows",
 			"enabled": true
 		}
+	],
+	"haxe.exclude": [
+		"_project",
+		"docs",
+		"export/translations",
+		"export/resources",
+		"export/icons",
+		"export/build",
 	]
 }

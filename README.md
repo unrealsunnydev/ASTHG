@@ -30,8 +30,8 @@ Check [Modding Docs][docs_modding_readme]
 [docs_modding_readme]: docs/modding/README.md
 
 <!-- Links -->
-[haxe]: https://haxe.org/download/version/4.3.2/
+[haxe]: <https://haxe.org/download/version/4.3.2/> "Haxe Website"
 
-[psych_engine]: <https://github.com/ShadowMario/FNF-PsychEngine/> "PsychEngine Github repository"
+[psych_engine]: <https://github.com/ShadowMario/FNF-PsychEngine/> "PsychEngine GitHub repository"
 [team_forever]: <https://www.youtube.com/@teamforeverdev> "TeamForever's Youtube Account"
 [sonic2absolute]: <https://teamforeveronline.wixsite.com/home/sonic-2-absolute> "Sonic 2 Absolute official page"

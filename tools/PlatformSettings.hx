@@ -27,7 +27,7 @@ typedef AndroidSettings_Icons = {
 
 	/**
 		A circular version of the icon for devices that use round icons
-		OPTIONAL if you are using Adaptive icons
+		If you are using Adaptive icons, is `optional`, but I recommend disabling this since you may don't need it.
 	**/
 	?hasRound:Bool
 }

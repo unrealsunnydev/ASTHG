@@ -2,7 +2,7 @@
 
 ## Introduction
 
-So, planning to translate the game? That’s great! Translation with `firetongue` is powerful — you can not only translate texts and use different fonts, but also swap files if needed.
+So, planning to translate the game? That 's great! Translation with `firetongue` is powerful 'n you can not only translate texts but use different fonts, and also, swap files if needed.
 
 ## How to Use
 
@@ -20,7 +20,7 @@ CSV:
 "MY_TEXT","This is my text."
 ```
 
-Before adding any file, you need to edit [index.xml](../../../assets/locales/index.xml). This is the main file where you define how many languages the game supports, notes, which files to use, etc. Basically, it’s the core of the localization system.
+Before adding any file, you need to edit [index.xml](../../../assets/locales/index.xml). This is the main file where you define how many languages the game supports, notes, which files to use, etc. Basically, it's the core of the localization system.
 
 Syntax of `index.xml`:
 ```xml
@@ -58,7 +58,7 @@ Syntax of `index.xml`:
 
 ## Formatting
 
-Some text formatting like `\n` for line breaks won’t work here. You need to use FireTongue’s own formatters:
+Some text formatting like `\n` for line breaks won 't work here. You need to use FireTongue's own formatters:
 
 | Formatter | In FireTongue | Description       |
 |:---------:|:-------------:|:-----------------:|
@@ -66,8 +66,8 @@ Some text formatting like `\n` for line breaks won’t work here. You need to us
 | `\t`      | `<T>`         | Tabulation        |
 | `,`       | `<C>`         | Comma             |
 | `"`       | `<Q>`         | Quote             |
-| “         | `<LQ>`        | Fancy Left Quote  |
-| ”         | `<RQ>`        | Fancy Right Quote |
+| `“`       | `<LQ>`        | Fancy Left Quote  |
+| `”`       | `<RQ>`        | Fancy Right Quote |
 
 This implementation prevents parsing errors and ensures texts display correctly.
 
@@ -91,11 +91,11 @@ They only work if `values` is not empty or `null`. Otherwise, they will appear u
 
 ## Replacing Files and Fonts
 
-Replacing fonts and files hasn’t been fully tested yet, but it can still be used.
+Replacing fonts and files hasn 't been fully tested yet, but it can still be used.
 
 To replace files, use the code below
 ```haxe
-Locale.getFile(key:String, ?extension:String = ““):String
+Locale.getFile(key:String, ?extension:String = ""):String
 ```
 
 ### Code parameters

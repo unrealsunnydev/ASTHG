@@ -2,9 +2,8 @@ package backend;
 
 import flixel.FlxState;
 
-class StateManager extends FlxState
-{
-	public var controls(get, never):Controls;
+class StateManager extends FlxState { 
+public var controls(get, never):Controls;
 	private function get_controls() {
 		return Controls.instance;
 	}

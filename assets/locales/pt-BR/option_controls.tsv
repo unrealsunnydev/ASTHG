@@ -1,0 +1,21 @@
+flag	content
+keybind_change	Pressione uma tecla
+keybind_change_gamepad	Pressione um botão
+keybind_actions	<N><N><1>: Cancel bind<N><2>: Delete bind
+keybind_tab	Pressione <1> para trocar de seções.
+keybind_tab_gamepad	Pressione <1>/<2> para trocar de seções.
+keybind_keyboard	TECLADO
+keybind_gamepad	CONTROLE
+controls_rebinding	Binding: <1>
+key_up	Mover para Cima
+key_left	Mover à Esquerda
+key_down	Mover para Baixo
+key_right	Mover à Esquerda
+key_accept	Aceitar / Confirmar
+key_back	Voltar / Cancelar
+key_jump	Pular
+key_pause	Pausar
+key_auxiliar	Ação Auxiliar
+key_volume_up	Aumentar Volume
+key_volume_down	Diminuir Volume
+key_volume_mute	Silenciar

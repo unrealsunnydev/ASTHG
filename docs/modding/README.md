@@ -31,4 +31,4 @@ Mods use a `mod.json` file for metadata, if it doesn't exists, the game will use
 - `description`: Describes what your mod do!
 - `contributors`: List of who contribute on the mod!
   - `name`: Name of the contributor (includes you!)
-- `mod_version`: Version of your mod ("MAJOR, MINOR, PATCH");
+- `mod_version`: Semantic Version of your mod ("MAJOR, MINOR, PATCH");

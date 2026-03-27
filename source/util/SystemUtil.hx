@@ -1,12 +1,18 @@
 package util;
 
 class SystemUtil {
-	inline public static function openFolder(folder:String, absolute:Bool = false) {
+	inline public static function openFolder(folder:String, ?absolute:Null<Bool> = false) {
 		#if sys
 		if(!absolute) folder =  Sys.getCwd() + folder;
 
+		#if windows
 		folder = folder.replace('/', '\\');
+		#else
+		folder = folder.replace('\\', '/');
+		#end
+
 		if(folder.endsWith('/')) folder.substr(0, folder.length - 1); 
+		
 
 		var command:String = "";
 		#if linux
@@ -17,7 +23,7 @@ class SystemUtil {
 
 		#if (windows || linux)
 		Sys.command(command, [folder]);
-		trace('[openFolder] $command $folder');
+		trace('[openFolder] Command $command', 'Folder $folder');
 		#end
 
 		#else
@@ -33,13 +39,13 @@ class SystemUtil {
 		#end
 	}
 
-	@:privateAccess()
-	private static var _accent:FlxColor = FlxColor.WHITE;
+	@:privateAccess() private static var _accent:FlxColor = FlxColor.WHITE;
+
 	public static var ACCENT_COLOR(get, set):FlxColor;
 	inline public static function loadAccentColor():Null<FlxColor> {
-		trace("Loading accent colors...");
+		trace("Loading accent colors...".info());
 
-		#if (windows && !winjs && !winrt) // Is Windows and not Web-targets
+		#if (windows && !winjs) // Is Windows and not Web-targets
 
 		/*
 			Run a PowerShell script converted to Int64
@@ -50,7 +56,7 @@ class SystemUtil {
 		var accent = Std.int(Std.parseFloat(p.stdout.readLine()));
 		p.close();
 		
-		trace("Loaded!");
+		trace("Loaded!".info());
 		// Haxe reads this as an FLOAT, not INT
 		return accent;
 		#else // I don't know how accent colors works on other systems...

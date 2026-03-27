@@ -14,6 +14,13 @@ class Option {
 	public var child:AsthgText;
 	public var text(get, set):Null<String>;
 
+	/**
+		Creates a new option
+		@param flag Translatable key (Not the text!)
+		@param saveVar Variable name to identify your option
+		@param type Type: `BOOL, STRING, INT, FLOAT`
+		@param options Options per type, `BOOL` doesn't need that.
+	**/
 	inline public function new(flag:String = "", saveVar:String = "", ?type:OptionType = OptionType.BOOL, ?options:OptionSettings) {
 		_name = flag;
 

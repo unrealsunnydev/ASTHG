@@ -1,0 +1,1 @@
+I recommend using icon.kitchen (Not Android Asset Studio!) or Android Studio (built project) before exporting it

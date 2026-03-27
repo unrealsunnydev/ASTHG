@@ -164,7 +164,7 @@ class PlayState extends StateManager {
 	}
 
 	function openPauseMenu() {
-			FlxG.sound.music?.pause();
+		FlxG.sound.music?.pause();
 
 		openSubState(new substates.Pause());
 	}

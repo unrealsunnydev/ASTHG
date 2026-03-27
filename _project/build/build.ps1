@@ -81,6 +81,7 @@ if ($Action -in @("build")) {
 			"export/$BuildType/android/bin/app/build/outputs/apk" # It's a long path! Dontcha think? (More than Machintosh lol)
 		}
 	}
-}
 
-Start-Process (if ($IsWindows) { "explorer" } elseif ($IsLinux) { "xdg-open" } elseif ($IsMacOS) { "open" }) -ArgumentList $expPath
+	$openCMD = if ($IsWindows) { "explorer" } elseif ($IsLinux) { "xdg-open" } elseif ($IsMacOS) { "open" }
+	Start-Process $openCMD -ArgumentList (Get-Location) + $expPath
+}

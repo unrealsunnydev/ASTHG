@@ -7,6 +7,8 @@ import lime.utils.Assets as LimeAssets;
 
 class CoolUtil {
 	/**
+		[source-code](https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/backend/CoolUtil.hx#L161)
+
 		Helper Function to Fix Save Files for Flixel 5
 
 		-- EDIT: [November 29, 2023] --
@@ -18,9 +20,7 @@ class CoolUtil {
 	@:access(flixel.util.FlxSave.validate)
 	inline public static function getSavePath():String {
 		final company:String = getProjectInfo('company');
-		// #if (flixel < "5.0.0") return company; #else
 		return '$company/${flixel.util.FlxSave.validate(getProjectInfo('file'))}';
-		// #end
 	}
 
 	public static function getProjectInfo(metaIndex:String) {
@@ -34,9 +34,7 @@ class CoolUtil {
 		@return Float
 	**/
 	inline public static function getSampleLoop(sample:Int, ?hz:Int = 44100):Float {
-		var loop:Float = sample*1000;
-		//trace('[getSampleLoop] Sample is ${loop/hz}');
-		return loop/hz;
+		return (sample * 1000) / hz;
 	}
 	
 	/**
@@ -56,10 +54,11 @@ class CoolUtil {
 		@return Null<Bool> (Bool->false if invalid value)
 	**/
 	public static function parseBool(k:String):Bool {
-		if (k == 'true') return true;
-		else if (k == 'false') return false;
-
-		return false;
+		return switch (k) {
+			case 'true': true;
+			case 'false': false;
+			default: false;
+		}
 	}
 
 	public static var musJson:Dynamic;
@@ -80,8 +79,8 @@ class CoolUtil {
 			trace('[playMusic] No metadata found for music "$sound".');
 			musJson = {
 				name: sound,
-				artist: "Unknown",
-				album: "Unknown",
+				artist: "Unknown (No Metadata)",
+				album: "Unknown (No Metadata)",
 
 				loop: false,
 				loopStart: 0

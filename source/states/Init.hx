@@ -8,7 +8,7 @@ class Init extends StateManager {
 	public static var volumeUpKeys:Array<FlxKey> = [FlxKey.NUMPADPLUS];
 
 	override public function create() {
-		trace('Init created');
+		trace('Init created'.info());
 
 		FlxG.fixedTimestep = false;
 		FlxG.game.focusLostFramerate = 60;

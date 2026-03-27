@@ -12,6 +12,10 @@ class Main extends Sprite {
 	public function new() {
 		super();
 
+		#if android
+		Sys.setCwd(haxe.io.Path.addTrailingSlash(extension.androidtools.content.Context.getExternalFilesDir())); // stupid android 16
+		#end
+
 		Controls.instance = new Controls();
 		ClientPrefs.loadDefaultKeys();
 				
@@ -44,7 +48,7 @@ class Main extends Sprite {
 			
 		var msg:String = "Error!\n";
 		
-		msg += e.error + "\n\nReport this in Github: https://github.com/sunkydunky31/ASTHG/issues";
+		msg += e.error + "\n\nReport this in Github: https://github.com/unrealsunnydev/ASTHG/issues";
 
 		#if sys
 		if (!sys.FileSystem.exists(folderPath))
