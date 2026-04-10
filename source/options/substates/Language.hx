@@ -25,7 +25,7 @@ class Language extends SubStateManager {
 	public function new() {
 		super();
 
-		var bg = new AsthgSprite().createGraphic(FlxG.width, FlxG.height, 0x50000000);
+		var bg = new AsthgSprite().createGraphic(FlxG.width, FlxG.height, 0x60000000);
 		bg.screenCenter();
 		add(bg);
 		add(grpLanguages);
@@ -33,24 +33,30 @@ class Language extends SubStateManager {
 		languages = Main.tongue.locales;
 		for (num => str in languages) {
 			// LanguageRegionNative breaks and I don't know why
-			var LangRegionNative = Main.tongue.getIndexString(LanguageNative, languages[num]) + " (" + Main.tongue.getIndexString(RegionNative, languages[num]) + ")";
+			var LangRegionNative = Main.tongue.getIndexString(LanguageNative, languages[num])
+				+ " (" + Main.tongue.getIndexString(RegionNative, languages[num]) + ")";
+
 			var text:AsthgText = AsthgText.create(0, 300, LangRegionNative);
 			text.format(16, "center", FlxColor.WHITE);
 			text.ID = num;
+
 			if (languages?.length < 7) {
 				text.screenCenter(Y);
 				text.y += (20 * (num - (languages?.length / 2))) + text?.size;
 			}
+
 			text.screenCenter(X);
 			grpLanguages.add(text);
 		}
 
 		curSelected = languages.indexOf(ClientPrefs.data.language);
+
 		if(curSelected < 0) {
 			ClientPrefs.data.language = ClientPrefs.defaultData.language;
 			curSelected = Std.int(Math.max(0, languages.indexOf(ClientPrefs.data.language)));
 		}
-		changeSelected();
+
+		changeSelection();
 	}
 
 	var changedLanguage:Bool = false;
@@ -59,7 +65,7 @@ class Language extends SubStateManager {
 
 		var mult:Int = (FlxG.keys.pressed.SHIFT) ? 4 : 1;
 		if (controls.UP || controls.DOWN)
-			changeSelected((controls.UP ? -1 : 0) * mult);
+			changeSelection((controls.UP ? -1 : 0) * mult);
 
 		if (controls.BACK) {
 			if(changedLanguage) {
@@ -80,11 +86,12 @@ class Language extends SubStateManager {
 		}
 	}
 
-	function changeSelected(change:Int = 0) {
+	function changeSelection(change:Int = 0) {
 		curSelected = FlxMath.wrap(curSelected + change, 0, languages.length-1);
-		for (num => lang in grpLanguages) {
+
+		for (num => lang in grpLanguages)
 			lang.alpha = (num == curSelected) ? 1 : 0.6;
-		}
+
 		CoolUtil.playSound(ConstantSound.MENU_SCROLL);
 	}
 	#end

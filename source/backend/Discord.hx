@@ -1,3 +1,5 @@
+//@see https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/backend/Discord.hx
+
 package backend;
 
 #if (DISCORD_ALLOWED && cpp)

@@ -20,13 +20,13 @@ class Project extends HXProject {
 			Can be translated on android build (check below)
 		**/
 		"title" => "Unnamed Sonic Game",
-	
+
 		/**
 			Rule: MAJOR.MINOR.BUGFIX-PATCH
 			Changed back to semantic version because of Polymod...
 		**/
-		"version" => "1.1.1",
-		
+		"version" => "1.1.2",
+
 		/**
 			Name of the company, or developer
 		**/
@@ -54,7 +54,7 @@ class Project extends HXProject {
 		Assets like MP3/OGG are removed by platform
 	**/
 	static var EXCLUDE_ASSETS:Array<String> = ["*.aseprite"];
-	
+
 	static var PLATFORM_SETTINGS:PlatformSettings = {
 		android: {
 			icons: {
@@ -69,7 +69,7 @@ class Project extends HXProject {
 		}
 	};
 
-	
+
 	public function new() {
 		super();
 		if (isWindows() && isCPP()) {
@@ -77,7 +77,7 @@ class Project extends HXProject {
 			Sys.command("cls");
 		}
 		LNG.load();
-		
+
 		setenv("PROJECT_BUILD", (isDebug() ? "debug" : isFinal() ? "final" : "release"));
 
 		// You can remove this line if your haxe is installed in the default path
@@ -88,12 +88,12 @@ class Project extends HXProject {
 		this.meta.version = GAME.get("version");
 		this.meta.company = GAME.get("company");
 		this.meta.packageName = GAME.get("packageName").toLowerCase();
-		
+
 		this.app.file = GAME.get("file");
 		this.app.main = "Main";
 		this.app.preloader = "flixel.system.FlxPreloader";
 		this.app.path = "export/" + Sys.getEnv("PROJECT_BUILD");
-		
+
 		if (isTarget("mobile")) {
 			this.window.width = 0;
 			this.window.height = 0;
@@ -103,16 +103,16 @@ class Project extends HXProject {
 			this.window.width = 426;
 			this.window.height = 240;
 		}
-		
+
 		this.window.orientation = Orientation.LANDSCAPE;
 		this.window.fps = 60;
 		this.window.background = (isDebug() ? 0xFF00FF : 0x000000);
 		this.window.resizable = (isWeb() || isTarget("desktop")) ? true : false;
 		this.window.allowHighDPI = true;
-		
+
 		if (isWeb()) EXCLUDE_ASSETS.push("*.ogg");
 		else		 EXCLUDE_ASSETS.push("*.mp3");
-			
+
 
 		echo("");
 		echo('${GAME.get("title")} v${GAME.get("version")}');
@@ -121,7 +121,7 @@ class Project extends HXProject {
 		dotPad(LNG.translate("project_Package"), this.meta.packageName, 24, false);
 		dotPad(LNG.translate("project_AppFile"), this.app.file, 24, false);
 		echo("-----------------------------------------");
-		
+
 		includeAssets("assets/default",	null, null, EXCLUDE_ASSETS);
 		includeAssets("assets/fonts",	null);
 		includeAssets("assets/other",	null);
@@ -133,19 +133,19 @@ class Project extends HXProject {
 			includeAssets("_project/resources/windows", "");
 
 		sources.push("source");
-		
+
 		MODS_ALLOWED.set(this, true);
 		DISCORD_ALLOWED.set(this, false);
 		TRANSLATIONS_ALLOWED.set(this, true);
 		echo("-----------------------------------------", true);
-		
+
 		if (MODS_ALLOWED.has(this))
 			includeAssets("mods", null);
-			
+
 		// Adding Haxelibs
 		addHaxelib("flixel");
 		addHaxelib("flixel-addons");
-		
+
 		addHaxelib("hxdiscord_rpc", (isCPP() && DISCORD_ALLOWED.get(this)));
 		addHaxelib("polymod", MODS_ALLOWED.get(this));
 		addHaxelib("firetongue", true); // Do NOT disable this, or all texts will not load
@@ -158,34 +158,34 @@ class Project extends HXProject {
 			breaks when searching for CLANG++, until I fix that in the project, I maintain it
 			on the list.
 		*/
-		
+
 		// Android configs
 		if (isAndroid()) {
 			addHaxelib("extension-androidtools");
 
 			config.set("android.minimum-sdk-version", 29); // 10 - Q
-			
+
 			if (PLATFORM_SETTINGS.android.localizedStrings) {
 				// Change game name to a translatable string
 				config.set("android.application", {"android:label": "@string/app_name"});
 				config.set("android.activity",	  {"android:label": "@string/app_name"});
 			}
 		}
-		
+
 		if (!isDebug()) {
 			haxedefs.set("FLX_NO_DEBUG", null);
 			haxedefs.set("NAPE_RELEASE_BUILD", null);
 		}
-		
+
 		// Removes the Flixel "Lost Focus" screen
 		haxedefs.set("FLX_NO_FOCUS_LOST_SCREEN", null);
 		haxedefs.set("message.reporting", "pretty");
-		
+
 		// Configure PolyMod
 		if (MODS_ALLOWED.has(this)) {
 			if (isDebug())
 				this.haxedefs.set("POLYMOD_DEBUG", true);
-			
+
 			this.haxedefs.set("POLYMOD_API_VERSION_MATCH",	"NONE");
 			this.haxedefs.set("POLYMOD_MOD_METADATA_FILE",	"mod.json");
 			this.haxedefs.set("POLYMOD_MOD_PACK_FILE",		"modpack.txt");
@@ -194,8 +194,8 @@ class Project extends HXProject {
 			this.haxedefs.set("POLYMOD_SCRIPT_EXT",			".hxs");
 			this.haxedefs.set("POLYMOD_SCRIPT_LIBRARY",		"scripts");
 		}
-		
-		
+
+
 		if (isAndroid() && PLATFORM_SETTINGS.android.icons.adaptive) {
 			/*
 				------------
@@ -211,6 +211,7 @@ class Project extends HXProject {
 			if (PLATFORM_SETTINGS.android.icons.adaptive) {
 				config.set("android.activity", {"android:icon": "@mipmap/ic_launcher"});
 				config.set("android.application", {"android:icon": "@mipmap/ic_launcher"});
+			//	adaptiveIcon = new AdaptiveIcon('_project/templates/android/template/app/src/main/res', true);
 			}
 			else {
 				addIcon("icon", "png", [36], true);
@@ -225,11 +226,10 @@ class Project extends HXProject {
 
 				if (PLATFORM_SETTINGS.android.icons.hasRound)
 					config.set("android.activity", {"android:roundIcon": "@mipmap/ic_launcher_round"});
-			}	
+			}
 		}
 		else {
 			addIcon("icon", "png", [8], true);
-			addIcon("icon", "png", [16], true);
 			addIcon("icon", "png", [16], true);
 			addIcon("icon", "png", [24], true);
 			addIcon("icon", "png", [32], true);
@@ -241,32 +241,31 @@ class Project extends HXProject {
 			addIcon("icon", "png", [256], true);
 			addIcon("icon", "png", [512], true);
 			addIcon("icon", "png", [768], true);
-			addIcon("icon", "svg"); // Main
 		}
 	}
-	
+
 	// Platform functions
-	
+
 	function isAndroid():Bool {
 		return (this.target == Platform.ANDROID && this.platformType == PlatformType.MOBILE); // Ignoring Android TVs lol
 	}
-	
+
 	function isIOS():Bool {
 		return (this.target == Platform.IOS && this.platformType == PlatformType.MOBILE);
 	}
-	
+
 	function isWindows():Bool {
 		return (this.target == Platform.WINDOWS && this.platformType == PlatformType.DESKTOP);
 	}
-	
+
 	function isLinux():Bool {
 		return (this.target == Platform.LINUX && this.platformType == PlatformType.DESKTOP);
 	}
-	
+
 	function isMacOS():Bool {
 		return (this.target == Platform.MAC && this.platformType == PlatformType.DESKTOP);
 	}
-	
+
 	function isCPP():Bool {
 		return (this.targetFlags.exists("cpp"));
 	}
@@ -274,7 +273,7 @@ class Project extends HXProject {
 	function isWeb():Bool {
 		return (this.platformType == PlatformType.WEB || this.target == Platform.HTML5 || this.target == "winjs");
 	}
-	
+
 	/**
 		Gets a bool if the project is runnning on the selected platform
 		@param key Platform target
@@ -288,12 +287,12 @@ class Project extends HXProject {
 			default: false;
 		}
 	}
-	
+
 	function isDebug():Bool { return this.debug; }
-	
+
 	function isFinal():Bool
 		return this.targetFlags.exists("final");
-		
+
 	function addHaxelib(name:String, ?condition:Null<Bool>, ?version:Null<String>) {
 		if (condition == null || condition == true) {
 			if (isNull(version))
@@ -304,7 +303,7 @@ class Project extends HXProject {
 		}
 		else { dotPad(name, false); }
 	}
-	
+
 	/**
 		Prints a text to the console
 		@param value The text to print
@@ -319,7 +318,7 @@ class Project extends HXProject {
 		}
 		else { return Sys.println(value); }
 	}
-	
+
 	/**
 		Adds an icon for the application.
 		@param name Filename of the icon
@@ -327,16 +326,21 @@ class Project extends HXProject {
 		@param size Icon size to append, `null` will use this icon for all sizes
 		@param appendSizeToName If true, the `size` argument will be added to the icon name, becoming `icon16.png` for example
 	**/
-	function addIcon(name:String, format:String = "png", ?size:Null<Array<Int>>, ?appendSizeToName:Null<Bool> = false) {
-		var path:String = "_project/icons/" + name;
-		if (size != null && appendSizeToName) path += '$size';
+	function addIcon(name:String, ?format:Null<String> = "png", ?size:Null<Array<Int>>, ?appendSizeToName:Null<Bool> = false) {
+		var path:String = '_project/icons/$name';
+		if (size != null && appendSizeToName) path += Std.string(size.join("x"));
 		path += '.$format';
-		
+
 		echo(LNG.translate("project_Icon_message", [path, (size != null ? '${size.join("x")}' : LNG.translate("project_Icon_placeholder"))]), true); // A null size is a placeholder for all sizes
-		
-		this.icons.push(new Icon(path, size[0] ?? null, size[1] ?? null));
+
+		if (size != null || size[0] != null || size[1] != null)
+			this.icons.push(new Icon(path, size[0], size[1]));
+		else {
+			echo("Size is null!");
+			this.icons.push(new Icon(path));
+		}
 	}
-	
+
 	/**
 		Prints a beauty log text like "My text......My value"
 		@param name Text on the Left
@@ -347,13 +351,13 @@ class Project extends HXProject {
 	public function dotPad(name:String, value:Dynamic, ?width:Int = 30, ?debug:Bool = true) {
 		var dots = width - name.length;
 		if (dots < 1) dots = 1;
-			
+
 		var padding = StringTools.lpad("", ".", dots);
-		
+
 		echo(name + padding + value, debug);
 	}
 
-	
+
 	/**
 		Checks if `string` is `null` or empty
 		*Copied from `util.StringUtil` class, importing it will cause a lot of exceptions around `package;`*
@@ -374,7 +378,7 @@ enum abstract FeatureFlags(String) from String to String {
 	var DISCORD_ALLOWED		 = "DISCORD_ALLOWED";
 	var TRANSLATIONS_ALLOWED = "TRANSLATIONS_ALLOWED";
 	//var VIDEOS_ALLOWED	 = "VIDEOS_ALLOWED";
-	
+
 	public function set(project:Project, ?enable:Bool = true) {
 		if (enable == true || enable == null) {
 			project.haxedefs.set(this, "");
@@ -388,7 +392,7 @@ enum abstract FeatureFlags(String) from String to String {
 		}
 		project.dotPad(this, enable != null ? '$enable' : 'false (fallback!)');
 	}
-	
+
 	public function get(project:Project):Bool {
 		if (has(project)) {
 			return (project.haxedefs.get(this) == "");
@@ -396,7 +400,7 @@ enum abstract FeatureFlags(String) from String to String {
 
 		return false;
 	}
-	
+
 	public function has(project:Project) {
 		return project.haxedefs.exists(this);
 	}

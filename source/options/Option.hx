@@ -1,3 +1,5 @@
+//@see https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/options/Option.hx
+
 package options;
 
 enum OptionType { BOOL; STRING; INT; FLOAT; }

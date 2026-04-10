@@ -35,14 +35,14 @@ class SaveSelect extends StateManager {
 		camFront.visible = true;
 		camFront.bgColor.alpha = 5;
 		FlxG.cameras.add(camFront, false);
-		
+
 		var bg:AsthgSprite = new AsthgSprite().createGraphic(FlxG.width, FlxG.height, 0xff4d4dff);
 		add(bg);
-		
+
 		var bgLayer:AsthgSprite = new AsthgSprite().createGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		bgLayer.alpha = ClientPrefs.data.backLayers;
 		add(bgLayer);
-		
+
 		var title:FlxBitmapText = new FlxBitmapText(FlxG.width/2, FlxG.height - 26, Locale.getString("title", "save_select"), Paths.getAngelCodeFont("GameOver"));
 		title.x -= title.width / 2;
 		add(title);
@@ -98,8 +98,8 @@ class SaveSelect extends StateManager {
 		if (controls.BACK)
 			StateManager.switchState(new states.MainMenu());
 
-		if (controls.justPressed('left') || controls.justPressed('right'))
-			changeSelection(controls.justPressed('left') ? -1 : 1);
+		if (controls.LEFT || controls.RIGHT)
+			changeSelection(controls.LEFT ? -1 : 1);
 	}
 
 	function changeSelection(count:Int = 0) {

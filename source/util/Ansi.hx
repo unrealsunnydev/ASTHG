@@ -1,3 +1,7 @@
+package util;
+
+using util.StringUtil;
+
 enum abstract AnsiList(String) to String {
 	var RESET              = "\x1b[0m";
 	var BOLD               = "\x1b[1m";
@@ -61,26 +65,29 @@ enum abstract AnsiList(String) to String {
 class Ansi {
 
 	public static function info(str:String):String
-		return apply(" INFO ", ansi.BG_CYAN) + str;
+		return ansiApply(" INFO ", AnsiList.BG_CYAN) + str;
 
 	public static function error(str:String):String
-		return apply(" ERROR ", ansi.BG_RED) + str;
+		return ansiApply(" ERROR ", AnsiList.BG_RED) + str;
 
 	public static function warn(str:String):String
-		return apply(" WARNING ", ansi.BG_YELLOW) + str;
+		return ansiApply(" WARNING ", AnsiList.BG_YELLOW) + str;
 
-	public static function apply(text:String, ansi:AnsiList, ?args:Null<Array<Dynamic>>):String {
+	public static function infoCustom(str:String, title:String, ?args:Null<Array<Dynamic>>):String
+		return ansiApply(' $title ', AnsiList.BG_TRUE_COLOR, args) + str;
+
+	public static function ansiApply(text:String, ansi:AnsiList, ?args:Null<Array<Dynamic>>):String {
 		var temp = '${ansi}$text';
 
 		if (args != null)
 			temp.format(args);
 		
-		temp += ansi.RESET;
+		temp += AnsiList.RESET;
 
 		//Prevents RESET appear more than 1 time
-		if (temp.indexOf(ansi.RESET) != -1)
-			temp = StringTools.replace(temp, ansi.RESET, "");
+		if (temp.indexOf(AnsiList.RESET) != -1)
+			temp = StringTools.replace(temp, AnsiList.RESET, "");
 
-		return temp + ansi.RESET;
+		return temp + AnsiList.RESET;
 	}
 }

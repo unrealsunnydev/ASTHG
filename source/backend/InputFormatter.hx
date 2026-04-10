@@ -1,3 +1,5 @@
+//@see https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/backend/InputFormatter.hx
+
 package backend;
 
 import openfl.display3D.textures.RectangleTexture;
@@ -176,6 +178,12 @@ class InputFormatter {
 		}
 	}
 
+	/**
+		Function to get a keybind/gamepad button name
+		@param k The control to get(e.g. `controls.UP`)
+		@return String
+		@author unreal.sunnydev
+	**/
 	public static function getControlNames(k:String):String {
 		var arr:Dynamic;
 		var b:Dynamic;

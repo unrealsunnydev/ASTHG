@@ -27,6 +27,7 @@
 	],
 	"animations": [
 		{ "name": "ANI_STOPPED", "loop": false, "offsets": [0, 0] },
+		{ "name": "ANI_WAITING", "loop": true, "offsets": [0, 0] },
 		{
 			"name": "ANI_CONTINUE_UP",
 			"loop": true,
@@ -61,14 +62,14 @@
 		{
 			"name": "ANI_BETA_DASH0",
 			"displayName": "BetaDash0",
-			"prefix": "ANI_BETA_DASH10",
+			"prefix": "ANI_BETA_DASH 10",
 			"loop": true,
 			"fps": 80
 		},
 		{
 			"name": "ANI_BETA_DASH1",
 			"displayName": "BetaDash1",
-			"prefix": "ANI_BETA_DASH20",
+			"prefix": "ANI_BETA_DASH 20",
 			"loop": true,
 			"fps": 128
 		},

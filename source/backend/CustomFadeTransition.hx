@@ -1,3 +1,5 @@
+//@see https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/backend/CustomFadeTransition.hx
+
 package backend;
 
 class CustomFadeTransition extends SubStateManager {

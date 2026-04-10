@@ -3,14 +3,14 @@ import polymod.Polymod;
 import polymod.Polymod.Framework;
 
 class Mods {
-	inline public static final MOD_ROOT:String = #if debug "../../../../" + #end "mods" ;
+	inline public static final MOD_ROOT:String = #if debug "../../../../" + #end "mods";
 	#if mac MOD_ROOT = '../../../$MOD_ROOT'; #end
 
 	public static var cachedMods:Array<ModMetadata> = null;
 
 	public static function loadMods(ids:Array<String>):Void {
 		trace((ids.length == 0) ? "Guess what? Loaded no mods!" : 'Woo! Loaded ${ids.length} mods!');
-		
+
 		Polymod.onError = getError;
 
 		Polymod.init({
@@ -30,12 +30,12 @@ class Mods {
 			modRoot: MOD_ROOT
 		});
 
-		return list; 
+		return list;
 	}
 
 	public static function getAllIds():Array<String> {
 		var dump:Array<String> = [for (i in getAll()) i.id];
-		return dump; 
+		return dump;
 	}
 
 	public static function getError(e:PolymodError):Void {

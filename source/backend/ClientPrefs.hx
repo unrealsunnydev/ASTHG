@@ -1,3 +1,5 @@
+//@see https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/backend/ClientPrefs.hx
+
 package backend;
 
 import flixel.input.gamepad.FlxGamepadInputID;
@@ -20,6 +22,7 @@ import states.Init;
 	public var framerate:Int = 60;
 	public var lowQuality:Bool = false;
 	public var showFPS:Bool = false;
+	public var shaders:Bool = #if shaders_supported true #else false #end; // TODO: If not supported, hide it on the options menu
 
 	// ----------- Gameplay ----------- //
 	public var autoPause:Bool = true;
@@ -36,24 +39,24 @@ class ClientPrefs {
 		'left'			=> [LEFT],
 		'down'			=> [DOWN],
 		'right'			=> [RIGHT],
-		
+
 		'accept'		=> [A],
 		'back'			=> [S],
 		'jump'			=> [D],
 		'auxiliar'		=> [W],
 		'pause'			=> [ENTER],
-		
+
 		'volume_mute'	=> [NUMPADZERO],
 		'volume_up'		=> [NUMPADPLUS],
 		'volume_down'	=> [NUMPADMINUS],
 	];
-	
+
 	public static var gamepadBinds:Map<String, Array<FlxGamepadInputID>> = [
 		'up'			=> [DPAD_UP],
 		'left'			=> [DPAD_LEFT],
 		'down'			=> [DPAD_DOWN],
 		'right'			=> [DPAD_RIGHT],
-		
+
 		'accept'		=> [A],
 		'jump'			=> [X],
 		'back'			=> [B],
@@ -133,7 +136,7 @@ class ClientPrefs {
 			FlxG.drawFramerate = data.framerate;
 			FlxG.updateFramerate = data.framerate;
 		}
-		
+
 		// flixel automatically saves your volume!
 		if(FlxG.save.data.volume != null)
 			FlxG.sound.volume = FlxG.save.data.volume;

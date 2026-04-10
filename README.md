@@ -22,6 +22,12 @@ Check [Modding Docs][docs_modding_readme]
 * Game Over font: [LoganMax0328](https://www.spriters-resource.com/profile/loganmax0328/) from [The Sprites Resource](https://www.spriters-resource.com/custom_edited/sonicthehedgehogcustoms/asset/222029/)
 * Game music and sounds: SEGA from Sonic Mania
 
+## About the Code used in this project
+
+**The code from Psych Engine is getting referenced times by times**, but theres parts that I coded myself.
+
+If you see something wrong in this project, **PLEASE, CONTACT ME!**
+
 <!-- My Discord link -->
 [sunnydev_discord]: <https://discordapp.com/users/525334699069931521> "Sunnydev's Discord profile"
 

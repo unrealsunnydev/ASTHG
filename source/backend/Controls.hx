@@ -1,3 +1,5 @@
+//@see https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/backend/Controls.hx
+
 package backend;
 
 import flixel.input.gamepad.FlxGamepadButton;
@@ -40,7 +42,6 @@ class Controls {
 		trace('Vibrating as Haptics (${Std.int(high)}', '$duration)');
 		return lime.ui.Haptic.vibrate(Std.int(high), duration);
 		#else
-		trace("Tried to vibrate a device, but platform is not compatible!");
 		return;
 		#end
 	}
@@ -95,24 +96,58 @@ class Controls {
 	}
 
 	public var UP(get, never):Bool;
+	public var UP_R(get, never):Bool;
+	public var UP_P(get, never):Bool;
 	public var DOWN(get, never):Bool;
+	public var DOWN_R(get, never):Bool;
+	public var DOWN_P(get, never):Bool;
 	public var LEFT(get, never):Bool;
+	public var LEFT_R(get, never):Bool;
+	public var LEFT_P(get, never):Bool;
 	public var RIGHT(get, never):Bool;
+	public var RIGHT_R(get, never):Bool;
+	public var RIGHT_P(get, never):Bool;
 
 	public var AUX(get, never):Bool;
+	public var AUX_R(get, never):Bool;
+	public var AUX_P(get, never):Bool;
 	public var JUMP(get, never):Bool;
+	public var JUMP_R(get, never):Bool;
+	public var JUMP_P(get, never):Bool;
 	public var BACK(get, never):Bool;
+	public var BACK_R(get, never):Bool;
+	public var BACK_P(get, never):Bool;
 	public var ACCEPT(get, never):Bool;
-	
-	private function get_UP()		return justPressed("up");
-	private function get_DOWN()		return justPressed("down");
-	private function get_LEFT()		return justPressed("left");
-	private function get_RIGHT()	return justPressed("right");
-	
-	private function get_AUX()		return justPressed("auxiliar");
-	private function get_JUMP()		return justPressed("jump");
-	private function get_BACK()		return justPressed("back");
-	private function get_ACCEPT()	return justPressed("accept");
+	public var ACCEPT_R(get, never):Bool;
+	public var ACCEPT_P(get, never):Bool;
+	public var PAUSE(get, never):Bool;
+
+	private function get_UP()       return justPressed("up");
+	private function get_UP_R()     return justReleased("up");
+	private function get_UP_P()     return pressed("up");
+	private function get_DOWN()     return justPressed("down");
+	private function get_DOWN_R()   return justReleased("down");
+	private function get_DOWN_P()   return pressed("down");
+	private function get_LEFT()     return justPressed("left");
+	private function get_LEFT_R()   return justReleased("left");
+	private function get_LEFT_P()   return pressed("left");
+	private function get_RIGHT()    return justPressed("right");
+	private function get_RIGHT_R()  return justReleased("right");
+	private function get_RIGHT_P()  return pressed("right");
+
+	private function get_AUX()      return justPressed("auxiliar");
+	private function get_AUX_R()    return justReleased("auxiliar");
+	private function get_AUX_P()    return pressed("auxiliar");
+	private function get_JUMP()     return justPressed("jump");
+	private function get_JUMP_R()   return justReleased("jump");
+	private function get_JUMP_P()   return pressed("jump");
+	private function get_BACK()     return justPressed("back");
+	private function get_BACK_R()   return justReleased("back");
+	private function get_BACK_P()   return pressed("back");
+	private function get_ACCEPT()   return justPressed("accept");
+	private function get_ACCEPT_R() return justReleased("accept");
+	private function get_ACCEPT_P() return pressed("accept");
+	private function get_PAUSE()   return justPressed("pause");
 
 	// IGNORE THESE
 	public static var instance:Controls;

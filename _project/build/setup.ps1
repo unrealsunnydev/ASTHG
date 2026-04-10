@@ -1,6 +1,31 @@
 #requires -PSEdition Core
 #requires -Version 7
 
+<#
+	.SYNOPSIS
+	Tool used for compiling the An Sonic the Hedgehog game
+
+	.PARAMETER StayOnMenu
+	If true, the script does not closes when it completes an action.
+	Options: y, yes, true, 1
+
+	.PARAMETER MenuOption
+	If set, automatically starts an option from the menu without choosing
+
+	Options: 0 to 5
+
+	.EXAMPLE
+	& setup.ps1 -MenuOption 0
+
+	& setup.ps1 -StayOnMenu yes
+
+	& setup.ps1 -StayOnMenu yes -MenuOption 3
+
+	.NOTES
+	Author: Sunnydev31 (@unreal.sunnydev)
+	Latest edition: 2026/03/29
+#>
+
 param(
 	[string]$StayOnMenu = "",
 	[int]$MenuOption = -1
@@ -40,6 +65,9 @@ $obj = @{ }
 <#
 	.DESCRIPTION
 	Function to get a setup configuration
+
+	.OUTPUTS
+	Object
 #>
 function Get-SetupConfig {
 	param([Parameter(Mandatory = $true)] [object]$Name)
@@ -56,6 +84,9 @@ function Get-SetupConfig {
 <#
 	.DESCRIPTION
 	Function to save a setup configuration
+
+	.OUTPUTS
+	Void
 #>
 function Set-SetupConfig {
 	param(
@@ -77,6 +108,9 @@ if (-not $HasHaxelib) { Write-Output ($Msg.NotHaxe) }
 <#
 	.DESCRIPTION
 	Function to start a Windows setup
+
+	.OUTPUTS
+	Void
 #>
 function Set-SetupWindows {
 	$filename = "vs_BuildTools.exe"
@@ -110,8 +144,11 @@ function Set-SetupWindows {
 	.DESCRIPTION
 	Function to start a Machintosh OS setup
 
-	.NOTE
+	.NOTES
 	This function are disabled by now
+
+	.OUTPUTS
+	Custom Exception
 #>
 function Set-SetupMacOS {
 	Write-Output ($Msg.NotAvailable)
@@ -163,7 +200,7 @@ function New-GameSetup {
 #>
 function Remove-GameSetup {
 	Write-Output $Msg.RemoveSetup.Dependencies
-	
+
 	<#
 		Search in config if setup has done or if ".haxelib" exists
 		If true, remove ALL dependencies
@@ -195,6 +232,7 @@ do {
 	Write-Output ""
 	Write-Debug ""
 	Write-Debug "CURRENT LOCATION: $(Get-Location)"
+	Write-Debug ""
 
 	$MenuOption = Read-Host ($Msg.Menu.Prompt -f 0, ($Msg["Menu"]["Options"].Count - 1))
 

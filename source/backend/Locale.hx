@@ -2,6 +2,8 @@ package backend;
 
 import firetongue.FireTongue;
 
+using util.StringUtil;
+
 /**
 	Handler for translating text and assets in the game
 

@@ -50,11 +50,11 @@ class Controls extends SubStateManager {
 
 	public function new() {
 		super();
-		
+
 		var bg:AsthgSprite = new AsthgSprite().createGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		bg.alpha = 0.6;
 		add(bg);
-		
+
 		var title:FlxBitmapText = new FlxBitmapText(FlxG.width/2, 8, Locale.getString("title_controls", "options"), Paths.getAngelCodeFont("Roco"));
 		title.x -= title.width/2;
 		add(title);
@@ -108,7 +108,7 @@ class Controls extends SubStateManager {
 		super.update(elapsed);
 
 		if (!capturing) {
-			if (controls.UP) { 
+			if (controls.UP) {
 				row = (row - 1 + binds.length) % binds.length;
 				updateSelection();
 				CoolUtil.playSound(ConstantSound.MENU_SCROLL);
@@ -118,13 +118,13 @@ class Controls extends SubStateManager {
 				updateSelection();
 				CoolUtil.playSound(ConstantSound.MENU_SCROLL);
 			}
-			if (controls.justPressed('left')) {
+			if (controls.LEFT) {
 				col = (col - 1 + 2) % 2;
 				updateSelection();
 				CoolUtil.playSound(ConstantSound.MENU_SCROLL);
 			}
-			if (controls.justPressed('right')) {
-				col = (col + 1) % 2; updateSelection(); 
+			if (controls.RIGHT) {
+				col = (col + 1) % 2; updateSelection();
 				CoolUtil.playSound(ConstantSound.MENU_SCROLL);
 			}
 
@@ -139,7 +139,7 @@ class Controls extends SubStateManager {
 				updateSelection();
 				CoolUtil.playSound(ConstantSound.MENU_ACCEPT);
 			}
-			
+
 			if (controls.BACK) close();
 		}
 		else {

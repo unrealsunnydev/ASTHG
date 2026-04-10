@@ -1,3 +1,9 @@
+/**
+	Sunnydev31 - 2026-03-27
+	You are allowed to use, modify and redistribute this code
+	But give credit where credit is due!
+**/
+
 package backend;
 
 class Constants {
@@ -18,6 +24,7 @@ class Constants {
 
 	// Characters
 	public static final PALETTE_OVERRIDE:Array<FlxColor> = [0xFF2020A0, 0xFF2040C0, 0xff4040E0, 0xff6060E0];
+	public static final LIFE_ICON:String = "Sonic/liveIcon";
 
 	// Save Select
 	public static final SAVE_ENTRY_LIMIT:Int = 7;
@@ -35,10 +42,15 @@ class Constants {
 	inline public static var VIDEO_EXT = "mp4";
 }
 
+/**
+	List of game sounds for easy management
+**/
 enum abstract ConstantSound(String) to String {
 	var MENU_ACCEPT = "MenuAccept";
 	var MENU_SCROLL = "MenuChange";
 	var MENU_BACK   = "MenuCancel";
 
 	var PLAYER_JUMP = "Jump";
+
+	var RING = "Jump";
 }

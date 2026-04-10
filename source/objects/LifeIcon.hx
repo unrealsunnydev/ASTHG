@@ -7,7 +7,7 @@
 package objects;
 
 class LifeIcon extends AsthgSprite {
-	
+
 	var charObj:Character;
 
 	public function new(char:String) {
@@ -16,7 +16,7 @@ class LifeIcon extends AsthgSprite {
 		charObj = states.PlayState.instance?.player;
 
 		init(char);
-		
+
 		applyPalette([
 			FlxColor.fromString(charObj.json?.palettes[charObj.curPalette][0]),
 			FlxColor.fromString(charObj.json?.palettes[charObj.curPalette][1]),
@@ -35,19 +35,22 @@ class LifeIcon extends AsthgSprite {
 		@param char Cur character
 	**/
 	public function init(char:String) {
-		var img = 'characters/${charObj.json.name}/liveIcon';
+		var charName = charObj.json.name, charIcon = charObj.json.liveIcon;
+
+		var img = 'characters/$charName/liveIcon';
+
 		var strike:Bool = Paths.fileExists('images/$img.png', IMAGE);
 
 		if (!strike) { // Strike 1: Char file not found -> Use JSON entry
 			trace("Not found! Searching with JSON entry");
-			img = "characters/" + charObj.json.name + "/" + charObj.json.liveIcon;
+			img = "characters/" + charName + "/" + charIcon;
 		}
-	
+
 		if (!strike) { //Strike 2: Char file with JSON name not found -> Use placeholder
 			trace("Not found again! Getting placeholder");
-			img = "characters/Sonic/liveIcon";
+			img = "characters/" + Constants.LIFE_ICON;
 		}
-	
+
 		if (!strike) { //Strike 3: Impossible to find files to use / Even fallback was not found
 			throw "Holy damn! WHAT DID YOU DO WITH YOUR ASSETS???????????";
 		}

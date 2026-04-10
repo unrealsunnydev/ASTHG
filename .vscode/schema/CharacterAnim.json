@@ -6,6 +6,7 @@
 	"properties": {
 		"name": {
 			"type": "string",
+			"title": "object.name",
 			"description": "Name of the animation"
 		},
 

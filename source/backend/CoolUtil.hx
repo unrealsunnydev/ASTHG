@@ -1,9 +1,6 @@
 package backend;
 
-import openfl.display.BitmapData;
 import flixel.sound.FlxSoundGroup;
-import openfl.utils.Assets;
-import lime.utils.Assets as LimeAssets;
 
 class CoolUtil {
 	/**

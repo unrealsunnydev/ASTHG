@@ -1,11 +1,11 @@
+//@see https://github.com/ShadowMario/FNF-PsychEngine/blob/main/source/backend/MusicBeatSubstate.hx
+
 package backend;
 
 import flixel.FlxSubState;
 
 class SubStateManager extends FlxSubState {
-	public function new() {
-		super();
-	}
+	public function new() super();
 
 	private var controls(get, never):Controls;
 

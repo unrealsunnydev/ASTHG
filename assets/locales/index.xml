@@ -23,5 +23,13 @@
 		<contributors value="Sunnydev31" />
 		<ui language="Language" region="Region" />
 		<label id="en-US,en-GB,en-CA" language="English" region="United States" />
+		<label id="pt-PT,pt-BR" language="Inglês" region="Estados Unidos" />
+	</locale>
+
+	<locale id="pt-BR" sort="1">
+		<contributors value="Sunnydev31" />
+		<ui language="Idioma" region="Região" />
+		<label id="en-US,en-GB,en-CA" language="Portuguese" region="Brazil" />
+		<label id="pt-PT,pt-BR" language="Português" region="Brasil" />
 	</locale>
 </data>

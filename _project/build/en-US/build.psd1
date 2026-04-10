@@ -16,8 +16,10 @@
 	)
 
 	Config = @{
-		"Platform" = "Platform: {0}"
+		"Platform"   = "Platform: .. {0}"
 		"BuildFlags" = "Build Flags: {0}"
-		"Is32Bits" = "32 Bits: {0}"
+		"Is32Bits"   = "32 Bits: ... {0}"
+		"Action"     = "Action: .... {0}"
+		"BuildType"  = "Build Type:  {0}"
 	}
 }

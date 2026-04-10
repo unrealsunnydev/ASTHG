@@ -26,10 +26,10 @@ else { Get-Command "haxelib" -ErrorAction Stop }
 
 # Start with default settings if not called on PowerShell terminal
 # CPP -> Windows / Linux / MacOS (depends on host)
-if ([string]::IsNullOrEmpty($Platform)) { $Platform	= if ($IsWindows -or $IsLinux -or $IsMacOS) { "cpp" } else { "hl" } }
-if ([string]::IsNullOrEmpty($Action)) { $Action = "build" }
+if ([string]::IsNullOrEmpty($Platform))  { $Platform  = if ($IsWindows -or $IsLinux -or $IsMacOS) { "cpp" } else { "hl" } }
+if ([string]::IsNullOrEmpty($Action))    { $Action    = "build" }
 if ([string]::IsNullOrEmpty($BuildType)) { $BuildType = "release" }
-if ([string]::IsNullOrEmpty($Is32Bits)) { $Is32Bits = "false" }
+if ([string]::IsNullOrEmpty($Is32Bits))  { $Is32Bits  = "false" }
 
 $Is32Bits = ($Is32Bits -in @("y", "yes", "true", "1"))
 
@@ -71,17 +71,3 @@ Write-Host ($Msg.BuildTexts["$Action"])
 & $haxelib @hxArgs
 
 Set-Pause
-
-if ($Action -in @("build")) {
-	$expPath = switch ($Platform) {
-		default {
-			"export/$BuildType/$(if ($IsWindows) { "windows" } elseif ($IsLinux -or $IsMacOS) { "neko" })/bin"
-		}
-		"android" {
-			"export/$BuildType/android/bin/app/build/outputs/apk" # It's a long path! Dontcha think? (More than Machintosh lol)
-		}
-	}
-
-	$openCMD = if ($IsWindows) { "explorer" } elseif ($IsLinux) { "xdg-open" } elseif ($IsMacOS) { "open" }
-	Start-Process $openCMD -ArgumentList (Get-Location) + $expPath
-}
