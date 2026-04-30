@@ -20,7 +20,7 @@ CSV:
 "MY_TEXT","This is my text."
 ```
 
-Before adding any file, you need to edit [index.xml](../../../assets/locales/index.xml). This is the main file where you define how many languages the game supports, notes, which files to use, etc. Basically, it's the core of the localization system.
+Before adding any file, you need to edit [index.xml][locales_index]. This is the main file where you define how many languages the game supports, notes, which files to use, etc. Basically, it's the core of the localization system.
 
 Syntax of `index.xml`:
 ```xml
@@ -32,7 +32,7 @@ Syntax of `index.xml`:
 
 	<file id="fonts" value="my_fonts.xml"/>
 
-	<locale id="en-US" is_default="true" sort="0">	
+	<locale id="en-US" is_default="true" sort="0">
 		<contributors value="Sunnydev31"/>
 		<ui language="Language" region="Region"/>
 		<label id="en-US" language="English" region="United States"/>
@@ -60,7 +60,7 @@ Syntax of `index.xml`:
 
 Some text formatting like `\n` for line breaks won 't work here. You need to use FireTongue's own formatters:
 
-| Formatter | In FireTongue | Description       |
+| Formatter | In FireTongue |    Description    |
 |:---------:|:-------------:|:-----------------:|
 | `\n`      | `<N>`         | Line Break        |
 | `\t`      | `<T>`         | Tabulation        |
@@ -80,7 +80,7 @@ Use this code:
 Locale.getString(flag:String, context:String, values:Array<Dynamic>):String
 ```
 - `flag`: Identifier used in translation files.
-- `context`: `id` defined in [index.xml](../../../assets/locales/index.xml).
+- `context`: `id` defined in [index.xml][locales_index].
 - `values`: Replaces any placeholder `<1>`, `<2>`… in ascending order.
 
 ## Replacing Texts
@@ -101,4 +101,8 @@ Locale.getFile(key:String, ?extension:String = ""):String
 ### Code parameters
  - `key`: Path to file (e.g. “images/myImage”)
  - `extension`: (OPTIONAL) File extension (e.g. “png“, “txt“)
-    - this adds a period (“.”) automatically 
+    - this adds a period (“.”) automatically
+
+
+<!-- Links -->
+[locales_index]: <../../../assets/locales/index.xml>

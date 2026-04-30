@@ -54,9 +54,15 @@ class Character extends AsthgSprite {
 			trace('Character not found, using default ($defaultPlayer)'.warn());
 		}
 
-		if (Reflect.hasField(json, "extraAnimations") && json.extraAnimations != null)
-			for (extra in json.extraAnimations)
-				addAnim(extra.name);
+		if (Reflect.hasField(json, "extraAnimations"))
+			for (extra in json.extraAnimations){
+				if (extra != null && !StringUtil.isNull(extra.name))
+					addAnim(extra.name);
+
+				trace("Found extra animation!");
+				trace("extra.name", "extra.displayName", "extra.prefix");
+				trace(extra.name, extra.displayName ?? "No Display Name", extra.prefix ?? "No Prefix?");
+			}
 
 		loadAnimations();
 		this.applyPalette([

@@ -3,6 +3,8 @@ package game;
 import states.PlayState;
 import objects.LifeIcon;
 
+import flixel.util.FlxStringUtil;
+
 /**
 	Dedicated class to handle the HUD, making PlayState more cleaner and easier to manage.
 
@@ -14,6 +16,21 @@ class HudGame extends AsthgSprite {
 	public static var instance:HudGame;
 
 	/**
+		"Layering" value for the HUD, used to make the HUD elements go over/under the rest of other elements
+		in game.
+
+		--- DEFAULT OPTIONS ---
+		"Score, Time, Rings" text: Z_INDEX + 1
+		"Score, Time, Rings" text values: Z_INDEX + 2
+		"X, Y" player position text: Z_INDEX + 1
+		"X, Y" player position text values: Z_INDEX + 2
+		Live icons and text value: Z_INDEX + 3
+
+		Z_INDEX value: 0xE000
+	**/
+	public static final Z_INDEX:Int = 0xE000;
+
+	/**
 		Stores the player score, actually this follows the Sonic 3 & Knuckles system
 		Where the score is multiplied by 10.
 	**/
@@ -22,12 +39,7 @@ class HudGame extends AsthgSprite {
 	/**
 		Stores the current stage time, actually this is unused.
 	**/
-	public var time:String = "0:00";
-
-	/**
-		what.
-	**/
-	public var timeVal:Float = 0;
+	public var time:Float = 0;
 
 	/**
 		Stores the P1 rings, actually this is unused... Or not?...
@@ -71,7 +83,6 @@ class HudGame extends AsthgSprite {
 	public var scoreValTxt:FlxBitmapText;
 	public var timeValTxt:FlxBitmapText;
 	public var ringsValTxt:FlxBitmapText;
-	public var livesValTxt:FlxBitmapText;
 
 	// --- DEBUG ONLY --- //
 
@@ -94,24 +105,29 @@ class HudGame extends AsthgSprite {
 	public var livesIcon:LifeIcon;
 
 	/**
-		Cronstructor for the HUD, remind to use a instance variable!
+		Cronstructor for the HUD, remember to use a instance variable!
 		@param x HUD Horizontal position, DEBUG sprites doesn't follow this.
 		@param y HUD Vertical position, Life sprites doesn't follow this.
+		@author Sunnydev31 (@unreal.sunnydev)
 	**/
 	public function new(x:Float, y:Float) {
 		super(x, y);
 		instance = this;
 
 		createScoreHud(x, y);
-		createTimeHud(x, y);
+		createTimeHud (x, y);
 		createRingsHud(x, y);
-
 		createLivesHud(x, FlxG.height - 26);
-
 		createDebugHud(FlxG.width - 60, y);
 	}
 
-	public dynamic function createScoreHud(?x:Float = 0, ?y:Float = 0) {
+	/**
+		Creates the lives HUD element (Live counter and icon)
+		@param x
+		@param y
+		@author Sunnydev31 (@unreal.sunnydev)
+	**/
+	public dynamic function createScoreHud(?x:Float = 0, ?y:Float = 0):Void {
 		scoreTxt = new FlxBitmapText(x, y, Locale.getString("hud_text_score"), Paths.getAngelCodeFont("HUD"));
 		scoreTxt.scrollFactor.set();
 
@@ -147,6 +163,24 @@ class HudGame extends AsthgSprite {
 		PlayState.instance.uiGroup.add(ringsValTxt);
 	}
 
+	/**
+		Creates the lives HUD element (Live counter and icon)
+
+		@param x Horizontal position on screen, default is 0
+		@param y Vertical position on screen, default is 0
+		@author Sunnydev31 (@unreal.sunnydev)
+	**/
+	public dynamic function createLivesHud(?x:Float = 0, ?y:Float = 0) {
+		livesIcon = new LifeIcon(PlayState.instance.player.lifeIcon);
+		livesIcon.setPosition(x, y);
+
+		livesTxt = new FlxBitmapText(livesIcon.x + livesIcon.frameWidth + 1, livesIcon.y + 3, 'livesTxt', Paths.getAngelCodeFont("HUD"));
+		livesTxt.scrollFactor.set();
+
+		PlayState.instance.uiGroup.add(livesIcon);
+		PlayState.instance.uiGroup.add(livesTxt);
+	}
+
 	public dynamic function createDebugHud(?x:Float = 0, ?y:Float = 0) {
 		#if debug
 		posX = AsthgSprite.create(x, y, "HUD/posX");
@@ -165,31 +199,16 @@ class HudGame extends AsthgSprite {
 		#end
 	}
 
-	/**
-		Creates the lives HUD element (Live counter and icon)
-
-		@param x Horizontal position on screen, default is 0
-		@param y Vertical position on screen, default is 0
-	**/
-	public dynamic function createLivesHud(?x:Float = 0, ?y:Float = 0) {
-		livesIcon = new LifeIcon(PlayState.instance.player.lifeIcon);
-		livesIcon.setPosition(x, y);
-
-		livesTxt = new FlxBitmapText(livesIcon.x + livesIcon.frameWidth + 1, livesIcon.y + 3, 'livesTxt', Paths.getAngelCodeFont("HUD"));
-		livesTxt.scrollFactor.set();
-
-		PlayState.instance.uiGroup.add(livesIcon);
-		PlayState.instance.uiGroup.add(livesTxt);
-	}
-
 	override public function update(e:Float) {
 		rings = Std.int(FlxMath.wrap(rings, 0, 999));
 		lives = Std.int(FlxMath.wrap(lives, 0, 99));
 
-		scoreTxt.text = Std.string(score);
-		timeTxt.text = Std.string(time);
+		scoreTxt.text = Std.string(score * 10);
+		timeTxt.text = FlxStringUtil.formatTime(time);
 		ringsTxt.text = Std.string(rings);
 		livesTxt.text = Std.string(lives);
+
+		timeTxt.color = (time >= 540) ? FlxColor.RED : FlxColor.WHITE; // 9 Minutes, display the time in red
 
 		#if debug
 		posXTxt.text = StringTools.hex(Std.int(PlayState.instance.player.x), 6);

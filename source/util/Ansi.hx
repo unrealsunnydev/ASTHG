@@ -81,13 +81,13 @@ class Ansi {
 
 		if (args != null)
 			temp.format(args);
-		
+
 		temp += AnsiList.RESET;
 
 		//Prevents RESET appear more than 1 time
 		if (temp.indexOf(AnsiList.RESET) != -1)
 			temp = StringTools.replace(temp, AnsiList.RESET, "");
 
-		return temp + AnsiList.RESET;
+		return temp + AnsiList.RESET + ' ';
 	}
 }

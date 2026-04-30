@@ -29,11 +29,12 @@ There's 2 ways on how to use the build script:
 
 1. Open PowerShell (Core) terminal
 2. Navigate to the `build` folder (`Set-Location "[your_project_path]/ASTHG"`)
-3. Call the script with `. ".\_project\build\build.ps1"`, you can add arguments if needed (it overrides the config file settings)  
+3. Call the script with `. ".\_project\build\build.ps1"`, you can add arguments if needed (it overrides the config file settings)
    Arguments:
 
 -   `Platform`: Target platform, Default: `windows`/`linux`/`mac` or Hashlink (`hl`)
 -   `Action`: Build action (second argument for Lime), Default: `build`
+-   `BuildType`: Type of build (`release`, `debug`, `final`), default: `release`
 -   `BuildFlags`: Additional build flags to pass to Lime compiler
 -   `Is32Bits`: Whether to build for 32 bits, Default: `false`
 
@@ -41,9 +42,10 @@ There's 2 ways on how to use the build script:
 
 1. Navigate to the `build` folder
 2. Double click `build.ps1` file (use `setup.ps1` to configure the project!)
+ - NOTE: You need PowerShell Core 7.0 to run it!
 3. Done! The script will ask for nescessary inputs.
 
 ## Extra
 
--   You can set `-watch` on `-BuildFlags` parameter to make the compiler auto (re)compile the game when a source file is changed	
+-   You can set `-watch` on `-BuildFlags` parameter to make the compiler auto (re)compile the game when a source file is changed
 	Also: the script will never stop in this mode, you have to press `CTRL`/`CMD` + `C` to force it to stop

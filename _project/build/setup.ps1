@@ -1,5 +1,5 @@
 #requires -PSEdition Core
-#requires -Version 7
+#requires -Version 7.0
 
 <#
 	.SYNOPSIS
@@ -23,7 +23,7 @@
 
 	.NOTES
 	Author: Sunnydev31 (@unreal.sunnydev)
-	Latest edition: 2026/03/29
+	Latest edition: 2026/04/10
 #>
 
 param(
@@ -234,9 +234,14 @@ do {
 	Write-Debug "CURRENT LOCATION: $(Get-Location)"
 	Write-Debug ""
 
-	$MenuOption = Read-Host ($Msg.Menu.Prompt -f 0, ($Msg["Menu"]["Options"].Count - 1))
+	if ($null -ne $MenuOption -and $MenuOption -ne -1) {
+		$MenuOptionNow = $MenuOption
+	}
+	else {
+		$MenuOptionNow = Read-Host ($Msg.Menu.Prompt -f 0, ($Msg["Menu"]["Options"].Count - 1))
+	}
 
-	switch ($MenuOption) {
+	switch ($MenuOptionNow) {
 		"0" { if ($HasHaxelib)	{ New-GameSetup		} }
 		"1" { if ($IsWindows)	{ Set-SetupWindows	}	else { Write-Output ($Msg.Menu.ErrorOS) } }
 		"2" { if ($IsMacOS)		{ Set-SetupMacOS	}	else { Write-Output ($Msg.Menu.ErrorOS) } }

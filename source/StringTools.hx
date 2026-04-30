@@ -282,6 +282,9 @@ class StringTools {
 		`s`, the result is false.
 	**/
 	public static function isSpace(s:String, pos:Int):Bool {
+		#if cs
+		return untyped char.IsWhiteSpace(s, pos);
+		#else
 		#if (python || lua)
 		if (s.length == 0 || pos < 0 || pos >= s.length)
 			return false;
@@ -294,6 +297,7 @@ class StringTools {
 				return true;
 
 		return (c > 8 && c <= 15) || (c >= 0x2000 && c <= 0x200A) || (c >= 0x205F && c < 0x2065);
+		#end
 	}
 
 	/**
